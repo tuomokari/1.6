@@ -1,0 +1,65 @@
+﻿[controller(resourcingwidget)
+	[using(dataform)]
+	[using(form)]
+	[using(table)]
+	[using(navigation)]
+	[using(layout)]
+	[using(schema)]
+	[using(text)]
+
+	[resourcingwidget(
+		userprofitcenter,
+		allocationstarthour,
+		allocationstartminute,
+		allocationendhour,
+		allocationendminute,
+		daycompletethreshold,
+		overtimethreshold)
+		[widget(variables, currentblockname, currentcontroller, class: "__hidden resourcingwidget")
+
+			[tabs(
+				class: "resourcingtooltabs",
+				opaque: true,
+				margin: "none",
+				alwayshorizontal: true)	
+					[tab(
+						label: $dailyresourcing,
+						icon: "schedule",
+						class: "dailytab",
+						hidetitle: true,
+						full: true,
+						id: "resourcing-tab-daily")						
+						[dailyresourcingwidget.dailyresourcingwidget(userprofitcenter, allocationstarthour, allocationstartminute, allocationendhour, allocationendminute)]
+					]
+					// Temporarily removed.
+					//[tab(
+					//	label: $calendar,
+					//	icon: "today",
+					//	class: "calendartab",
+					//	hidetitle: true,
+					//	full: true,
+					//	id: "resourcing-tab-calendar")						
+					//	[resourcingcalendarwidget.resourcingcalendarwidget(userprofitcenter)]
+					//]	
+					//[tab(
+					//	label: $capacityutilization,
+					//	icon: "insert_chart",
+					//	class: "capacityutilizationtab",
+					//	hidetitle: true,
+					//	full: true,
+					//	id: "resourcing-tab-capacityutilization")						
+					//	[capacityutilizationwidget.capacityutilizationwidget(userprofitcenter)]
+					//]			
+					//[tab(
+					//	label: $scheduler,
+					//	icon: "reorder",
+					//	class: "schedulertab",
+					//	hidetitle: true,
+					//	full: true,
+					//	id: "resourcing-tab-scheduler")						
+					//	[schedulerwidget.schedulerwidget(userprofitcenter)]
+					//]		
+				]		
+			]
+		]
+	]

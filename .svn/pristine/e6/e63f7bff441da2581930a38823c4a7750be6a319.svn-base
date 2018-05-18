@@ -1,0 +1,185 @@
+﻿[controller(layout)
+	[using(navigation)]
+	
+	[card (
+		class = "__default",
+		id = null,
+		relation = null,
+		chrome = "default")
+		[chromeclass = "default"]
+		[if(chrome=="border") chromeclass=" __chrome-border"]
+		[if(chrome=="accent") chromeclass=" __chrome-accent"]
+		[if(chrome=="default") chromeclass=""]
+		[if(chrome=="none") chromeclass=" __chrome-none"]
+
+		<div [attr(id)] class="__card[if (class) " "[class]][chromeclass]" [attr("data-relation", relation)]>
+			[content]
+		</div>
+	]
+
+	[panel (
+		heading = null,
+		class = "__default",
+		id = "",
+		margin = false,
+		padding = true,
+		mobilemargin = false,
+		mobilepadding = true,
+		headingurl = null,
+		titlepanel = false
+		)
+		<div [attr(id)] class="__panel[if (class) " "[class]][if (margin) " __margin"][if (padding) " __padding"][if (mobilemargin) " __mobilemargin"][if (mobilepadding) " __mobilepadding"][if (titlepanel) " __titlepanel"]">
+			
+		[if (heading && titlepanel)
+			<div class="__panelhead">
+				<h2 class="__titlepanel-title">
+					[if (headingurl != null)
+						[link(href: headingurl)
+							[heading]										
+						]
+					][else
+						[heading]					
+					]
+				</h2>
+			</div>
+			<div class="__panelcontent">
+				[content]
+			</div>
+		][elseif (heading && !titlepanel)
+			<div class="__panelhead">
+				<h2>
+					[if (headingurl != null)
+						[link(href: headingurl)
+							[heading]										
+						]
+					][else
+						[heading]					
+					]
+				</h2>
+			</div>
+			<div class="__panelcontent">
+				[content]
+			</div>
+		][else
+			[content]
+		]
+		</div>
+	]
+
+	[flexpanel(
+		class = "__default",
+		id = "",
+		renderouterpanel = true,
+		allowshrink = true,
+		resizable = true,
+		individualscrollbars = false
+	)
+		<div class="__flexpanel-wrapper[if (class) " "[class]][if (renderouterpanel) " renderouterpanel"][if (allowshrink) " allowshrink"][if (resizable) " resizable"][if (individualscrollbars) " individualscrollbars"]">
+			[content]
+		</div>
+	]
+
+	[flexpanelhandle
+		<div class="__flexpanel-handle"></div>
+	]
+
+	[flexpanelcolumn(
+		padding = "all",
+		resizable = true,
+		class = null
+	)
+		<div class="__flexpanel-column[if (class != "") " "[class]][if (padding=="all") " padding-all"][if (padding=="vertical") " padding-vertical"][if (padding=="horizontal") " padding-horizontal"]">
+			<div class="__flexpanel-column-content">[content]</div>
+		</div>
+		[if (resizable)
+			[flexpanelhandle]
+		]
+	]
+
+	[accordion (closeother = true, expand = false, initial = 0, margin = true, padding = true, mobilemargin = true, mobilepadding = true)
+		<div class = "__accordion[if (closeother == true) " __closeother"][if (margin) " __margin"][if (padding) " __padding"][if (mobilemargin) " __mobilemargin"][if (mobilepadding) " __mobilepadding"][if (expand != false) " __expand"][if (initial > 0) " __initial"]"[if (initial > 0) " "[attr("initial", initial)]]>
+			[content]
+		</div>
+	]
+
+	[tabs (
+		id = null,
+		class = null,
+		initial = 0,
+		opaque = false,
+		margin = "vertical",
+		alwayshorizontal = false)
+
+		[state = history.getstate(callerid)]
+		[marginclass = ""]
+		[if (margin == "vertical")
+			[marginclass = " __margin-vertical"]
+		]
+		[if (margin == "horizontal")
+			[marginclass = " __margin-horizontal"]
+		]
+		[if (margin == "all")
+			[marginclass = " __margin-all"]
+		]
+		
+		<div [attr(id)] class = "__tabs[if (class != "") " "[class]][marginclass][if (alwayshorizontal) " __alwayshorizontal"]" data-callerid="[callerid]" data-historytabindex="[state.tabindex]" [dataattr(initial)]>
+			<div class="__tabsheader[if (opaque) " __opaque"]">
+				<div class="__tabsheader-wrapper">
+				</div>
+			</div>
+			<div class="__tabscontent[if (opaque) " __opaque"]">
+				[content]
+			</div>
+		</div>
+	]
+
+	[tab (
+	    label = "",
+		id = null,
+		class = null,
+		icon = null,
+		hidetitle = false,
+		full = false)
+		<div class="__tabhead">[if (icon) <i class="material-icons __tab-icon">[icon]</i><span class="__tabcountseparator">&nbsp;</span>]<span class="__tab-label[if (icon) " __hideonmobile"]">[label]</span></div>
+		<div [attr(id)] class="__tab[if (class != "") " "[class]][if (full) " __full"]">
+			[if(!hidetitle)<h2>[if (icon) <i class="fa [icon] __tab-icon"></i>&nbsp;][label]</h2>]
+			[content]
+		</div>
+	]
+
+	[region(
+		id = null,
+		class = null,
+		margin = true,
+		padding = true,
+		mobilemargin = false,
+		mobilepadding = true)
+		
+		<div [attr(id)] class="__region[if (class) " "[class]][if (margin) " __margin"][if (padding) " __padding"][if (mobilemargin) " __mobilemargin"][if (mobilepadding) " __mobilepadding"]" >
+			[content]
+		</div>
+	]
+
+	[notification(class = null, id = null)
+		<div [attr(id)] class="__notification[if (class) " "[class]]">
+			[content]
+		</div>
+	]
+	
+	[desktop
+		<div class="__show_desktop">
+			[content]
+		</div>
+	]
+	[mobile
+		<div class="__show_mobile">
+			[content]
+		</div>
+	]
+
+	[closedialog
+		<html>
+			<body onload = "window.parent.$('body').data('dialog').close();"></body>
+		</html>	
+	]
+]

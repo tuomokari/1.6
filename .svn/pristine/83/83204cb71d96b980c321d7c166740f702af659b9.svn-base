@@ -1,0 +1,55 @@
+﻿projectleadmodule
+	en-US
+		timesheetentriestab: Timesheet entries
+		dayentriestab: Expenses
+		articlestab: Articles
+		startdate: Stat date
+		enddate: End date
+		worker: Worker
+		article: Article
+		date: Date
+		hours: Hours
+		amount: Amount
+		paytype: Paytype
+		updater: Updated by
+		entrydate: Update time
+		note: Note
+		generate_report: Generate report
+		stage: Stage
+		stage_worker_approved: Worker approved
+		stage_worker_unapproved: Unapproved
+		stage_manager: Manager update
+		stage_manager_approved: Manager approved
+		stage_payroll: Payroll update
+		generatingreport: Generating report...
+		deleted: Deleted
+		noresults: No results
+		error: An error occurred
+		modified: Modified
+	fi
+		timesheetentriestab: Tuntikirjaukset
+		dayentriestab: Kulut
+		articlestab: Nimikkeet
+		startdate: Alkupäivä
+		enddate: Loppupäivä
+		worker: Työntekijä
+		article: Nimike
+		date: Päivämäärä
+		hours: Tunnit
+		amount: Määrä
+		paytype: Palkkalaji
+		updater: Kirjauksen tekijä
+		entrydate: Kirjausaika
+		note: Selite
+		generate_report: Luo raportti
+		stage: Vaihe
+		stage_worker_approved: Työntekijän hyväksymä
+		stage_worker_unapproved: Hyväksymätön kirjaus
+		stage_manager: Esimiehen muutos
+		stage_manager_approved: Esimiehen hyväksymä
+		stage_payroll: Palkanlaskennan muutos
+		generatingreport: Valmistellaan raporttia...
+		deleted: Poistettu
+		noresults: Ei tuloksia
+		error: Tapahtui virhe
+		modified: Muutettu

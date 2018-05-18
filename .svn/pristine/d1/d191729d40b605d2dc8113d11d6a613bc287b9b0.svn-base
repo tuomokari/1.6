@@ -1,0 +1,161 @@
+﻿/*#region desktop tabs*/
+.__tabs {
+    display: none;
+    clear: both;
+    overflow: hidden;
+    &.__margin-vertical {
+        margin: @basemeasure 0;
+    }
+    &.__margin-horizontal {
+        margin: @basemeasure 0;
+    }
+    &.__margin-all {
+        margin: @basemeasure;
+    }
+}
+
+.__tabsheader {
+    overflow: hidden;
+    white-space: nowrap;
+    /*width: 3000px; // todo: find out a better way to handle these. Check mobile functionality*/
+    font-size: 0; // to remove empty space under this element, since its wrapper is an inline element
+    margin-bottom: -1px; // fix IE graphics rounding bug
+
+    &.__opaque {
+        .__tabsheader-wrapper .__tabhead {
+            background: darken(fade(@color-panel-background, 100%), 25%);
+            &.__active {
+                background: fade(@color-panel-background, 100%);
+            }
+
+            &:not(.__active):hover {
+                background: darken(fade(@color-panel-background, 100%), 10%);
+            }
+        }
+    }
+
+    .__tabsheader-wrapper {
+        border-top-left-radius: @border-radius;
+        border-top-right-radius: @border-radius;
+        overflow: hidden;
+        display: inline-block;
+
+        .__tabhead {
+            .__box;
+            border-radius: 0;
+            float: left;
+            clear: none;
+            min-width: 100px;
+            margin: 0;
+            overflow: visible;
+            background: darken(@color-panel-background, 25%);
+            border: none;
+            color: fade(@color-text-positive, 90%);
+            cursor: pointer;
+            font-size: 16px;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            margin-bottom: 0;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            padding: 5px 10px 10px 10px;
+            background-clip: border-box;
+            .display-flex;
+            .center-content;
+            .center-align;
+
+            &.__active {
+                background: @color-panel-background;
+                cursor: default;
+                box-shadow: none;
+                color: @color-text-positive;
+            }
+
+            &:not(.__active):hover {
+                background: darken(@color-panel-background, 10%);
+                color: @color-text-positive;
+            }
+        }
+    }
+}
+
+.__tabscontent {
+    .__panel-core();
+    border-top-left-radius: 0;
+    border-top-width: 0;
+    .desktop({
+        box-shadow: none;
+    });
+    box-sizing: border-box;
+    border: none;
+    overflow: hidden;
+    width: auto;
+    .flex-values(1 1 auto);
+    position: relative; // to overlay the content on the tab headers
+}
+
+.__tab {
+    visibility: hidden;
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    box-sizing: border-box;
+    padding: @basemeasure;
+
+    &.__active {
+        position: static;
+        visibility: visible;
+        z-index: 2;
+        &.__full {
+            position: absolute;
+            height: 100%;
+        }
+    }
+}
+/*#endregion*/
+
+/*#region smartphone tabs*/
+@media only screen and (max-width: @screen-smartphone) {
+    .__tabs:not(.__alwayshorizontal) {
+        -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+        margin-left: 30px;
+        overflow: visible;
+
+        .__tab h2 .__tab-icon {
+            display: none;
+        }
+
+        .__tabsheader {
+            width: 30px;
+            margin-left: -30px;
+            position: absolute;
+            overflow: visible;
+        }
+    
+        .__tabsheader-wrapper {
+            border-top-right-radius: 0;
+            border-bottom-left-radius: @basemeasure;
+        }
+
+        .__tabhead {
+            min-width: 10px;
+            padding: @basemeasure / 2;
+            width: 30px;
+            max-width: 100px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: normal;
+            // todo: remove bg transparency
+
+            .__tab-label.__hideonmobile {
+                display: none;
+            }
+        }
+
+        .__tabcountseparator {
+            display: none;
+        }
+    }
+}
+/*#endregion*/

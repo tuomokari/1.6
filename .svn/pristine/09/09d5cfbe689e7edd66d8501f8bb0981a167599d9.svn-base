@@ -1,0 +1,24 @@
+dailyresourcingwidget
+	projectsandallocationsbyprofitcenter
+		project
+			__condition: { profitcenter: [@profitcenter], status: "In progress", noresourcing: {$ne: true}, disabled: {$ne: true} }
+			allocationentry
+				__condition: { starttimestamp: { $lt: [@end] }, $or: [{endtimestamp: { $gt: [@start] }}, {"endtimestamp": { $exists: false }} ] }
+
+	usersforprofitcenter
+		user
+			__condition: { profitcenter: [@profitcenter], disabled: {$ne: true}}
+			allocationentry
+				__condition: { starttimestamp: { $lt: [@end] }, $or: [{endtimestamp: { $gt: [@start] }}, {"endtimestamp": { $exists: false }} ] }
+		asset
+			__condition: { profitcenter: [@profitcenter], disabled: {$ne: true}}
+			allocationentry
+				__condition: { starttimestamp: { $lt: [@end] }, $or: [{endtimestamp: { $gt: [@start] }}, {"endtimestamp": { $exists: false }} ] }
+				
+	getuserallocation
+		allocationentry
+			__condition: { starttimestamp: { $lt: [@end] }, endtimestamp: { $gt: [@start] }, user: [@user] }
+	
+	getassetallocation
+		allocationentry
+			__condition: { starttimestamp: { $lt: [@end] }, endtimestamp: { $gt: [@start] }, asset: [@asset] }

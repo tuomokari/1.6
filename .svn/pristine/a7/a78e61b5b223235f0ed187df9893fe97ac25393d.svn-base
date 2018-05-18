@@ -1,0 +1,196 @@
+﻿[controller(tro)
+	[using(dataform)]
+	[using(form)]
+	[using(table)]
+	[using(navigation)]
+	[using(layout)]
+	[using(schema)]
+	[using(text)]
+	[using(menubar)]
+
+	[approvework
+		[html
+			[head(title: [$pagetitle_approvework])
+				[defaultaction.defaultviewhead]
+			]
+			
+			[body
+				[application
+					[approveworkbody()]
+				]
+			]
+		]
+	]
+	
+	[private]
+	[approveworkbody
+
+		[if (viewbag.inactiveprojectsfound == true)
+			[panel
+				[errormessage($approvework_error_someprojectsclosed)]
+			]			
+		]
+
+		[panel (
+			heading: $pagetitle_approvework,
+			titlepanel: true
+		)
+	
+			[state = historystate.approveworkbody_state]
+			[filtertype = state.approvework_filter_type]
+			[if (filtertype == null) filtertype = "notaccepted"]
+			
+			[hourtotals.hourtotals(
+				mode: filtertype,
+				startdate: state.daterangestart,
+				enddate: state.daterangeend)]
+			
+			[form(action: callingaction, id: "approvework_filter_form")
+
+				<div class="__buttongroup">
+
+					<button class="__button approvework_currentperiod[if (filtertype != "notaccepted") ""]">[txt("approvework_unacceptedentries")]</button>
+					<button class="__button approvework_daterange[if (filtertype != "daterange") ""]">[txt("approvework_daterange")]</button>
+				</div>
+
+				[hiddenfield(name: "approvework_filter_type", value: filtertype)]
+
+				[regionclass = "approvework-daterange-element"]
+				[if (filtertype != "daterange") regionclass += " __hidden"]
+
+				[region (
+					class: regionclass
+				)
+					[datetimefield(
+						"daterangestart",
+						$approvework_start,
+						state.daterangestart,
+						allowclear: false,
+						startyear: 2015)]
+					
+					[datetimefield(
+						"daterangeend",
+						$approvework_finish,
+						state.daterangeend,
+						isenddate: true,
+						allowclear: false,
+						startyear: 2015)]
+					
+					[submit($approvework_show, class: "approvework_show")]
+				]
+			]
+
+			[extraparams = ""]
+			[if (filtertype == "daterange")
+				extraparams += "&showall=true&rangestart=" + state.daterangestart + "&rangeend=" + state.daterangeend
+			]
+
+			[panel
+
+				[heading($approvework_timesheetentry, 2)]
+				
+				[listview.listview(
+					class: "approvework_timesheetentry",
+					orderby: "starttimestamp",
+					schema: schemafor("timesheetentry"),
+					listviewcontroller: "approveworklistview",
+					listviewaction: "approveworkentry",
+					renderpanel: false,
+					allownew: false,
+					allowback: false,
+					allowremove: false,
+					tools: false,
+					async: true,
+					extraparams: extraparams)
+				]
+			[if (config.application.features.articles == true)
+
+				[heading($approvework_article, 2)]
+
+				[listview.listview(
+					class : "approvework_articleentry",
+					orderby: "timestamp",
+					schema: schemafor("articleentry"),
+					listviewcontroller: "approveworklistview",
+					listviewaction: "approveworkentry",
+					renderpanel: false,
+					allownew: false,
+					allowback: false,
+					allowremove: false,
+					tools: false,
+					async: true,
+					extraparams: extraparams)
+				]
+			]
+			
+				[heading($approvework_dayentry, 2)]
+				
+				[listview.listview(
+					class : "approvework_dayentry",
+					orderby: "date",
+					schema: schemafor("dayentry"),
+					listviewcontroller: "approveworklistview",
+					listviewaction: "approveworkentry",
+					renderpanel: false,
+					allownew: false,
+					allowback: false,
+					allowremove: false,
+					tools: false,
+					async: true,
+					extraparams: extraparams)
+				]
+
+				[if (currentuser.internalworker)
+					[heading($approvework_absence, 2)]
+
+					[listview.listview(
+						class : "approvework_absenceentry",
+						orderby: "starttimestamp",
+						schema: schemafor("absenceentry"),
+						listviewcontroller: "approveworklistview",
+						listviewaction: "approveworkentry",
+						renderpanel: false,
+						allownew: false,
+						allowback: false,
+						allowremove: false,
+						tools: false,
+						async: true,
+						extraparams: extraparams)
+					]
+				]
+			]
+
+			[if (config.application.features.assets && (currentuser.level == 2 || currentuser.level == 3 || currentuser.level == 5))
+				[heading($approvework_assetentry, 2)]
+					[listview.listview(
+						class : "approvework_assetentry",
+						orderby: "starttimestamp",
+						schema: schemafor("assetentry"),
+						listviewcontroller: "approveworklistview",
+						listviewaction: "approveworkentry",
+						renderpanel: false,
+						allownew: false,
+						allowback: false,
+						allowremove: false,
+						tools: false,
+						extraparams: extraparams)
+					]
+			]
+
+			[if (config.application.features.showentrieslastapproved)
+				<span>[$approvework_entrieslastapproved]&nbsp;</span><span class="__localize_datetime">[viewbag.entrieslastapproved]</span><br />
+			]
+
+			[actionbutton(
+				id: "approvework_approve_button",
+				label: $approvework_approvework,
+				controllername: "tro",
+				action: "doapprovework",
+				confirmationmessage: $approvework_doyouwishtoapprove)
+			]
+			[actionbutton(controllername: "tro", action: "home") $back]		
+
+			[approveworkhelper.approveworkhelper("worker", "approvework_timesheetentry", true)]
+		]
+	]	
+]

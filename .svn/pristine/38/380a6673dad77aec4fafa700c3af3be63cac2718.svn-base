@@ -1,0 +1,46 @@
+﻿[controller(horizontalworkview)
+	[horizontalworkview(datasource)
+		<div class="__horizontalworkviewwrapper">
+
+			[widget(variables, currentblockname, currentcontroller, class: "__hidden __horizontalworkview")
+				[templates
+					[entrytemplate]
+				]
+			]
+		</div>
+
+	]
+
+	[private]
+	[templates
+		<div class="horizontalworkview_templates __hidden">
+			[content]
+		</div>	
+	]
+
+	[private]
+	[template(class)
+		<div class="[class] __widgettemplate">
+			[content]
+		</div>
+	]
+
+
+	[private]
+	[entrytemplate
+		[template("horizontalworkview_entry_template day workentryrow")
+			<div class="time">
+				<span class='hours'></span><span class='decimal'></span><span class='unit'></span>
+			</div>
+			<div class="details">
+				<span class='overtime'></span></br>
+				<span class="expensesicon"><i class="material-icons">euro_symbol</i></span>
+				<span class="absencesicon"><i class="material-icons">do_not_disturb</i></span>
+				</span><span class="articlesicon"><i class="material-icons">layers</i></span>
+				</span><span class="assetsicon"><i class="material-icons">local_shipping</i></span>
+				</span><span class="allocationsicon"><i class="material-icons">today</i></span>
+				<span class='extras'></span>
+			</div>
+		]
+	]
+]

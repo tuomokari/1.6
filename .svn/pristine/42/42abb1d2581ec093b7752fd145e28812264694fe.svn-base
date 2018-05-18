@@ -1,0 +1,145 @@
+﻿[controller(dailyresourcingwidget)
+	[using(dataform)]
+	[using(form)]
+	[using(table)]
+	[using(layout)]
+	[using(schema)]
+	[using(text)]
+	[using(documentstructure)]
+	[using(navigation)]
+
+	[dailyresourcingwidget(
+		userprofitcenter,
+		allocationstarthour,
+		allocationstartminute,
+		allocationendhour,
+		allocationendminute,
+		daycompletethreshold,
+		overtimethreshold
+		)
+		[widget(variables, currentblockname, currentcontroller, class: "__hidden dailyresourcingwidget")
+		
+			[panel(
+				class: "dailyresourcingsetup __inner"
+			)
+			<div class="resourcingtools-wrapper">
+				<div class="profitcenter-select">
+					[selectiondropdown(
+						collectionname: "profitcenter",
+						name: "dailyresourcingwidget_profitcenter",
+						label: txt("schema_profitcenter", "tro"),
+						historyenabled: false,
+						class: "profitcenter-select",
+						inline: true)]
+						<input type="checkbox" id="show-secondary-profitcenter" class="__switch" /><label for="show-secondary-profitcenter">[txt("showsecondaryprofitcenter")]</label>
+					[selectiondropdown(
+						collectionname: "profitcenter",
+						name: "dailyresourcingwidget_profitcenter_2",
+						label: "",
+						historyenabled: false,
+						class: "profitcenter-select-2",
+						inline: true)]
+				</div>
+				<div class="display-options">
+					<input type="checkbox" id="show-users" checked="checked" class="__switch" /><label for="show-users">[txt("showusers")]</label>
+					<input type="checkbox" id="show-assets" checked="checked" class="__switch" /><label for="show-assets">[txt("showassets")]</label>
+				</div>
+				<div class="dailyresourcingcontrols">
+					<div class="datecontrols">
+						<a class="__button previous dailyresourcingwidget_previousbutton __modest"><i class="material-icons">navigate_before</i></a><div class="date selecteddate"><span class="long"></span><span class="short"></span></div><a class="__button today dailyresourcingwidget_todaybutton __modest"><i class="material-icons">restore</i></a><input type="hidden" class="datepicker" /><a class="__button calendar __modest"><i class="material-icons">date_range</i></a><a class="__button next dailyresourcingwidget_nextbutton __modest"><i class="material-icons">navigate_next</i></a><a class="__button settings __modest"><i class="material-icons">settings</i></a>
+					</div>
+				</div>
+			</div>
+			]
+
+			[flexpanel(
+				individualscrollbars: true,
+				class: "__inner"
+			)
+				[flexpanelcolumn(
+					class: "projects",
+					padding: "none"
+				)
+					[panel($scheduledprojects, class: "scheduledprojects")
+						<div class="scheduledprojectslist"></div>
+					]
+					[panel($unscheduledprojects, class: "unscheduledprojects")
+						<div class="unscheduledprojectslist"></div>
+					]
+				]
+			
+				[flexpanelcolumn(
+					class: "resources"
+				)
+				<div class="resources-users" data-title="[txt('users')]"></div>
+				<div class="resources-assets" data-title="[txt('assets')]"></div>
+				]
+			
+				[flexpanelcolumn(
+					resizable: false,
+					class: "allocationboard",
+					padding: "none"
+				)
+					<div class="dailyresourcingitems">
+					</div>
+				]
+			]
+
+			[templates]
+		]
+	]
+
+	[projectdetails(elementdata)
+		[itemschema = schemafor("project")]
+			
+		[table				
+			[schemaname = nameof(tree.parent(itemschema))]
+			[foreach schemaitem in itemschema
+				[if (schemaitem.type != "relation" || schemaitem.relationtype == "one")
+
+					[name = txt("schema_" + nameof(itemschema)+ "_" + nameof(schemaitem), "tro")]
+					[displayrowfor(tree.get(elementdata, nameof(schemaitem)), schemaitem, true, name)]
+				]
+			]
+		]
+	]
+
+	[private]
+	[templates
+		<div class="dailyresourcingwidget_templates __hidden">
+			<div class="dailyresourcingwidget_projectcard widgettemplate">
+				<h3 class="projectname">
+				</h3>
+				<p class="customer __hidden"><span class="customervalue"></span></p>
+				<div class="allocations"></div>
+
+				<div class="project-tools">
+					[actionbutton(
+					class: "dailyresourcingwidget_projectcard_details __float-right")
+						<i class="material-icons">info_outline</i>
+					]
+				</div>
+			</div>
+			<div class="dailyresourcingwidget_usercard widgettemplate">
+				[if (config.application.features.useprofilepictures)
+					<div class="dailyresourcingwidget_allocationcard_userpicture_wrapper"><img class="dailyresourcingwidget_allocationcard_userpicture" alt="" /></div>
+				]
+				<h3 class="dailyresourcingwidget_allocationcard_username">
+				</h3>
+				<p class="dailyresourcingwidget_allocationcard_userallocatedhours"></p>
+			</div>
+			<div class="dailyresourcingwidget_assetcard widgettemplate">
+				<h3 class="dailyresourcingwidget_allocationcard_assetname">
+				</h3>
+				<p class="dailyresourcingwidget_allocationcard_assetallocatedhours"></p>
+			</div>
+			<div class="dailyresourcingwidget_allocationcard widgettemplate">
+				<h5 class="username">
+				</h5>
+				<p class="time"><span class="dailyresourcingwidget_allocationcard_starttime"></span> &ndash; <span class="dailyresourcingwidget_allocationcard_card_endtime"></span></p>
+				[button($remove, class: "dailyresourcingwidget_allocationcard_removebutton")]
+				[button($modify, class: "dailyresourcingwidget_allocationcard_modifybutton")]
+			</div>
+		</div>	
+	]
+]

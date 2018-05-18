@@ -1,0 +1,69 @@
+﻿[controller(tro)
+
+	[using(dataform)]
+	[using(form)]
+	[using(table)]
+	[using(navigation)]
+	[using(layout)]
+	[using(schema)]
+	[using(text)]
+	[using(menubar)]
+	[using(timeline)]
+
+	[resourceprofitcenter()
+		[html
+			[head(title: [$pagetitle_resourceprofitcenter])
+				[defaultaction.defaultviewhead]
+			]
+			
+			[body
+				[application
+					[resourceprofitcenterbody()]
+				]
+			]
+		]
+	]
+	
+	[private]
+	[resourceprofitcenterbody()
+	[state = history.getstate("resourceprofitcenter_state")]
+
+		[panel(
+			padding: false,
+			class: "timelineouterwrapper"
+			)
+			[region
+				<div class="timelinearea">
+					[profitcentertimeline(
+						profitcenter: state.profitcenter
+					)]
+				</div>
+			]
+		]
+		[panel (
+			class: "timelinecontrolspanel"
+			)
+			<div class="timelinecontrols-left">
+				[timelinecontrols]
+			</div>
+			<div class="timelineresources">
+				<div class="timeline_button" id="timeline_filtertoggle"><i class="fa fa-filter"></i></div>
+				<div id="timeline_filter" style="display: none">
+					[panel($resourceprofitcenter_filter)
+						[form(action: callingaction)
+
+							[selectionfield(
+								collectionname: "profitcenter",
+								name: "profitcenter",
+								value: state.profitcenter,
+								label: $schema_person_profitcenter,
+								documentsperpage: 10)]
+
+							[submit($filter)]
+						]
+					]
+				</div>
+			</div>
+		]
+	]
+]

@@ -1,0 +1,7 @@
+﻿[controller(calendarwidget)
+	[calendarwidget(parameter1, parameter2)
+			[widget(variables, currentblockname, currentcontroller, class: "__hidden __calendarwidget")
+			<h1>[$title]</h1>
+		]
+	]
+]

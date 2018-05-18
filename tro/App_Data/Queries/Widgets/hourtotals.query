@@ -1,0 +1,31 @@
+hourtotals
+	totalsforuser_unapproved
+		timesheetentry
+			__condition: { approvedbyworker: { $ne: true }, countsasregularhours: { $ne: false }, creator: [@user], prarent: { $exists: false}  }
+			__specifiedonly: true
+			starttimestamp
+			endtimestamp
+			istraveltime
+
+		absenceentry
+			__condition: { approvedbyworker: { $ne: true }, countsasregularhours: { $ne: false }, creator: [@user] }
+			__specifiedonly: true
+			starttimestamp
+			endtimestamp
+
+	totalsforuser_bydate
+		timesheetentry
+			__condition: { user: [@user], starttimestamp: { $gt: [@rangestart], $lt: [@rangeend] }, countsasregularhours: { $ne: false }, approvedbyworker: true, prarent: { $exists: false} }
+			__specifiedonly: true
+			starttimestamp
+			endtimestamp
+			approvedbyworker
+			istraveltime
+
+		absenceentry
+			__condition: { user: [@user], starttimestamp: { $gt: [@rangestart], $lt: [@rangeend] }, countsasregularhours: { $ne: false }, approvedbyworker: true }
+			__specifiedonly: true
+			starttimestamp
+			endtimestamp
+			approvedbyworker
+	

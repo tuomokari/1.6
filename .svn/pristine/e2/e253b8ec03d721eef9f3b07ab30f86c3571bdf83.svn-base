@@ -1,0 +1,62 @@
+﻿.card(@cardcolor: @color-panel-background-opaque; @accentcolor: @color-button; @chrome: false; @hover: false; @shadow: true) {
+    padding: @basemeasure / 2 @basemeasure;
+    cursor: default;
+    z-index: 100;
+    .__panel(@cardcolor; @shadow);
+    margin: @basemeasure 0;
+    box-sizing: border-box;
+    border-radius: @border-radius;
+    background: @cardcolor;
+    user-select: none; 
+
+    & when (@hover = true) {
+        &:hover {
+            background: lighten(@cardcolor, 3%);
+            cursor: pointer;
+        }
+    }
+
+    .animate();
+
+    & when (@chrome = "accent") {
+        .smartphone({
+            border: 1px solid darken(@cardcolor, 10%);
+            border-left: @basemeasure / 2 solid @accentcolor;
+        });
+
+        .desktop({
+            border-left: @basemeasure / 2 solid @accentcolor;
+        });
+    }
+}
+
+/* predefined card styles, corresponding to "chrome" options in the MC2 metacode tag
+    accent: colored border on the left side of the card
+    none: will not render a panel at all, no layout options whatsoever. This is for situations where the card's panel is already created for some reason.
+    default: will render a normal panel
+
+*/
+.__card {
+    &.__chrome-accent {
+        .card(@chrome: "accent");
+    }
+    &.__chrome-none {
+    }
+    &:not(.__chrome-border):not(.__chrome-accent):not(.__chrome-none) { // default with panel
+        .card();
+	
+	    &.__motif {
+            background: rgba(0, 0, 0, 0.05);
+		    border: 1px dashed rgb(170, 170, 170);
+		    min-height: 65px;
+		    .display-flex;
+		    box-shadow: none;
+		    .center-content;
+		    .center-align;
+	    }
+    }
+}
+
+.dragging() {
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1), 0 0 2px 0 rgba(0, 0, 0, 0.025), 0 8px 15px -3px rgba(0, 0, 0, 0.75), 0 1px rgba(253, 253, 253, 0.75) inset;
+}

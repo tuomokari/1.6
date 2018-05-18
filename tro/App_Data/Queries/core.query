@@ -1,0 +1,11 @@
+﻿core
+	userbyemail
+		user
+			__condition: { email: [@email] }
+	
+	userdata
+		userdata
+			__condition: { user: [@user], key: [@key] }
+			__specifiedonly: true
+			key
+			value

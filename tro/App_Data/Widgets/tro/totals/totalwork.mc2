@@ -1,0 +1,26 @@
+﻿[controller(totalwork)
+	[totalwork(filterdivclass, paytypes)
+		[widget(variables, currentblockname, currentcontroller, class: "__hidden __totals")
+			<h2 class="toomanyresultsmessage __warning">[$toomanyresults]</h2>
+			<table class="managertotalstable __table">
+				<thead class="totalstablehead">
+					<tr>
+						<th class="name_header">[$user]</th>
+						<th class="regular_hours_header">[$regular_hours]</th>
+						<th class="absences_header">[$absences]</th>
+						<th class="overtime_header">[$overtime]</th>
+						<th class="totalhours_header">[$totalhours]</th>
+						[if (config.application.features.enablesocialproject)
+							<th class="socialproject_header">[$socialproject]</th>
+						]
+						[foreach expensetype in config.totalwork.extraexpensetypes
+							<th data-totalcollection="dayentry" data-totaltype="[nameof(expensetype)]" class="totaltype totaltypes_[nameextraexpensetypesof(expensetype)]">[txt("totaltypes_" + nameof(expensetype))]</th>							
+						]
+					</tr>
+				</thead>
+				<tbody class="totalstablebody">
+				</tbody>
+			</table>
+		]
+	]
+]

@@ -1,0 +1,17 @@
+﻿[controller(core)
+
+	[widget(params, name, controllername, class, id = null, initialrefresh = true)
+
+		<div data-widget="true" data-widgetname="[name]" data-widgetnamespace="[controllername]" [parameterstoattributes(params)] 
+			[attr(class)] [parameterstoattributes(extraparameters)] [attr(id)] data-initialrefresh="[initialrefresh]">
+		
+		[content]
+		
+		</div>
+	]
+
+	[provideinterface(interfacename)
+		<div class="__widget_interface_provider" data-interfacename="[interfacename]"  style="display:none"></div>
+
+	]
+]

@@ -1,0 +1,118 @@
+﻿connections
+	mc2developmentserver
+		handlers
+
+			messageloggerhandler
+				loggers
+					Development Server Messages
+						loggertype:"namedpipe"
+						loglevel:"finetrace"
+
+			mongodbhandler
+			payrollintegrationhandler
+				export
+					//Default integration\payroll should not be used with exportrootfolder
+					//integrationfolder:integration\trotovisma
+					//default remoteConnection.GetDataPath()
+					exportrootfolder:c:\systemsgarden
+					//exportabsencefilecsv:Poissaolokirjaukset.csv
+					//exportdayfilecsv:KuluJatuntikirjaukset.csv
+					//exporttimesheetfilecsv:KuluJatuntikirjaukset.csv
+					//exportabsencefiletxt:Poissaolokirjaukset.txt
+					//exportdayfiletxt:Kulukirjaukset.txt
+					//exporttimesheetfiletxt:Tuntikirjaukset.txt
+					//wether to assign csv-header or not default is false, true espcially for the testing purposes
+					showcsvheader:true
+					//total of how many valid entrytypes and their names
+					validtypescountandtypes:3
+						absence:0
+						day:1
+						timesheet:2
+					fields
+						paymentgroup
+							index:0
+							valid
+								absence
+								day
+								timesheet
+						useridentifier
+							index:1
+							valid
+								absence
+								day
+								timesheet
+							//whether remove preceding zeros from identifier, default is false
+							removeprecedingzeroes:true
+						startdate
+							index:2
+							valid
+								absence
+								day
+								timesheet
+							format:d.M.yyyy
+						//By deafult enddate is same as startdate
+						enddate
+							index:3
+							valid
+								absence
+								day
+								timesheet
+							format:d.M.yyyy
+						//identifier:projectid default value
+						//required 3 fields, 1 field length is 8
+						projectnumber:array
+							identifier:poski
+							fieldspan:3
+							length:8
+							index:4
+							valid
+								day
+								timesheet
+						workorder
+							index:7
+							valid
+								day
+								timesheet
+						paytypeid
+							index:8
+							valid
+								absence
+								day
+								timesheet
+						hours
+							index:9
+							valid
+								absence
+								day
+								timesheet
+						amount
+							index:10
+							valid
+								day
+						hourlyrate
+							index:11
+							valid
+								day
+						quantityrate
+							index:12
+							valid
+								day
+
+			//axintegrationhandler
+
+			//trohelpershandler
+
+			tcphandler
+				sslport:26262
+				sslcertificatefile:localhost.pfx
+				requirecertificate:false
+
+loggers
+	Development server
+		loggertype:"namedpipe"
+		loglevel:"finetrace"
+
+	Development server filelog
+		loggertype:"file"
+		loglevel:"finetrace"
+		filename:"C:\Projects\GateTro\TRO\Tools\DevelopmentServer\bin\Debug\integration\payroll\devserver.log"

@@ -1,0 +1,36 @@
+homescreenprojects
+	allocationsforproject
+		allocationentry
+			__condition: "{ 
+			project: [@project], 
+			status: "In progress",
+			$or: [
+				 { $and: [ { date: { $gte: [@start] } }, { date: { $lte: [@end] } }] },
+				 { date: { $exists: false }}]				
+			}"
+	
+	unapprovedentriesforproject
+		timesheetentry
+			__condition: "{ 
+			project: [@project], 
+			user: [@user],
+			approvedbyworker: { $ne: true }
+			}"
+		absenceentry
+			__condition: "{ 
+			project: [@project], 
+			user: [@user],
+			approvedbyworker: { $ne: true }
+			}"
+		dayentry
+			__condition: "{ 
+			project: [@project], 
+			user: [@user],
+			approvedbyworker: { $ne: true }
+			}"
+		articleentry
+			__condition: "{ 
+			project: [@project], 
+			user: [@user],
+			approvedbyworker: { $ne: true }
+			}"

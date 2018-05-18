@@ -1,0 +1,46 @@
+﻿[controller(tro)
+
+	[using(dataform)]
+	[using(form)]
+	[using(table)]
+	[using(navigation)]
+	[using(layout)]
+	[using(schema)]
+	[using(text)]
+	[using(menubar)]
+	[using(documentstructure)]
+
+	[home(useritem, currdatetime)
+		[html
+			[head(title: [$pagetitle_home])
+				[defaultaction.defaultviewhead]
+			]
+			
+			[body
+				[application("__home")
+					[homebody(
+						useritem: useritem,
+						currdatetime: currdatetime)
+					]
+				]
+			]
+		]
+	]	
+			
+	[private]
+	[mobilemenu
+		[menufor(navigation: tree.get(navigation, callingcontroller), id: "mobilemenu")]
+	]
+
+	[private]
+	[homebody(
+		useritem,
+		currdatetime)
+		
+		[state = ""]
+
+		<div id="__menubar_logo_mobile"></div>
+					
+		[homescreenwidget.homescreenwidget]
+	]
+]

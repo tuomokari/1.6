@@ -1,0 +1,204 @@
+﻿[controller(login)
+
+	[using(form)]
+	[using(table)]
+	[using(layout)]
+	[using(text)]
+	[using(navigation)]
+
+	[passwordlogin(message)
+		[html
+			[head(title: [$pagetitle_login])
+				[defaultviewhead]
+			]
+			
+			[body
+				[application
+					[passwordloginbody(message)]
+				]
+			]
+		]
+	]
+	
+	[private]
+	[passwordloginbody(message)
+		[panel(
+			heading: [$login],
+			class: "__login-panel __cancel-shift"
+			)
+
+			[form()
+				[textfield(label: $username, name: "username")]
+				[passwordfield(label: $password, name: "password")]
+
+				[if (message)
+					[validatemessage(txt(message))]
+				]
+
+				[submit($login)]
+
+				<div class="__messagebox-controls">
+					[actionlink(
+						linktext: $login_request_password,
+						action: "requestpassword",
+						controller: "login",
+						class: "__button __modest")]
+				</div>
+			]
+		]
+	]
+
+	[requestpassword(actiondetail)
+		[html
+			[head(title: [$pagetitle_request_password])
+				[defaultviewhead]
+			]
+			
+			[body
+				[application
+					[requestpasswordbody(actiondetail)]
+				]
+			]
+		]	
+	]
+
+	[requestpasswordbody(actiondetail)
+		[panel(
+			heading: [$request_password],
+			class: "__login-panel __cancel-shift"
+		)
+			[form()
+				[textfield(label: $email, name: "email")]
+
+				[if (message)
+					[validatemessage(txt(message))]
+				]
+
+				[submit($requestpassword_send)]
+
+				[if (actiondetail == "passwordsent")
+					<br/>
+					<p>[$requestpassword_requestsent]</p>
+					[actionlink($requestpassword_go_to_login,"passwordlogin","login")]
+				][elseif (actiondetail == "invalidemail")
+					<br/>
+					<p class="__error">[$requestpassword_invalidemail]</p>
+				]
+			]
+		]
+	]
+
+	[adlogin(message)
+		[html
+			[head(title: [$pagetitle_login])
+				[defaultviewhead]
+			]
+			
+			[body
+				[application
+					[adloginbody(message)]
+				]
+			]
+		]
+	]
+	
+	[private]
+	[adloginbody(message)
+		[panel(
+			heading: [$login],
+			class: "__login-panel __cancel-shift"
+		)
+
+			[form()
+				[textfield(label: $username, name: "username")]
+				[passwordfield(label: $password, name: "password")]
+
+				[if (message)
+					[validatemessage(txt(message))]
+				]
+				
+				<div class="__messagebox-controls">
+					[submit($login)]
+				</div>
+			]
+		]
+	]
+
+	[setpassword
+		[html
+			[head(title: [$pagetitle_setpassword])
+				[defaultviewhead]
+			]
+			
+			[body
+				[application
+					[setpasswordbody]
+				]
+			]
+		]
+	]
+	
+	[private]
+	[setpasswordbody()
+		[panel(
+			heading: [$setpassword],
+			class: "__login-panel __cancel-shift"
+		)
+
+			[form()
+				[selectionfield(collectionname: "user", name: "user", label: $schema_user)]
+				[textfield(label: $password, name: "password")]
+				[submit("$set")]
+			]
+		]
+	]
+
+	[logout
+		[html
+			[head(title: [$pagetitle_logout])
+				[defaultviewhead]
+			]
+			
+			[body
+				[logoutbody]
+			]
+		]		
+	]
+
+	[private]
+	[logoutbody()
+		[panel([logout])
+		]
+	]
+
+	[impersonate
+		[html
+			[head(title: [$pagetitle_impersonate])
+				[defaultviewhead]
+			]
+			
+			[body
+				[application
+					[impersonatebody]
+				]
+			]
+		]
+	]
+	
+	[private]
+	[impersonatebody()
+		[panel(
+			heading: [$impersonate],
+			class: "__cancel-shift"
+		)
+
+			[form()
+				[selectionfield(
+				collectionname: "user",
+				name: "user",
+				label: $schema_user)]
+				[submit($impersonate)]
+			]
+		]
+	]	
+]

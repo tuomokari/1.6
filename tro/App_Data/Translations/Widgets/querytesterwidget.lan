@@ -1,0 +1,35 @@
+﻿querytesterwidget
+	en-US
+		title: Query tester
+		queryname: Query name
+		querycontroller: Query namespace
+		executequery: Execute query
+		results: Results
+		parameter: Parameter
+		addparameter: Add parameter
+		string: String
+		int: Integer
+		bool: Boolean
+		date: Date
+		identifier: Identifier
+		float: Float
+		name: Name
+		value: Value
+		type: Type
+	fi
+		title: Hakujen testaus
+		queryname: Haun nimi
+		querycontroller: Haun nimiavaruus
+		executequery: Suorita haku
+		results: Tulokset
+		parameter: Parametri
+		addparameter: Lisää parametri
+		string: Teksti
+		int: Luku
+		float: Liukuluku
+		bool: Kyllä/Ei
+		date: Päivämäärä
+		identifier: Tunniste
+		name: Nimi
+		value: Arvo
+		type: Tyyppi

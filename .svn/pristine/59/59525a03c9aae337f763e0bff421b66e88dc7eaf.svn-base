@@ -1,0 +1,1214 @@
+﻿tro
+	en-US
+
+		addtimesheetentry: Work hours
+		adddayentry: Expense
+		addarticleentry: Articles
+		addabsenceentry:  Absences
+		addassetentry: Asset hours
+		addsocialprojectentry: Administrative project
+
+		actions: Actions
+
+		validate_startmustbebeforeend: End date must be after the start date
+		validate_mustnotbetooearly: You cannot enter work hours this far back.
+		validate_timesheetalreadyexists: Work hours are already logged for the specified time period.
+		validate_absencealreadyexists: Abasences are already logged for the specified time period.
+		validate_mustnotbelaterthantoday: You cannot enter work hours for today or later.
+		validate_projectnotactive: You cannot modify or add entries to an inactive project (The project must be in "In progress" state).
+		validate_payrollperiodlocked: The payroll period is already locked for this time. You cannot make the modification.
+		validate_alreadyaccepted: The document you are attempting to modify has already been approved and cannot be modified.
+
+		tiptext_timesheetentry_istraveltime: Note: marks entire entry as travel time.
+		
+		timeline_week: Week
+		timeline_week_abbreviated: Wk
+		timeline_month: Month
+		timeline_month_abbreviated: M
+		timeline_day: Day
+		timeline_day_abbreviated: D
+		timeline_previous: Previous
+		timeline_next: Next
+		timeline_remove: Remove
+		timeline_edit: Edit
+		timeline_range: Find
+		timeline_backtoprojectresourcing: Back to project resourcing
+		timeline_confirmremoveallocation: Are you sure you wish to remove allocation?
+		timeline_createtimesheetentry: Create entry with these details
+		timeline_confirmcreatetimesheetentry: Are you sure you wish to create time sheet entry corresponding to this allocation?
+		timeline_createtimesheetentry_success: Timesheet entry created successfully.
+		timeline_createtimesheetentry_fail: The system was not able to create the timesheet entry. Please contact system administration for more help.
+		timeline_starts: Begins
+		timeline_ends: Ends
+		timeline_duration: Duration
+		timeline_adduser: Add user
+		timeline_addasset: Add asset
+
+		stats_absence: Absence
+		stats_work: Work
+		stats_overtime: Overtime
+		stats_othercustomers: Other customers
+		stats_otherprojects: Other projects
+		stats_topprojects: Top projects
+		stats_topcustomers: Top customers
+		stats_hoursbytype: Bookings by type
+		stats_hours: Hours
+		stats_hourtypehistory: Booking type history
+		stast_weeks: Weeks
+
+		reports: Reports
+
+		monitoring_logins: Logins
+		monitoring_loginsfor30days: Logins for 30 days
+		monitoring_integration: Integration
+		monitoring_entries: Entires
+		monitoring_databaseload: Database load
+		monitoring_database: Database
+		monitoring_approvals: Approvals
+		monitoring_usage: System usage
+
+		navigation_resourceprojects: Resourcing
+		navigation_userprofitcenter: Profit center
+		navigation_resourceallocation: Resourcing allocations
+		navigation_resourceuser: User resourcing
+		navigation_resourceteam: Team resourcing
+		navigation_tro: Home
+		navigation_user: Users
+		navigation_project: Projects
+		navigation_impersonate: Impersonate
+		navigation_articleentry: Article Entry
+		navigation_timesheetentry: Timesheet Entry
+		navigation_settings: Settings
+		navigation_assetlocationentry: Asset Location
+		navigation_asset: Assets
+		navigation_home: Home
+		navigation_approvework: My work
+		navigation_approveworkmanager: Approve work of others
+		navigation_hrview: HR view
+		navigation_dayentry: Daily entries
+		navigation_payrollperiod: Payroll period
+		navigation_controller: All collections
+		navigation_clacontract: CLA contract
+		navigation_manage: Manage
+		navigation_reports: Reports
+		navigation_myplaces: My places
+		navigation_payrollexport: Payroll exports
+		navigation_resourcing: Resourcing
+		navigation_monitoring: Monitoring
+		navigation_integrationevent: Integration events
+
+		pagetitle_articleselect: Select article
+		pagetitle_assetlocationentry: Asset location entry
+		pagetitle_assetselect: Select asset
+		pagetitle_edittimesheetentry: Edit timesheet entry
+		pagetitle_userselect: Select user
+		pagetitle_settings: Settings
+		pagetitle_start: TRO
+		pagetitle_taskinfo: Task details
+		pagetitle_taskselect: Select task
+		pagetitle_viewtimesheetentries: Timesheet entries
+		pagetitle_viewtimesheetentry: Timesheet entry
+		pagetitle_home: Home
+		pagetitle_changeuserproject: Change project
+		pagetitle_hrview: HR view
+		pagetitle_manage: Manage
+		pagetitle_approvework: My work
+		pagetitle_approveworkmanager: Approve work of others
+		pagetitle_resourceprojects: Resourcing
+		pagetitle_resourceallocations: Project allocations
+		pagetitle_userprofitcenter: Profit center allocations
+		pagetitle_reports: Reports
+		pagetitle_myplaces: My places
+		pagetitle_favouriteusers: User lists
+		pagetitle_projectleadreport: Projectlead report
+
+		schema_customer: Customer
+		schema_customer_identifier: Id
+		schema_customer_name: Name
+		schema_customer_name2: Name 2
+		schema_customer_streetaddress: Street address
+		schema_customer_postalcode: Postal code
+		schema_customer_city: City
+		schema_customer_country: Country
+		schema_customer_state: State
+		schema_customer_contactpersonname: Contact person
+		schema_customer_phonenumber: Phone number
+		schema_customer_email: Email
+		schema_customer_disabled: Disabled
+
+		schema_project: Project
+		schema_project_identifier: Identifier
+		schema_project_name: Name
+		schema_project_projectmanager: Project Manager
+		schema_project_customer: Customer
+		schema_project_parentproject: Parent Project
+		schema_project_description: Description
+		schema_project_contactperson: Contact Person
+		schema_project_projectstart: Project Start
+		schema_project_projectend: Project End
+		schema_project_profitcenter: Profit Center
+		schema_project_status: Status
+		schema_project_projectaddress: Project address
+		schema_project_projectcontactinfo: Project contact info
+		schema_project_note: Note
+		schema_project_streetaddress: Street address
+		schema_project_postalcode: Postal code
+		schema_project_country: Country
+		schema_project_state: State
+		schema_project_contactpersonname: Contact person
+		schema_project_phonenumber: Phone number
+		schema_project_email: Email
+		schema_project_city: City
+		schema_project_noresourcing: No resourcing
+		schema_project_duedate: Due date
+		schema_project_businessarea: Businesarea
+		schema_project_functionalarea: Functional area
+		schema_project_projectcategory: Project category
+		schema_project_relation_projectlead: Project leaders
+
+		schema_resource: Resource
+		schema_resource_identifier: Identifier
+		schema_resource_user: User
+		schema_resource_asset: Asset
+		schema_resource_allocationentry: Allocation Entry
+		schema_resource_timesheetentry: Timesheet Entry
+		schema_resource_articleentry: Article Entry
+
+		schema_assetlocationentry: Asset Location
+		schema_assetlocationentry_asset: Asset
+		schema_assetlocationentry_location: Location
+		schema_assetlocationentry_timestamp: Timestamp
+		schema_assetlocationentry_note: Note
+
+		schema_location: Location
+		schema_location_coordinates: Coordinates
+		schema_location_name: Name
+
+		schema_favouriteusers: User lists
+		schema_favouriteusers_name: List name
+		schema_favouriteusers_user: Users
+		schema_favouriteusers_relation_user: Users
+
+		schema_timesheetentry: Timesheet Entry
+		schema_timesheetentry_user: User
+		schema_timesheetentry_asset: Asset
+		schema_timesheetentry_project: Project
+		schema_timesheetentry_starttimestamp: Start Timestamp
+		schema_timesheetentry_endtimestamp: End Timestamp
+		schema_timesheetentry_istraveltime: Travel
+		schema_timesheetentry_approvedbyworker: Approved by worker
+		schema_timesheetentry_approvedbymanager: Approved by manager
+		schema_timesheetentry_exporttimestamp_ax: ERP export time
+		schema_timesheetentry_exported_ax: Exported to ERP
+		schema_timesheetentry_exportnote: Export status
+		schema_timesheetentry_duration: Duration
+		schema_timesheetentry_note: Note
+		schema_timesheetentry_notifications: Notifications
+		schema_timesheetentry_exportfailurecount_ax: Export failures
+		schema_timesheetentry_clacontract: TES
+		schema_timesheetentry_paymentgroup: Payment group
+		schema_timesheetentry_internalworker: Internal worker
+		schema_timesheetentry_details: Details
+		schema_timesheetentry_exported_visma: Exported to payroll
+		schema_timesheetentry_exporttimestamp_visma: Payroll export timestamp
+		schema_timesheetentry_profitcenter: Project profit center
+		schema_timesheetentry_userprofitcenter: User profit center
+		schema_timesheetentry_projectmanager: Project manager
+		schema_timesheetentry_timesheetentrydetailpaytype: Work type
+		schema_timesheetentry_date: Date
+		schema_timesheetentry_differentdurationforbilling: Different billable hours
+		schema_timesheetentry_billingduration: Billable hours
+		schema_timesheetentry_userbusinessarea: User businessarea
+		schema_timesheetentry_userfunctionalarea: User functional area
+		schema_timesheetentry_assetbusinessarea: Asset businessarea
+		schema_timesheetentry_assetfunctionalarea: Asset functional area
+		schema_timesheetentry_countsasregularhours: Counts as regular hours
+		schema_timesheetentry_projectcategory: Project category
+		schema_timesheetentry_price: Price
+		schema_timesheetentry_hasprice: Has custom price
+		schema_timesheetentry_parent: Parent entry
+		schema_timesheetentry_parent_external: Details
+
+		schema_asset: Asset
+		schema_asset_name: Name
+		schema_asset_description: Description
+		schema_asset_identifier: Identifier
+		schema_asset_office: Office
+		schema_asset_supervisor: Manager
+		schema_asset_fixedassetnumber: Fixed asset number
+		schema_asset_projectcategory: Project category
+		schema_asset_licenseplate: License plate number
+		schema_asset_profitcenter: Project profit center
+		schema_asset_businessarea: Businessarea
+		schema_asset_functionalarea: Functional area
+
+		schema_allocationentry: Allocation Entry
+		schema_allocationentry_resource: Resource
+		schema_allocationentry_project: Project
+		schema_allocationentry_starttimestamp: Start Timestamp
+		schema_allocationentry_endtimestamp: End timestamp
+		schema_allocationentry_note: Note
+		schema_allocationentry_user: User
+		schema_allocationentry_asset: Asset
+		schema_allocationentry_initials: Tag
+		schema_allocationentry_status: Status
+		schema_allocationentry_userprofitcenter: User profitcenter
+		schema_allocationentry_projectprofitcenter: Project profitcenter
+		schema_allocationentry_date: Date
+		schema_allocationentry_duration: Duration
+		schema_allocationentry_projectcustomer: Customer
+		schema_allocationentry_projectnote: Project note
+
+		schema_articleentry: Article Entry
+		schema_articleentry_article: Article
+		schema_articleentry_project: Project
+		schema_articleentry_timestamp: Timestamp
+		schema_articleentry_amount: Amount
+		schema_articleentry_note: Note
+		schema_articleentry_exported_ax: Exported to ERP
+		schema_articleentry_exporttimestamp_ax: ERP export time
+		schema_articleentry_exportnote: Export status
+		schema_articleentry_resource: Resource
+		schema_articleentry_user: User
+		schema_articleentry_approvedbyworker: Approved by worker
+		schema_articleentry_approvedbymanager: Approved by manager
+		schema_articleentry_exportfailurecount_ax: Export failure count
+		schema_articleentry_profitcenter: Project profit center
+		schema_articleentry_clacontract: CLA contract
+		schema_articleentry_paymentgroup: Payment group
+		schema_articleentry_userprofitcenter: User profit center
+		schema_articleentry_date: Date
+
+		schema_dayentry: Daily entries
+		schema_dayentry_project: Project
+		schema_dayentry_user: User
+		schema_dayentry_date: Date
+		schema_dayentry_note: Note
+		schema_dayentry_approvedbyworker: Approved by worker
+		schema_dayentry_approvedbymanager: Approved by manager
+		schema_dayentry_personalcarkm: Personal car usage
+		schema_dayentry_route: Route and description
+		schema_dayentry_employeecontractcarkm: Contract car usage
+		schema_dayentry_contractbonus: Contract bonus
+		schema_dayentry_sundaycompensation: Sunday compensation
+		schema_dayentry_weekrestcompensation: Week rest compensation
+		schema_dayentry_startpay: Start pay
+		schema_dayentry_toolcompensation: Tool compensation
+		schema_dayentry_overnightstaycompensation: Overnight stay compensation
+		schema_dayentry_exported_ax: Exported to ERP
+		schema_dayentry_exporttimestamp_ax: ERP export time
+		schema_dayentry_exportfailurecount_ax: Export failures
+		schema_dayentry_exportnote: Export status
+		schema_dayentry_dayentrytype: Day entry type
+		schema_dayentry_amount: Quantity
+		schema_dayentry_internalworker: Internal worker
+		schema_dayentry_profitcenter: Project profit center
+		schema_dayentry_userprofitcenter: Resource profit center
+		schema_dayentry_clacontract: Worker CLA contract
+		schema_dayentry_paymentgroup: Worker payment group
+		schema_dayentry_exported_visma: Exported to payroll calculation
+		schema_dayentry_exportfailurecount_visma: Payroll export failure count
+		schema_dayentry_exporttimestamp_visma: Exported to payroll timestamp
+		schema_dayentry_hasprice: Custom price available
+		schema_dayentry_priceonlyformanagers: Price only for managers
+		schema_dayentry_price: Price
+		schema_dayentry_payrollexporttype: Payroll export type
+		schema_dayentry_projectcategory: Project category
+		schema_dayentry_starttime: Start time
+		schema_dayentry_endtime: End time
+
+		schema_article: Article
+		schema_article_identifier: Identifier
+		schema_article_name: Name
+		schema_article_unit: Unit
+		schema_article_description: Description
+		schema_article_articlegroup: Group
+
+		schema_settings: Settings
+		schema_settings_user: User
+
+		schema_user_level: Access level
+		schema_user_identifier: Personnel number
+		schema_user_firstname: First name
+		schema_user_middlename: Middle name
+		schema_user_lastname: Last name
+		schema_user_contactdetail: Contact detail
+		schema_user_settings: Settings
+		schema_user_description: Description
+		schema_user_organizationcode: Organization code
+		schema_user_pid: Personal identification number
+		schema_user_languagecode: Language Code 
+		schema_user_countrycode: Country Code
+		schema_user_employmentstart: Employment Start
+		schema_user_employmentend: Employment End
+		schema_user_probationend: Probation end
+		schema_user_office: Office
+		schema_user_title: Title
+		schema_user_taxregistrationid: Tax registration identifier
+		schema_user_supervisor: Manager
+		schema_user_weeklyworkinghours: Weekly working hours
+		schema_user_clacontract: CLA Contract
+		schema_user_paymentgroup: Payment group
+		schema_user_personnelgroup: Personnel group
+		schema_user_employmentcontractor: Employment contractor
+		schema_user_employmentcontractorvalidto: Employment contractor valid to
+		schema_user_vendorid: Vendor identifier
+		schema_user_vendorname: Vendor name
+		schema_user_employeecountrycode: Employee country code
+		schema_user_currentproject: Current project
+		schema_user_currenttimesheet: Current timesheet
+		schema_user_profitcenter: Profit center
+		schema_user_internalworker: Internal worker
+		schema_user_entrieslastapproved: Entries last accepted
+		schema_user_disabled: Disabled
+		schema_user_businessarea: Business area
+		schema_user_functionalarea: Functional area
+		schema_user_disableintegrationchangesfordocument: Limit integration updates
+		schema_user_picture: Picture
+
+		schema_payrollperiod: Payroll period
+		schema_payrollperiod_name: Name
+		schema_payrollperiod_startdate: Start date
+		schema_payrollperiod_enddate: End date
+		schema_payrollperiod_paydate: Payment date
+		schema_payrollperiod_clacontract: CLA contract
+		schema_payrollperiod_locked: Locked
+		schema_payrollperiod_automaticallyexported: Automatically exported
+		schema_payrollperiod_automaticallylocked: Automatically locked
+
+		schema_clacontract: CLA contract
+		schema_clacontract_identifier: Identifier
+		schema_clacontract_name: Name
+		schema_clacontract_disabled: Disabled
+
+		schema_paymentgroup: Payment group
+		schema_paymentgroup_identifier: Identifier
+		schema_paymentgroup_name: Name
+
+		schema_timesheetentrydetailpaytype: Paytype
+		schema_timesheetentrydetailpaytype_identifier: Pay type 1 identifier
+		schema_timesheetentrydetailpaytype_identifier2: Pay type 2 identifier
+		schema_timesheetentrydetailpaytype_name: Name
+		schema_timesheetentrydetailpaytype_order: Sort order weight
+		schema_timesheetentrydetailpaytype_isovertime50: Overtime 50%
+		schema_timesheetentrydetailpaytype_isovertime100: Overtime 100%
+		schema_timesheetentrydetailpaytype_isovertime150: Overtime 150%
+		schema_timesheetentrydetailpaytype_isovertime200: Overtime 200%
+		schema_timesheetentrydetailpaytype_exporttoax: Export to ERP		
+		schema_timesheetentrydetailpaytype_countsasregularhours: Counts as regular hours
+		schema_timesheetentrydetailpaytype_invalidatesregularhours: Invalidates regular hours
+		schema_timesheetentrydetailpaytype_projectcategory: Project category
+		schema_timesheetentrydetailpaytype_projectcategory2: Project category 2
+		schema_timesheetentrydetailpaytype_substractlunchbreak: Lunch break
+		schema_timesheetentrydetailpaytype_paytypefactor: Pay type 1 factor
+		schema_timesheetentrydetailpaytype_paytypefactor2: Pay type 2 factor
+		schema_timesheetentrydetailpaytype_relation_enabledclacontracts: Enabled CLA contracts
+		schema_timesheetentrydetailpaytype_issocialpaytype: Administrative pay type
+		schema_timesheetentrydetailpaytype_istravel: Travel
+		schema_timesheetentrydetailpaytype_hasprice: Custom price available
+		schema_timesheetentrydetailpaytype_priceonlyformanagers: Price only for managers
+		schema_timesheetentrydetailpaytype_priceoptional: Price optional
+		schema_timesheetentrydetailpaytype_payrollexporttype: Payroll export type
+		schema_timesheetentrydetailpaytype_disabled: Disabled
+		schema_timesheetentrydetailpaytype_mandatorynote: Mandatory note
+		schema_timesheetentrydetailpaytype_abbreviation: Abbreviation
+		schema_timesheetentrydetailpaytype_icon: Icon
+		schema_timesheetentrydetailpaytype_noduration: This paytype has no duration
+		schema_timesheetentrydetailpaytype_totalsgroup: Totals view group
+
+		schema_articlegroup: Article group
+		schema_articlegroup_identifier: Identifier
+		schema_articlegroup_name: Name
+
+		schema_dayentrytype: Day entry type
+		schema_dayentrytype_identifier: Identifier
+		schema_dayentrytype_name: Name
+		schema_dayentrytype_unit: Unit
+		schema_dayentrytype_projectcategory: Project category
+		schema_dayentrytype_hasroute: Has route
+		schema_dayentrytype_relation_enabledclacontracts: Enabled CLA contracts
+		schema_dayentrytype_exporttoerp: Export to ERP
+		schema_dayentrytype_hasprice: Enable price
+		schema_dayentrytype_priceonlyformanagers: Price only for managers
+		schema_dayentrytype_noamountselection: No amount selection
+		schema_dayentrytype_hastime: Has time
+		schema_dayentrytype_disabled: Disabled
+		schema_dayentrytype_issocialpaytype: Administrative expense
+		schema_dayentrytype_mandatorynote: Mandatory note
+		schema_dayentrytype_abbreviation: Abbreviation
+		schema_dayentrytype_icon: Icon
+		schema_dayentrytype_totalsgroup: Totals view group
+		
+		schema_projectcategory: Project category
+		schema_projectcategory_identifier: Identifier
+		schema_projectcategory_identifier2: Identifier 2
+		schema_projectcategory_name: Name
+		schema_projectcategory_type:Type
+		schema_projectcategory_projectcategorygroup: Group
+		schema_projectcategory_disabled: Disabled
+		schema_projectcategory_description: Description
+ 
+		timesheet_workstarted: Work started
+		timesheet_start: Start
+		timesheet_changeuserproject: Change
+		timesheet_stop: Stop
+		timesheet_chooseproject: No active project. Please select from below.
+		timesheet_nextprojects: Today's work
+		timesheet_stats: Previous entries
+		timesheet_istraveltime: Travel time
+
+		home_project: Active project:
+		home_projectdetails: Project details
+		home_nextprojects_search: Search project
+		
+		approvework_approvework: Approve work
+		approvework_approveselectedwork: Approve selected work
+		approvework_doyouwishtoapprove: Do you wish to approve all work and items entered so far?
+		approvework_timesheetentry: Hours
+		approvework_article: Articles
+		approvework_dayentry: Expenses
+		approvework_absence: Absences
+		approvework_absenceentry: Absences
+		approvework_assetentry: Asset hours
+		approvework_tab_timesheetentry: Hours
+		approvework_tab_article: Articles
+		approvework_tab_dayentry: Daily entries
+		approvework_tab_absenceentry: Absences
+		approvework_tab_assetentry: Asset hours
+		approvework_entrieslastapproved: The last time you approved your work entries was at
+		approvework_error_someprojectsclosed: Some entries were made for projects that have already been closed. You need to move these entries to open projects or remove the entries. If you need help please contact your manager.
+		approvework_unacceptedentries: Entries to accept
+		approvework_daterange: Find
+		approvework_day: Day
+		approvework_start: Begins
+		approvework_finish: Ends
+		approvework_show: Show
+		approvework_tab_totals: Totals
+
+		approveworkmanager_title: Approve work
+		approveworkmanager_filters: Filters
+		approveworkmanager_doyouwishtoapprove: Do you wish to approve selected work items?
+		approveworkmanager_totalhours: Total hours to approve
+		approveworkmanager_projectsformanager: Show hours for projects where the selected user is manager
+		approveworkmanager_profitcenter: Show hours for porjects that have the selected profit center
+		approveworkmanager_show_only_entries_not_accepted: Only entries not accepted by manager
+		approveworkmanager_start: Begins
+		approveworkmanager_end: Ends
+		approveworkmanager_userprofitcenter: Profit center
+		approveworkmanager_userbusinessarea: Business area
+		approveworkmanager_userfunctionalarea: User functional area
+		approveworkmanager_showdaterange: Date range
+
+		resourceprojects_filter: Filter
+		userprofitcenter_filter: Filter
+
+		schema_genericasset: Generic asset
+		schema_genericasset_identifier: Identifier
+		schema_genericasset_name: Name
+		schema_genericasset_projectcategory: Project Category
+		schema_genericasset_supervisor: Manager
+		schema_genericasset_office: Office
+		schema_genericasset_fixedassetnumber: Fixed asset number
+		schema_genericasset_profitcenter: Profit center
+
+		schema_profitcenter: Profit center
+		schema_profitcenter_identifier: Identifier
+		schema_profitcenter_categoryid: Category Id
+		schema_profitcenter_name: Name
+
+		schema_absenceentry: Absence
+		schema_absenceentry_user: User
+		schema_absenceentry_starttimestamp: Start Timestamp
+		schema_absenceentry_endtimestamp: End Timestamp
+		schema_absenceentry_approvedbyworker: Approved by worker
+		schema_absenceentry_approvedbymanager: Approved by manager
+		schema_absenceentry_duration: Duration
+		schema_absenceentry_note: Note
+		schema_absenceentry_clacontract: TES
+		schema_absenceentry_paymentgroup: Payment group
+		schema_absenceentry_internalworker: Internal worker
+		schema_absenceentry_absenceentrytype: Absence type
+		schema_absenceentry_date: Date
+		schema_absenceentry_payrollexporttype: Payroll export type
+
+		schema_absenceentrytype: Absence type
+		schema_absenceentrytype_identifier: Identifier
+		schema_absenceentrytype_name: Name
+		schema_absenceentrytype_projectcategory: Project category
+		schema_absenceentrytype_relation_enabledclacontracts: Active CLA contracts
+		schema_absenceentrytype_exporttoerp: Export to ERP
+		schema_absenceentrytype_countsasregularhours: Counts as regular hours
+		schema_absenceentrytype_disabled: Disabled
+
+		schema_assetentry: Asset entry
+		schema_assetentry_asset: Asset
+		schema_assetentry_project: Project
+		schema_assetentry_starttimestamp: Start Timestamp
+		schema_assetentry_endtimestamp: End Timestamp
+		schema_assetentry_approvedbyworker: Approved by worker
+		schema_assetentry_approvedbymanager: Approved by manager
+		schema_assetentry_duration: Duration
+		schema_assetentry_note: Note
+		schema_assetentry_profitcenter: Project profit center
+		schema_assetentry_assetprofitcenter: Asset profit center
+		schema_assetentry_exporttimestamp_ax: ERP export time
+		schema_assetentry_exported_ax: Exported to ERP
+		schema_assetentry_exportnote: Export status
+		schema_assetentry_exportfailurecount_ax: Export failure count
+		schema_assetentry_date: Date
+		schema_assetentry_creator: Creator
+
+		schema_businessarea: Businessarea
+		schema_businessarea_identifier: Identifier
+		schema_businessarea_Name: Name
+
+		schema_functionalarea: Functional area
+		schema_functionalarea_identifier: Identifier
+		schema_functionalarea_name: Name
+
+		schema_payrollexport: Payroll exports
+		schema_payrollexport_identifier: Identifier
+		schema_payrollexport_date: Date
+		schema_payrollexport_status: Status
+		schema_payrollexport_payrollperiod: Payroll period
+		schema_payrollexport_user: User
+		schema_payrollexport_created: Created
+		schema_payrollexport_target: Target
+		schema_payrollexport_onlyentriesnotacceptedbymanager: Only entries accepted by manager
+		schema_payrollexport_onlyentriesnotacceptedbyworker: Only entries accepted by worker
+		schema_payrollexport_onlyexportedentries: Only exported entries
+
+		schema_integrationevent: Integration events
+		schema_integrationevent_status: Status
+		schema_integrationevent_direction: Direction
+		schema_integrationevent_messagetype: Message type
+		schema_integrationevent_exported: Exported
+		schema_integrationevent_failed: Failed
+		schema_integrationevent_project: Project
+		schema_integrationevent_user: User
+		schema_integrationevent_handledtime: Handled
+		schema_integrationevent_userprofitcenter: User profitcenter
+		schema_integrationevent_profitcenter: Project profitcenter
+		schema_integrationevent_handledcount: Handled count
+		schema_integrationevent_firsthandledtime: First handled
+		schema_integrationevent_objectid: Internal identifier
+
+		// Login
+		login_new_password_email_subject: Password request
+		login_new_password_email_body: "Hello!\n\nYou have requrested new credentials Systems Garden TRO.\n\nUser account:{0}\nPassword:{1}\n\nYours,\n{2}"
+		company_signature: Systems Garden Oy
+
+	fi
+		addtimesheetentry: Työkirjaus
+		adddayentry: Kulu
+		addarticleentry: Nimike
+		addabsenceentry: Poissaolo
+		addassetentry: Laitekirjaus
+		addsocialprojectentry: Hallinnollinen työ
+
+		actions: Toimenpiteet
+
+		validate_startmustbebeforeend: Loppuajan on oltava alkuajan jälkeen
+		validate_mustnotbetooearly: Et voi tehdä työkirjausta näin kauas menneisyyteen.
+		validate_timesheetalreadyexists: Kirjaus on jo olemassa päällekkäisenä aikana
+		validate_absencealreadyexists: Poissaolokirjaus on jo olemassa päällekkäisenä aikana
+		validate_mustnotbelaterthantoday: Et voi kirjata työtunteja myöhemmäksi kuin tälle päivälle.
+		validate_projectnotactive: Et voi lisätä tai muokata kirjauksia projektille, joka ei ole käynnissä (projektin täytyy olla tilassa "In progress").
+		validate_payrollperiodlocked: Palkkakausi on jo lukittu tältä ajalta.
+		validate_alreadyaccepted: Olet jo hyväksynyt kirjauksen, jota yrität muokata. Ole hyvä ja ota yhteyttä työnjohtoon tai palkanlaskentaan, jos sinun täytyy tehdä muutoksia.
+
+		tiptext_timesheetentry_istraveltime: Huom: tekee koko kirjauksesta matkakirjauksen.
+
+		timeline_week: Viikko
+		timeline_week_abbreviated: Vk
+		timeline_month: Kuukausi
+		timeline_month_abbreviated: Kk
+		timeline_day: Päivä
+		timeline_day_abbreviated: Pv
+		timeline_previous: Edellinen
+		timeline_next: Seuraava
+		timeline_remove: Poista
+		timeline_edit: Muokkaa
+		timeline_range: Hae
+		timeline_backtoprojectresourcing: Takaisin projektiresursointiin
+		timeline_confirmremoveallocation: Haluatko varmasti poistaa varauksen?
+		timeline_createtimesheetentry: Tee tuntikirjaus näillä tiedoilla
+		timeline_confirmcreatetimesheetentry: Oletko varma että haluat luoda varausta vastaavan tuntikirjauksen?
+		timeline_createtimesheetentry_success: Tuntikirjaus luotu onnistuneesti.
+		timeline_createtimesheetentry_fail: Järjestelmä ei pystynyt luomaan tuntikirjausta. Ole hyvä ja ota yhteyttä järjestelmän ylläpitoon jos tarvitset lisää ohjeita.
+		timeline_starts: Alkaa
+		timeline_ends: Päättyy
+		timeline_duration: Kesto
+		timeline_adduser: Lisää henkilö
+		timeline_addasset: Lisää kalusto
+
+		stats_absence: Poissaolot
+		stats_work: Työ
+		stats_overtime: Ylityö
+		stats_othercustomers: Muut asiakkaat
+		stats_otherprojects: Muut projektit
+		stats_topprojects: Eniten työllistävät projektit
+		stats_topcustomers: Eniten työllistävät asiakkaat
+		stats_hoursbytype: Työ tyypeittäin
+		stats_hours: Tunnit
+		stats_hourtypehistory: Työhistoria
+		stast_weeks: Viikkoa
+
+		reports: Raportit
+
+		monitoring_logins: Kirjautumiset
+		monitoring_integration: Integraatio
+		monitoring_loginsfor30days: Kirjautumiset 30 päivän aikana
+		monitoring_entries: Kirjaukset
+		monitoring_databaseload: Tietokantakuorma
+		monitoring_database: Tietokanta
+		monitoring_approvals: Hyväksynnät
+		monitoring_usage: Järjestelmän käyttöaste
+
+		navigation_resourceprojects: Resursointi
+		navigation_userprofitcenter: Tulosyksikkö
+		navigation_resourceallocation: Resursointivaraukset
+		navigation_resourceuser: Henkilöresursointi
+		navigation_resourceteam: Tiimiresursointi
+		navigation_tro: Koti
+		navigation_user: Käyttäjät
+		navigation_project: Projektit
+		navigation_impersonate: Impersonoidu
+		navigation_articleentry: Nimikkeen syöttö
+		navigation_timesheetentry: Työkirjauksen syöttö
+		navigation_settings: Asetukset
+		navigation_assetlocationentry: Kaluston paikkatieto
+		navigation_asset: Kalusto
+		navigation_home: Koti
+		navigation_approvework: Omat kirjaukset
+		navigation_approveworkmanager: Kirjausten tarkistaminen
+		navigation_hrview: Palkanlaskenta
+		navigation_dayentry: Kulu
+		navigation_payrollperiod: Palkkakausi
+		navigation_controller: Kaikki kokoelmat
+		navigation_clacontract: TES
+		navigation_manage: Hallinta
+		navigation_reports: Raportit
+		navigation_myplaces: Omat paikat
+		navigation_payrollexport: Viennit
+		navigation_resourcing: Resursointi
+		navigation_monitoring: Monitorointi
+		navigation_integrationevent: Integraation tapahtumat
+
+		pagetitle_articleselect: Valitse nimike
+		pagetitle_assetlocationentry: Kaluston paikkatieto
+		pagetitle_assetselect: Valitse kalusto
+		pagetitle_edittimesheetentry: Muokkaa työkirjausta
+		pagetitle_userselect: Valitse henkilö
+		pagetitle_settings: Asetukset
+		pagetitle_start: TRO
+		pagetitle_taskinfo: Tehtävän tiedot
+		pagetitle_taskselect: Valitse tehtävä
+		pagetitle_viewtimesheetentries: Työkirjaukset
+		pagetitle_viewtimesheetentry: Työkirjaus
+		pagetitle_home: Koti
+		pagetitle_changeuserproject: Valitse projekti
+		pagetitle_hrview: Palkanlaskenta
+		pagetitle_manage: Manage
+		pagetitle_approvework: Omat kirjaukset
+		pagetitle_approveworkmanager: Kirjausten tarkistaminen
+		pagetitle_resourceprojects: Resursointi
+		pagetitle_resourceallocations: Projektin varaukset
+		pagetitle_userprofitcenter: Tulosyksikön varaukset
+		pagetitle_reports: Raportit
+		pagetitle_myplaces: Omat paikat
+		pagetitle_favouriteusers: Henkilölistat
+		pagetitle_projectleadreport: Työmääräimen tuntiraportti
+
+		schema_customer: Asiakas
+		schema_customer_identifier: Id
+		schema_customer_name: Nimi
+		schema_customer_name2: Nimi 2
+		schema_customer_streetaddress: Katuosoite
+		schema_customer_postalcode: Postinumero
+		schema_customer_country: Maa
+		schema_customer_state: Osavaltio
+		schema_customer_city: Kaupunki
+		schema_customer_contactpersonname: Yhteyshenkilö
+		schema_customer_phonenumber: Puhelinnumero
+		schema_customer_email: Sähköpostiosoite
+		schema_customer_disabled: Pois käytöstä
+
+		schema_project: Projekti
+		schema_project_identifier: Tunniste
+		schema_project_name: Nimi
+		schema_project_projectmanager: Projektipäällikkö
+		schema_project_customer: Asiakas
+		schema_project_parentproject: Pääprojekti
+		schema_project_description: Kuvaus
+		schema_project_contactperson: Yhteyshenkilö
+		schema_project_projectstart: Projektin aloitus
+		schema_project_projectend: Projektin lopetus
+		schema_project_profitcenter: Tulosyksikkö
+		schema_project_status: Tila
+		schema_project_projectaddress: Projektin osoite
+		schema_project_projectcontactinfo: Projektin yhteystieto
+		schema_project_note: Lisätietoja
+		schema_project_streetaddress: Katuosoite
+		schema_project_postalcode: Postinumero
+		schema_project_country: Maa
+		schema_project_state: Osavaltio
+		schema_project_contactpersonname: Yhteyshenkilö
+		schema_project_phonenumber: Puhelinnumero
+		schema_project_email: Sähköpostiosoite
+		schema_project_city: Kaupunki
+		schema_project_noresourcing: Ei resursoida
+		schema_project_duedate: Määräpäivä
+		schema_project_businessarea: Liiketoiminta-alue
+		schema_project_functionalarea: Toimintoalue
+		schema_project_projectcategory: Projektiluokka
+		schema_project_relation_projectlead: Kärkimiehet
+
+		schema_resource: Resurssi
+		schema_resource_identifier: Tunniste
+		schema_resource_user: Käyttäjä
+		schema_resource_asset: Kalusto
+		schema_resource_allocationentry: Varaus
+		schema_resource_timesheetentry: Työkirjaus
+		schema_resource_articleentry: Nimikekirjaus
+
+		schema_assetlocationentry: Kaluston paikkatieto
+		schema_assetlocationentry_asset: Kalusto
+		schema_assetlocationentry_location: Sijainti
+		schema_assetlocationentry_timestamp: Aikaleima
+		schema_assetlocationentry_note: Huomautus
+		schema_assetentry_creator: Kirjaaja
+
+		schema_location: Sijainti
+		schema_location_coordinates: Koordinaatit
+		schema_location_name: Nimi
+
+		schema_favouriteusers: Henkilölistat
+		schema_favouriteusers_name: Listan nimi
+		schema_favouriteusers_user: Käyttäjät
+		schema_favouriteusers_relation_user: Käyttäjät
+
+		schema_timesheetentry: Työkirjaus
+		schema_timesheetentry_user: Käyttäjä
+		schema_timesheetentry_asset: Kalusto
+		schema_timesheetentry_project: Projekti
+		schema_timesheetentry_starttimestamp: Alkamisajankohta
+		schema_timesheetentry_endtimestamp: Päättymisajankohta
+		schema_timesheetentry_istraveltime: Matka
+		schema_timesheetentry_approvedbyworker: Työntekijän hyväksymä
+		schema_timesheetentry_approvedbymanager: Työnjohdon hyväksymä
+		schema_timesheetentry_exporttimestamp_ax: Vientiaika (ERP)
+		schema_timesheetentry_exported_ax: Viety (ERP)
+		schema_timesheetentry_exportnote: Viennin tila
+		schema_timesheetentry_duration: Kesto
+		schema_timesheetentry_note: Huomautus
+		schema_timesheetentry_notifications: Lisätiedot
+		schema_timesheetentry_exportfailurecount_ax: Viennin virheet
+		schema_timesheetentry_clacontract: TES
+		schema_timesheetentry_paymentgroup: Maksuryhmä
+		schema_timesheetentry_internalworker: Sisäinen työntekijä
+		schema_timesheetentry_details: Lisätiedot
+		schema_timesheetentry_exported_visma: Viety palkanlaskentaan
+		schema_timesheetentry_exporttimestamp_visma: Vientiaika palkanlaskentaan
+		schema_timesheetentry_profitcenter: Projektin tulosyksikkö
+		schema_timesheetentry_projectmanager: Projektipäällikkö
+		schema_timesheetentry_userprofitcenter: Henkilön tulosyksikkö
+		schema_timesheetentry_timesheetentrydetailpaytype: Palkkalaji
+		schema_timesheetentry_date: Päivämäärä
+		schema_timesheetentry_differentdurationforbilling: Eri määrä laskulle
+		schema_timesheetentry_billingduration: Laskutettavat tunnit
+		schema_timesheetentry_userbusinessarea: Henkilön liiketoiminta-alue
+		schema_timesheetentry_userfunctionalarea: Käyttäjän toimintoalue
+		schema_timesheetentry_countsasregularhours: Lasketaan perustunniksi
+		schema_timesheetentry_projectcategory: Projektiluokka
+		schema_timesheetentry_price: Hinta
+		schema_timesheetentry_hasprice: Aseta hinta
+		schema_timesheetentry_parent: Perustunnit
+		schema_timesheetentry_parent_external: Tarkennukset
+	
+		schema_asset: Kalusto
+		schema_asset_name: Nimi
+		schema_asset_description: Kuvaus
+		schema_asset_identifier: Tunniste
+		schema_asset_office: Toimisto
+		schema_asset_supervisor: Esimies
+		schema_asset_fixedassetnumber: Kiinteän kohteen numero
+		schema_asset_projectcategory: Projektiluokka
+		schema_asset_licenseplate: Rekisterinumero
+		schema_asset_profitcenter: Tulosyksikkö
+		schema_asset_businessarea: Liiketoiminta-alue
+		schema_asset_functionalarea: Toimintoalue
+
+		schema_allocationentry: Varaus
+		schema_allocationentry_resource: Resurssi
+		schema_allocationentry_project: Projekti
+		schema_allocationentry_starttimestamp: Alkamisajankohta
+		schema_allocationentry_endtimestamp: Päättymisajankohta
+		schema_allocationentry_note: Huomautus
+		schema_allocationentry_user: Käyttäjä
+		schema_allocationentry_asset: Kalusto
+		schema_allocationentry_initials: Tagi
+		schema_allocationentry_status: Tila
+		schema_allocationentry_userprofitcenter: Käyttäjän tulosyksikkö
+		schema_allocationentry_projectprofitcenter: Projektin tulosyksikkö
+		schema_allocationentry_date: Päivämäärä
+		schema_allocationentry_duration: Kesto
+		schema_allocationentry_projectcustomer: Asiakas
+		schema_allocationentry_projectnote: Projektin huomiot
+
+		schema_articleentry: Nimikekirjaus
+		schema_articleentry_article: Nimike
+		schema_articleentry_project: Projekti
+		schema_articleentry_timestamp: Aikaleima
+		schema_articleentry_amount: Määrä
+		schema_articleentry_note: Huomautus
+		schema_articleentry_exported_ax: Viety (ERP)
+		schema_articleentry_exporttimestamp_ax: Vientiaika (ERP) 
+		schema_articleentry_exportnote: Viennin tila
+		schema_articleentry_resource: Resurssi
+		schema_articleentry_user: Käyttäjä
+		schema_articleentry_approvedbyworker: Työntekijän hyväksymä
+		schema_articleentry_approvedbymanager: Työnjohtajan hyväksymä
+		schema_articleentry_profitcenter: Projektin tulosyksikkö
+		schema_articleentry_clacontract: TES
+		schema_articleentry_paymentgroup: Maksuryhmä
+		schema_articleentry_exportfailurecount_ax: ERP viennin virheet
+		schema_articleentry_userprofitcenter: Työntekijän tulosyksikkö
+		schema_articleentry_date: Päivämäärä
+
+		schema_dayentry: Kulut ja korvaukset
+		schema_dayentry_project: Projekti
+		schema_dayentry_user: Käyttäjä
+		schema_dayentry_date: Päivämäärä
+		schema_dayentry_note: Huomautus
+		schema_dayentry_approvedbyworker: Työntekijän hyväksymä
+		schema_dayentry_approvedbymanager: Työnjohtajan hyväksymä
+		schema_dayentry_personalcarkm: Oma auto
+		schema_dayentry_route: Reitti ja kuvaus
+		schema_dayentry_employeecontractcarkm: TES km
+		schema_dayentry_contractbonus: Urakkalisä
+		schema_dayentry_sundaycompensation: Sunnuntaikorvaus
+		schema_dayentry_weekrestcompensation: Viikkolepokorvaus
+		schema_dayentry_startpay: Lähtöraha
+		schema_dayentry_toolcompensation: Työkalukorvaus
+		schema_dayentry_overnightstaycompensation: Yöpymislisä
+		schema_dayentry_exported_ax: Viety (ERP)
+		schema_dayentry_exporttimestamp_ax: Vientiaika (ERP)
+		schema_dayentry_exportnote: Viennin tila
+		schema_dayentry_exportfailurecount_ax: Viennin virheet
+		schema_dayentry_dayentrytype: Palkkalaji
+		schema_dayentry_amount: Määrä
+		schema_dayentry_internalworker: Sisäinen työntekijä
+		schema_dayentry_profitcenter: Projektin tulosyksikkö
+		schema_dayentry_userprofitcenter: Työntekijän tulosyksikkö
+		schema_dayentry_clacontract: Työntekijän TES
+		schema_dayentry_paymentgroup: Työntekijän maksuryhmä
+		schema_dayentry_exported_visma: Viety palkanlaskentaan
+		schema_dayentry_exportfailurecount_visma: Palkanlaskentaan viennin virheet
+		schema_dayentry_exporttimestamp_visma: Palkanlaskentaan viennin aika
+		schema_dayentry_price: Hinta
+		schema_dayentry_hasprice: Hinta käytössä
+		schema_dayentry_priceonlyformanagers: Hinta vain työnjohtajille
+		schema_dayentry_projectcategory: Projektiluokka
+		schema_dayentry_starttime: Alkuaika
+		schema_dayentry_endtime: Loppuaika
+
+		schema_article: Nimike
+		schema_article_identifier: Tunniste
+		schema_article_name: Nimi
+		schema_article_unit: Yksikkö
+		schema_article_description: Kuvaus
+		schema_article_articlegroup: Ryhmä
+		
+		schema_projectcategory: Projektiluokka
+		schema_projectcategory_identifier: Tunniste
+		schema_projectcategory_identifier2: Tunniste 2
+		schema_projectcategory_name: Nimi
+		schema_projectcategory_type: Palkkalaji
+		schema_projectcategory_projectcategorygroup: Ryhmä
+		schema_projectcategory_disabled: Poissa käytöstä
+		schema_projectcategory_description: Kuvaus
+
+		schema_settings: Asetukset
+		schema_settings_Käyttäjä: Käyttäjä
+
+		schema_user: Henkilö
+		schema_user_identifier: Henkilönumero
+		schema_user_firstname: Etunimi
+		schema_user_middlename: Toinen nimi
+		schema_user_lastname: Sukunimi
+		schema_user_contactdetail: Yhteystieto
+		schema_user_settings: Asetukset
+		schema_user_description: Kuvaus
+		schema_user_organizationcode: Organisaatiokoodi
+		schema_user_pid: Henkilökohtainen tunnusluku
+		schema_user_languagecode: Kielikoodi
+		schema_user_countrycode: Maakoodi
+		schema_user_employmentstart: Työsuhteen alku
+		schema_user_employmentend: Työsuhteen loppu
+		schema_user_probationend: Koeajan loppu
+		schema_user_defaultdimension: Oletusdimensio
+		schema_user_defaultdimensiondescription: Oletusdimension kuvaus
+		schema_user_office: Toimisto
+		schema_user_title: Titteli
+		schema_user_taxregistrationid: Veronumero
+		schema_user_supervisor: Työnjohtaja
+		schema_user_weeklyworkinghours: Viikkotyötunnit
+		schema_user_clacontract: TES
+		schema_user_paymentgroup: Maksuryhmä
+		schema_user_personnelgroup: Henkilöstöryhmä
+		schema_user_employmentcontractor: Alihankkija
+		schema_user_employmentcontractorvalidto: Alihankkija voimassa
+		schema_user_vendorid: Toimittajan tunnus
+		schema_user_vendorname: Toimittajan nimi
+		schema_user_employeecountrycode: Työntekijän maakoodi
+		schema_user_currentproject: Nykyinen projekti
+		schema_user_currenttimesheet: Nykyinen työkirjaus
+		schema_user_profitcenter: Tulosyksikkö
+		schema_user_internalworker: Sisäinen työntekijä
+		schema_user_entrieslastapproved: Kirjaukset viimeksi hyväksytty
+		schema_user_disabled: Poissa käytöstä
+		schema_user_businessarea: Liiketoiminta-alue
+		schema_user_functionalarea: Toimintoalue
+		schema_user_disableintegrationchangesfordocument: Rajoita päivitys integraatiossa
+		schema_user_picture: Kuva
+
+		schema_payrollperiod: Palkkakausi
+		schema_payrollperiod_name: Nimi
+		schema_payrollperiod_startdate: Alkupäivä
+		schema_payrollperiod_enddate: Loppupäivä
+		schema_payrollperiod_paydate: Maksupäivä
+		schema_payrollperiod_clacontract: TES
+		schema_payrollperiod_locked: Lukittu
+		schema_payrollperiod_automaticallyexported: Viety automaattisesti
+		schema_payrollperiod_automaticallylocked: Lukittu automaattisesti
+		
+		schema_clacontract: TES
+		schema_clacontract_identifier: Tunniste
+		schema_clacontract_name: Nimi
+		schema_clacontract_disabled: Poissa käytöstä
+
+		schema_paymentgroup: Maksuryhmä
+		schema_paymentgroup_identifier: Tunniste
+		schema_paymentgroup_name: Nimi
+
+		schema_timesheetentrydetailpaytype: Palkkalaji
+		schema_timesheetentrydetailpaytype_identifier: Palkkalajin 1 tunniste
+		schema_timesheetentrydetailpaytype_identifier2: Palkkalajin 2 tunniste
+		schema_timesheetentrydetailpaytype_name: Nimi
+		schema_timesheetentrydetailpaytype_order: Järjestyksen prioriteetti
+		schema_timesheetentrydetailpaytype_isovertime50: Ylityö 50%
+		schema_timesheetentrydetailpaytype_isovertime100: Ylityö 100%
+		schema_timesheetentrydetailpaytype_isovertime150: Ylityö 150%
+		schema_timesheetentrydetailpaytype_isovertime200: Ylityö 200%
+		schema_timesheetentrydetailpaytype_exporttoax: Vie ERP
+		schema_timesheetentrydetailpaytype_countsasregularhours: Lasketaan työtunniksi
+		schema_timesheetentrydetailpaytype_invalidatesregularhours: Kumoaa perustunnit
+		schema_timesheetentrydetailpaytype_projectcategory: Projektiluokka
+		schema_timesheetentrydetailpaytype_projectcategory2: Projektiluokka 2
+		schema_timesheetentrydetailpaytype_substractlunchbreak: Lounastauko
+		schema_timesheetentrydetailpaytype_paytypefactor: Palkkalajin 1 kerroin
+		schema_timesheetentrydetailpaytype_paytypefactor2: Palkkalajin 2 kerroin
+		schema_timesheetentrydetailpaytype_relation_enabledclacontracts: Aktiiviset TES:t
+		schema_timesheetentrydetailpaytype_issocialpaytype: Sosiaalinen kirjaustyyppi
+		schema_timesheetentrydetailpaytype_istravel: Matka-aika
+		schema_timesheetentrydetailpaytype_hasprice: Hinta käytössä
+		schema_timesheetentrydetailpaytype_priceonlyformanagers: Hinta vain työnjohtajille
+		schema_timesheetentrydetailpaytype_priceoptional: Hinta valinnainen
+		schema_timesheetentrydetailpaytype_payrollexporttype: Palkanlaskennan viennin tyyppi
+		schema_timesheetentrydetailpaytype_disabled: Poissa käytöstä
+		schema_timesheetentrydetailpaytype_mandatorynote: Selite pakollinen
+		schema_timesheetentrydetailpaytype_isbasepaytype: Peruspalkka
+		schema_timesheetentrydetailpaytype_abbreviation: Lyhenne
+		schema_timesheetentrydetailpaytype_icon: Kuvake
+		schema_timesheetentrydetailpaytype_noduration: Ei kestoa
+		schema_timesheetentrydetailpaytype_totalsgroup: Summanäyttöjen ryhmä
+
+		schema_articlegroup: Nimikeryhmä
+		schema_articlegroup_identifier: Tunniste
+		schema_articlegroup_name: Nimi
+
+		schema_dayentrytype: Kulun tai korvauksen tyyppi
+		schema_dayentrytype_identifier: Tunniste
+		schema_dayentrytype_name: Nimi
+		schema_dayentrytype_unit: Yksikkö
+		schema_dayentrytype_projectcategory: Projektiluokka
+		schema_dayentrytype_hasroute: Sisältää reitin
+		schema_dayentrytype_relation_enabledclacontracts: Aktiiviset TES:t
+		schema_dayentrytype_exporttoerp: Vie toiminnanohjausjärjestelmään
+		schema_dayentrytype_hasprice: Hinta käytössä
+		schema_dayentrytype_priceonlyformanagers: Hinta vain työnjohtajille
+		schema_dayentrytype_payrollexporttype: Palkanlaskennan viennin tyyppi
+		schema_dayentrytype_noamountselection: Poista määrän valinta
+		schema_dayentrytype_hastime: Sisältää ajan
+		schema_dayentrytype_disabled: Poissa käytöstä
+		schema_dayentrytype_issocialpaytype: Hallinnollinen kirjaus
+		schema_dayentrytype_mandatorynote: Selite pakollinen
+		schema_dayentrytype_abbreviation: Lyhenne
+		schema_dayentrytype_icon: Kuvake
+		schema_dayentrytype_totalsgroup: Summanäyttöjen ryhmä
+
+		timesheet_workstarted: Työ aloitettu
+		timesheet_start: Aloita
+		timesheet_changeuserproject: Vaihda
+		timesheet_stop: Pysäytä
+		timesheet_chooseproject: Ei aktiivista työtä. Valitse työ allaolevista valikoista.
+		timesheet_nextprojects: Päivän työt
+		timesheet_stats: Tehdyt kirjaukset
+		timesheet_istraveltime: Matka-aika
+
+		home_project: Aktiivinen projekti:
+		home_addtimesheetentry: Työkirjaus
+		home_adddayentry: Kulu
+		home_addarticleentry: Nimike
+		home_projectdetails: Projektin tiedot
+		home_nextprojects_search: Hae työ
+		home_setasactive: Aseta työ aktiiviseksi
+
+		approvework_approvework: Hyväksy kirjaukset
+		approvework_approveselectedwork: Hyväksy valitut kirjaukset
+		approvework_doyouwishtoapprove: Haluatko hyväksyä kaikki tähänastiset kirjaukset?
+		approvework_timesheetentry: Työkirjaukset
+		approvework_article: Nimikkeet
+		approvework_dayentry: Kulut
+		approvework_absence: Poissaolot
+		approvework_absenceentry: Poissaolot
+		approvework_assetentry: Laitekirjaukset
+		approvework_tab_timesheetentry: Työkirjaukset
+		approvework_tab_article: Nimikkeet
+		approvework_tab_dayentry: Kulut
+		approvework_tab_absenceentry: Poissaolot
+		approvework_tab_assetentry: Laitekirjaukset
+		approvework_entrieslastapproved: Viimeksi hyväksyit kirjauksesi
+		approvework_error_someprojectsclosed: Jotkut kirjaukset on tehty jo suljetuille projekteille. Kirjaukset tulee joko siirtää avoinna olevalle projektille tai poistaa. Epäselvissä tapauksissa ole hyvä ja ota yhteys esimieheesi.
+		approvework_unacceptedentries: Hyväksyttävät
+		approvework_daterange: Hae
+		approvework_day: Päivä
+		approvework_start: Alkaa
+		approvework_finish: Päättyy
+		approvework_show: Näytä
+		approvework_tab_totals: Summat
+
+		approveworkmanager_title: Kirjausten hyväksyntä
+		approveworkmanager_filters: Suodattimet
+		approveworkmanager_doyouwishtoapprove: Haluatko hyväksyä valitut työkohteet?
+		approveworkmanager_totalhours: Vahvistamaton työ:
+		approveworkmanager_projectsformanager: Näytä tunnit niille projekteille, jossa valittu henkilö on projektipäällikkö
+		approveworkmanager_profitcenter: Näytä tunnit niille projekteille, jotka kuuluvat valittuun kustannusyksikköön
+		approveworkmanager_show_only_entries_not_accepted: Näytä vain hyväksymättömät kirjaukset
+		approveworkmanager_start: Alkaa
+		approveworkmanager_end: Päättyy
+		approveworkmanager_userprofitcenter: Henkilön tulosyksikkö
+		approveworkmanager_userbusinessarea: Liiketoiminta-alue
+		approveworkmanager_userfunctionalarea: Toimintoalue
+		approveworkmanager_showdaterange: Näytä valitulta ajalta
+
+		resourceprojects_filter: Suodata
+		userprofitcenter_filter: Suodata
+
+		hrview_exportdata: Vie tiedot
+		hrview_timesheetentriestab: Tuntikirjaukset
+		hrview_dailyentriestab: Kulut
+		hrview_show_only_expored_entries: Näytä jo viedyt kirjaukset
+		hrview_show_only_entries_not_accepted_by_manager: Näytä esimiesten hyväksymättömät kirjaukset
+		hrview_show_only_entries_not_accepted_by_worker: Näytä työntekijöiden hyväksymättömät kirjaukset
+		hrview_absenceentriestab: Poissaolot
+
+		schema_genericasset: Kalustoluokka
+		schema_genericasset_identifier: Tunniste
+		schema_genericasset_name: Nimi
+		schema_genericasset_projectcategory: Projektiluokka
+		schema_genericasset_supervisor: Esimies
+		schema_genericasset_office: Toimisto
+		schema_genericasset_fixedassetnumber: Kaluston numero
+		schema_genericasset_profitcenter: Tulosyksikkö
+
+		schema_profitcenter: Tulosyksikkö
+		schema_profitcenter_identifier: Tunniste
+		schema_profitcenter_categoryid: Kategorian tunniste
+		schema_profitcenter_name: Nimi
+
+		schema_absenceentry: Poissaolokirjaus
+		schema_absenceentry_user: Käyttäjä
+		schema_absenceentry_starttimestamp: Alkamisajankohta
+		schema_absenceentry_endtimestamp: Päättymisajankohta
+		schema_absenceentry_approvedbyworker: Työntekijän hyväksymä
+		schema_absenceentry_approvedbymanager: Työnjohdon hyväksymä
+		schema_absenceentry_duration: Kesto
+		schema_absenceentry_note: Huomautus
+		schema_absenceentry_exportfailurecount_ax: Viennin virheet
+		schema_absenceentry_clacontract: TES
+		schema_absenceentry_internalworker: Sisäinen työntekijä
+		schema_absenceentry_absenceentrytype: Palkkalaji
+		schema_absenceentry_userprofitcenter: Työntekijän tulosyksikkö
+		schema_absenceentry_date: Päivämäärä
+
+		schema_absenceentrytype: Poissaolon tyyppi
+		schema_absenceentrytype_identifier: Tunniste
+		schema_absenceentrytype_name: Nimi
+		schema_absenceentrytype_projectcategory: Projektiluokka
+		schema_absenceentrytype_relation_enabledclacontracts: Aktiiviset TES:t
+		schema_absenceentrytype_exporttoerp: Vie toiminnanohjausjärjestelmään
+		schema_absenceentrytype_countsasregularhours: Lasketaan perustunniksi
+		schema_absenceentrytype_payrollexporttype: Palkanlaskennan viennin tyyppi
+		schema_absenceentrytype_disabled: Poissa käytöstä
+
+		schema_assetentry: Laitekirjaus
+		schema_assetentry_asset: Laite
+		schema_assetentry_project: Projekti
+		schema_assetentry_starttimestamp: Alkamisajankohta
+		schema_assetentry_endtimestamp: Päättymisajankohta
+		schema_assetentry_approvedbyworker: Työntekijän hyväksymä
+		schema_assetentry_approvedbymanager: Työnjohdon hyväksymä
+		schema_assetentry_duration: Kesto
+		schema_assetentry_note: Huomautus
+		schema_assetentry_profitcenter: Projektin tulosyksikkö
+		schema_assetentry_exportfailurecount_ax: Viennin virheet
+		schema_assetentry_exporttimestamp_ax: Vientiaika (ERP)
+		schema_assetentry_exportnote: Viennin tila
+		schema_assetentry_exported_ax: Viety (ERP)
+		schema_assetentry_assetprofitcenter: Laitteen tulosyksikkö
+		schema_assetentry_date: Päivämäärä
+
+		schema_businessarea: Liiketoiminta-alue
+		schema_businessarea_identifier: Tunniste
+		schema_businessarea_Name: Nimi
+
+		schema_functionalarea: Toimintoalue
+		schema_functionalarea_identifier: Tunniste
+		schema_functionalarea_name: Nimi
+
+		schema_payrollexport: Palkanlaskennan viennit
+		schema_payrollexport_identifier: Tunniste
+		schema_payrollexport_date: Aika
+		schema_payrollexport_status: Tila
+		schema_payrollexport_payrollperiod: Palkkakausi
+		schema_payrollexport_user: Käyttäjä
+		schema_payrollexport_created: Viety
+		schema_payrollexport_target: Kohde
+		schema_payrollexport_onlyentriesnotacceptedbymanager: Vain esimiesten hyväksymättömät kirjaukset
+		schema_payrollexport_onlyentriesnotacceptedbyworker: Vain työntekijöiden hyväksymättömät kirjaukset
+		schema_payrollexport_onlyexportedentries: Vain viedyt kirjaukset
+
+		schema_monitorinfo: Monitorin tiedot
+		schema_monitorinfo_info: Palautettava tieto
+
+		schema_integrationevent: Integraation tapahtumat
+		schema_integrationevent_status: Tila
+		schema_integrationevent_direction: Viestin suunta
+		schema_integrationevent_messagetype: Viestin tyyppi
+		schema_integrationevent_exported: Viety
+		schema_integrationevent_failed: Virhetilassa
+		schema_integrationevent_project: Projekti
+		schema_integrationevent_user: Käyttäjä
+		schema_integrationevent_handledtime: Käsittelyaika
+		schema_integrationevent_userprofitcenter: Käyttäjän tulosyksikkö
+		schema_integrationevent_profitcenter: Projektin tulosyksikkö
+		schema_integrationevent_handledcount: Käsittelyjen lukumäärä
+		schema_integrationevent_firsthandledtime: Ensimmäisen kerran käsitelty
+		schema_integrationevent_objectid: Sisäinen tunniste
+
+		// Login
+		login_new_password_email_subject: Uudet käyttäjätunnuksesi
+		login_new_password_email_body: "Hei!\n\nOlet pyytänyt tunnuksia Systems Garden Oy:n TRO-palveluun.\n\nUusi käyttäjätunnus: {0}\nUusi salasana: {1}\n\nTerveisin,\n{2}"
+		company_signature: Systems Garden Oy

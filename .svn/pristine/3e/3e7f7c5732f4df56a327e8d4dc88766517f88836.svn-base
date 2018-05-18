@@ -1,0 +1,72 @@
+﻿tro
+	weekview_timesheetentries
+		timesheetentry
+			__condition: { user: [@user], $or: [ { creator: [@user] }, { approvedbyworker: true } ], starttimestamp: { $gt: [@rangestart], $lt: [@rangeend] }, countsasregularhours: { $ne: false } }
+			__specifiedonly: true
+			starttimestamp
+			endtimestamp
+			approvedbyworker
+			istraveltime
+
+		absenceentry
+			__condition: { user: [@user], $or: [ { creator: [@user] }, { approvedbyworker: true } ], starttimestamp: { $gt: [@rangestart], $lt: [@rangeend] }, countsasregularhours: { $ne: false } }
+			__specifiedonly: true
+			starttimestamp
+			endtimestamp
+			approvedbyworker
+
+	currenttimesheet
+		user
+			__condition: { _id: [@user] }
+			__specifiedonly: true
+			currenttimesheet
+				__specifiedonly: true
+				starttimestamp
+
+	timesheetanddetailsbyid
+		timesheetentry
+			__condition: { parent: [@id] }
+
+	// Added to default listview query for timesheetentry
+	listview_timesheetentry
+		timesheetentry
+			
+	home_user
+		user
+			__condition: { _id: [@user] }
+			currentproject
+				__specifiedonly: false
+			currenttimesheet
+				__specifiedonly: false
+
+	assetentry_defaultassets
+		project
+			__condition: { _id: [@projectid] }
+			__specifiedonly: true
+			allocationentry
+				__specifiedonly: true
+				asset
+					__specifiedonly: false
+
+	logic_paytypesthatcountasregularhours
+		timesheetentrydetailpaytype
+			__condition: { countsasregularhours: true }
+
+	getsocialproject
+		project
+			__condition: { identifier: "__socialproject" }
+			__specifiedonly: false
+
+	getchildtimesheets
+		timesheetentry
+			__condition: { parent: [@parent] }
+			__specifiedonly: true
+			duration
+
+	getbasepay
+		timesheetentrydetailpaytype
+			__condition: { isbasepaytype: true }
+			
+	gettraveltime
+		timesheetentrydetailpaytype
+			__condition: { istraveltime: true }

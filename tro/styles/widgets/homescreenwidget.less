@@ -1,0 +1,42 @@
+﻿.__homescreenwidget {
+
+    .hwvpanel {
+        padding: 0;
+        border-radius: 0;
+        background: none;
+        box-shadow: none;
+        margin-bottom: @basemeasure / 2;
+    }
+
+    .allocationspanel {
+        padding-left: 0;
+        padding-right: 0;
+
+        border-top-right-radius: 0;
+        
+        .controls-wrapper, .entrycontainer, .__startproject {
+            padding-left: 10px;
+            padding-right: 10px;
+
+            &.controls-wrapper {
+                padding-top: 5px; // todo: unify with the other panel...
+            }
+        }
+    }
+
+    .workentriespanel {
+        padding-left: 0;
+        padding-right: 0;
+
+        border-top-left-radius: 0;
+
+        >.workentries>.dataview>div, >.workentries>.genericactions { // this is maybe a bit sub-optimal, but does the job
+            padding-left: 5px;
+            padding-right: 5px;
+            &.controls-wrapper {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+        }
+    }
+}

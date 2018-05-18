@@ -1,0 +1,144 @@
+﻿connections
+	mc2developmentserver
+		handlers
+
+			messageloggerhandler
+				loggers
+					Development Server Messages
+						loggertype:"namedpipe"
+						loglevel:"finetrace"
+
+			mongodbhandler
+			payrollintegrationhandler
+				export
+					exportautomatically: true
+					lockautomatically: true
+					//9h -> ms
+					payrolllockoffset: 32400000
+					//2d -> ms
+					payrollexportoffset: 172800000
+
+					// ************ Data location region ************
+
+					//Default integration\payroll should not be used with exportrootfolder
+					//integrationfolder:integration\trotovisma
+					
+					//default remoteConnection.GetDataPath()
+					exportrootfolder:c:\systemsgarden
+
+					// ************ CSV region ************
+
+					//wether to assign csv-header or not default is false, true espcially for the testing purposes
+					showcsvheader:true
+					
+					exportallinonefile: VismaExport.csv
+					
+					//append:true appends to pevious csv
+					//exportabsencefilecsv:Poissaolokirjaukset.csv
+					//	append:false
+					
+					//exportdayfilecsv:KuluJaTuntikirjaukset.csv
+					//	append:true
+					
+					//exporttimesheetfilecsv:KuluJaTuntikirjaukset.csv
+					//	append:true
+
+					// ************ Excel region ************
+
+					//Excel export filename default "payrollexport.xlsx"
+					exportexcelfile:Vire.xlsx
+
+					// ************ Entry types and fields region ************
+					
+					//total of how many valid entrytypes and their names
+					validtypescountandtypes:3
+						absence:0
+						day:1
+						timesheet:2
+					fields
+						useridentifier
+							index:0
+							valid
+								absence
+								day
+								timesheet
+						paytypeid
+							index: 1
+							valid
+								absence
+								day
+								timesheet
+						hours
+							index: 2
+							valid
+								absence
+								day
+								timesheet
+							//calculation function, requires precedingoperator
+							calculationfunction:1000/60/60
+							//to start arithmetic calculation, required if calculationfunction, creates hours{precedingoperator}1000/60/60
+							precedingoperator:/
+
+						amount
+							index: 3
+							valid
+								absence
+								day
+								timesheet
+
+						amountextra1
+							index: 4
+							identifier: unit
+								value: pcs
+							valid
+								absence
+								day
+								timesheet
+
+						amountextra2
+							index: 5
+							identifier: unit
+								value: euro
+							valid
+								absence
+								day
+								timesheet
+						
+						startdate
+							index: 6
+							valid
+								absence
+								day
+								timesheet
+							format:d.M.yyyy
+						//By default enddate is same as startdate
+						
+						profitcenter
+							index: 7
+							valid
+								absence
+								day
+								timesheet
+
+			//axintegrationhandler
+			//vismaintegrationhandler
+
+			//sapintegrationhandler
+			//	connectionstring:"Data Source=localhost;Initial Catalog=AreTro2;User Id=aretro2_user;Password=s4l41n3n;Application Name=aretro2;MultipleActiveResultSets=True"
+
+			trohelpershandler
+
+			reversetcphandler
+				sslport:26263
+				sslcertificatefile:localhost.pfx
+				requirecertificate:false
+
+loggers
+	Development server
+		loggertype:"namedpipe"
+		loglevel:"finetrace"
+
+	Development server filelog
+		loggertype:"file"
+		loglevel:"finetrace"
+		filename:"D:\Projects\tro\tro\trunk\Tools\DevelopmentServer\integration\saptotro\devserver.log"

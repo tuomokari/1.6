@@ -1,0 +1,45 @@
+﻿[controller(admin)
+
+	[using(panel)]
+	[using(form)]
+	[using(layout)]
+
+	[refreshdocuments
+		[widget(variables, currentblockname, currentcontroller)
+			<div id='[newid]' class="refreshvariables" style="width: 640px; height: 400px;">
+				[panel($refreshdocuments_title)
+
+					[dropdown(
+						label: $admin_collection,
+						name: "collectiondropdown")
+						[foreach collection in schema
+							[if (nameof(collection) == "controller") continue]
+							[option(label: nameof(collection))]							
+						]
+					]
+
+					[numberfield(
+						name: "skip",
+						label: $admin_skip)]
+
+					[numberfield(
+						name: "limit",
+						label: $admin_limit)]
+							
+					[button(
+						name: "refreshbutton", 
+						label: $refreshdocuments_refresh)]
+
+					<img src="http://media.giphy.com/media/7vZd4mti5BEly/giphy.gif" class="__hidden" id="lavalamp"/>
+
+					[memo(
+						name: "results",
+						label: $refreshdocuments_results,
+						readonly: true
+					)]
+				]
+		
+			</div>
+		]
+	]
+]

@@ -1,0 +1,1063 @@
+﻿USE [master]
+GO
+/****** Object:  Database [AreTro2_test]    Script Date: 11.3.2016 10:43:04 ******/
+CREATE DATABASE [AreTro2_test]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'AreTro2db', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\DATA\AreTro2db.mdf' , SIZE = 1254400KB , MAXSIZE = UNLIMITED, FILEGROWTH = 4096KB )
+ LOG ON 
+( NAME = N'AreTro2db_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\DATA\AreTro2db_log.ldf' , SIZE = 279552KB , MAXSIZE = 2048GB , FILEGROWTH = 1024KB )
+GO
+ALTER DATABASE [AreTro2_test] SET COMPATIBILITY_LEVEL = 110
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [AreTro2_test].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [AreTro2_test] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [AreTro2_test] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [AreTro2_test] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [AreTro2_test] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [AreTro2_test] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [AreTro2_test] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [AreTro2_test] SET AUTO_CREATE_STATISTICS ON 
+GO
+ALTER DATABASE [AreTro2_test] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [AreTro2_test] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [AreTro2_test] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [AreTro2_test] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [AreTro2_test] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [AreTro2_test] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [AreTro2_test] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [AreTro2_test] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [AreTro2_test] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [AreTro2_test] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [AreTro2_test] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [AreTro2_test] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [AreTro2_test] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [AreTro2_test] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [AreTro2_test] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [AreTro2_test] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [AreTro2_test] SET RECOVERY SIMPLE 
+GO
+ALTER DATABASE [AreTro2_test] SET  MULTI_USER 
+GO
+ALTER DATABASE [AreTro2_test] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [AreTro2_test] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [AreTro2_test] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [AreTro2_test] SET TARGET_RECOVERY_TIME = 0 SECONDS 
+GO
+USE [AreTro2_test]
+GO
+/****** Object:  User [aretro2_user]    Script Date: 11.3.2016 10:43:06 ******/
+CREATE USER [aretro2_user] FOR LOGIN [aretro2_user] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [aretro2_limited]    Script Date: 11.3.2016 10:43:06 ******/
+CREATE USER [aretro2_limited] FOR LOGIN [aretro2_limited] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [ARE\TEST_FRTUser]    Script Date: 11.3.2016 10:43:06 ******/
+CREATE USER [ARE\TEST_FRTUser] FOR LOGIN [ARE\TEST_FRTUser] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [ARE\ServiceTro2]    Script Date: 11.3.2016 10:43:06 ******/
+CREATE USER [ARE\ServiceTro2] FOR LOGIN [ARE\ServiceTro2] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [ARE\revonja_s]    Script Date: 11.3.2016 10:43:06 ******/
+CREATE USER [ARE\revonja_s] FOR LOGIN [ARE\revonja_s] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [ARE\revonja]    Script Date: 11.3.2016 10:43:06 ******/
+CREATE USER [ARE\revonja] FOR LOGIN [ARE\revonja] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [ARE\PROD_FRTUser]    Script Date: 11.3.2016 10:43:06 ******/
+CREATE USER [ARE\PROD_FRTUser] FOR LOGIN [ARE\PROD_FRTUser] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [ARE\petraan]    Script Date: 11.3.2016 10:43:06 ******/
+CREATE USER [ARE\petraan] FOR LOGIN [ARE\petraan] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [ARE\mononsan]    Script Date: 11.3.2016 10:43:06 ******/
+CREATE USER [ARE\mononsan] FOR LOGIN [ARE\mononsan] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [ARE\kallojar]    Script Date: 11.3.2016 10:43:06 ******/
+CREATE USER [ARE\kallojar] FOR LOGIN [ARE\kallojar] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [ARE\hiqutuki]    Script Date: 11.3.2016 10:43:06 ******/
+CREATE USER [ARE\hiqutuki] FOR LOGIN [ARE\hiqutuki] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [ARE\hartiilk]    Script Date: 11.3.2016 10:43:06 ******/
+CREATE USER [ARE\hartiilk] FOR LOGIN [ARE\hartiilk] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [ARE\hartihan]    Script Date: 11.3.2016 10:43:06 ******/
+CREATE USER [ARE\hartihan] FOR LOGIN [ARE\hartihan] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [ARE\FRENDS_Agent_Test]    Script Date: 11.3.2016 10:43:06 ******/
+CREATE USER [ARE\FRENDS_Agent_Test] FOR LOGIN [ARE\FRENDS_Agent_Test] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [ARE\ext-vuorevi]    Script Date: 11.3.2016 10:43:06 ******/
+CREATE USER [ARE\ext-vuorevi] FOR LOGIN [ARE\ext-vuorevi] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [ARE\ext-leppaesa]    Script Date: 11.3.2016 10:43:06 ******/
+CREATE USER [ARE\ext-leppaesa] FOR LOGIN [ARE\ext-leppaesa] WITH DEFAULT_SCHEMA=[dbo]
+GO
+ALTER ROLE [db_owner] ADD MEMBER [aretro2_user]
+GO
+ALTER ROLE [db_datareader] ADD MEMBER [aretro2_limited]
+GO
+ALTER ROLE [db_datawriter] ADD MEMBER [aretro2_limited]
+GO
+ALTER ROLE [db_datareader] ADD MEMBER [ARE\TEST_FRTUser]
+GO
+ALTER ROLE [db_datawriter] ADD MEMBER [ARE\TEST_FRTUser]
+GO
+ALTER ROLE [db_securityadmin] ADD MEMBER [ARE\ServiceTro2]
+GO
+ALTER ROLE [db_backupoperator] ADD MEMBER [ARE\ServiceTro2]
+GO
+ALTER ROLE [db_datareader] ADD MEMBER [ARE\revonja_s]
+GO
+ALTER ROLE [db_datawriter] ADD MEMBER [ARE\revonja_s]
+GO
+ALTER ROLE [db_datareader] ADD MEMBER [ARE\revonja]
+GO
+ALTER ROLE [db_datawriter] ADD MEMBER [ARE\revonja]
+GO
+ALTER ROLE [db_datareader] ADD MEMBER [ARE\PROD_FRTUser]
+GO
+ALTER ROLE [db_datawriter] ADD MEMBER [ARE\PROD_FRTUser]
+GO
+ALTER ROLE [db_datareader] ADD MEMBER [ARE\petraan]
+GO
+ALTER ROLE [db_datawriter] ADD MEMBER [ARE\petraan]
+GO
+ALTER ROLE [db_datareader] ADD MEMBER [ARE\mononsan]
+GO
+ALTER ROLE [db_datawriter] ADD MEMBER [ARE\mononsan]
+GO
+ALTER ROLE [db_owner] ADD MEMBER [ARE\kallojar]
+GO
+ALTER ROLE [db_datareader] ADD MEMBER [ARE\hiqutuki]
+GO
+ALTER ROLE [db_owner] ADD MEMBER [ARE\hartiilk]
+GO
+ALTER ROLE [db_owner] ADD MEMBER [ARE\hartihan]
+GO
+ALTER ROLE [db_datareader] ADD MEMBER [ARE\FRENDS_Agent_Test]
+GO
+ALTER ROLE [db_datawriter] ADD MEMBER [ARE\FRENDS_Agent_Test]
+GO
+ALTER ROLE [db_datareader] ADD MEMBER [ARE\ext-vuorevi]
+GO
+ALTER ROLE [db_datawriter] ADD MEMBER [ARE\ext-vuorevi]
+GO
+ALTER ROLE [db_datareader] ADD MEMBER [ARE\ext-leppaesa]
+GO
+/****** Object:  StoredProcedure [dbo].[GetMonitorData]    Script Date: 11.3.2016 10:43:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Systems Garden Oy /TK
+-- Create date: 2.7.2015
+-- Description:	Tro monitor data: get data to monitor process
+--				response=collectionname,messagetype,status,<direction>,message-count
+-- =============================================
+CREATE PROCEDURE [dbo].[GetMonitorData]
+AS
+declare
+	@RC					int
+	,@procedureName	varchar(1000)
+BEGIN
+	SET NOCOUNT ON;
+	SET @procedureName=object_name(@@PROCID)
+
+	SELECT ISNULL(status, '') as status
+			, CASE WHEN isinbound=1 THEN 'in' ELSE 'out' END as direction
+			, SUM(ISNULL(messagecnt, 0)) as messagecnt 
+		FROM dbo.Monitor  
+		GROUP BY ISNULL(status, '') 
+			, CASE WHEN isinbound=1 THEN 'in' ELSE 'out' END
+
+  	return (1)
+
+END
+
+
+GO
+/****** Object:  StoredProcedure [dbo].[GetTroOutErpMessages ]    Script Date: 11.3.2016 10:43:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Systems Garden Oy /TK
+-- Create date: 8.8.2013
+-- Description:	Update TroToSAP message "erpError" status to "retried" (Tro RetryDocuments process)
+-- =============================================
+CREATE PROCEDURE [dbo].[GetTroOutErpMessages ]
+	@retryIntervalSec	int 
+AS
+declare
+	@RC					int
+	,@procedureName	varchar(1000)
+	,@errorMessage varchar(MAX)
+BEGIN
+	SET NOCOUNT ON;
+	SET @procedureName=object_name(@@PROCID)
+	SET @errorMessage=''
+	BEGIN TRY
+		declare @timelimit datetime
+		SET @timelimit = dateadd(second, -@retryIntervalSec, getdate())
+
+		set @errorMessage=ISNULL(cast(@retryIntervalSec as varchar),'NULL')
+
+		EXECUTE @RC = [dbo].[TroLogita] 
+		   @source		= @procedureName
+		  ,@loglevel	= 0 -- 0=error
+		  ,@message		= @errorMessage
+
+		-- output table:
+		declare @messages table (sqlid int, status varchar(20), response varchar(MAX), firstprocesstime datetime, lastprocesstime datetime, processcnt int)
+
+		-- cancel messages of events which have a newer message:
+		update o
+			set status='cancelled'
+			OUTPUT inserted.id, inserted.status, inserted.response, inserted.lastprocesstime,inserted.firstprocesstime, inserted.processcnt INTO @messages
+		FROM TroIntMessagesOut o, TroIntMessagesOut o2
+		WHERE	o.status = 'erpretry'
+			and o2.id > o.id 
+			and o2.messagetype=o.messagetype
+			and o2.collectionname=o.collectionname
+			and o2.refid1=o.refid1
+			and ISNULL(o2.refid2,'') =ISNULL(o.refid2,'')
+				--ketjutetut tuntikirjaussanomat tuottivat tässä virheen, siksi lisätty seuraavat kaksi and-ehtoa.
+			and o2.status not in ('cancelled')
+			and ISNULL(o.partNr, 0) = ISNULL(o2.partNr, 0)
+
+		update o
+			set status=CASE WHEN processcnt < 500 THEN 'new' ELSE 'cancelled' END
+			OUTPUT inserted.id, inserted.status, inserted.response, inserted.lastprocesstime,inserted.firstprocesstime, inserted.processcnt INTO @messages
+		FROM TroIntMessagesOut o
+		WHERE	status = 'erpretry'
+				and lastprocesstime < @timelimit
+
+		update o
+			set status=CASE WHEN status = 'erperror' THEN 'failed' WHEN status = 'erpprocessed' THEN 'synced' ELSE status END
+			OUTPUT inserted.id, inserted.status, inserted.response, inserted.lastprocesstime,inserted.firstprocesstime, inserted.processcnt INTO @messages
+		FROM TroIntMessagesOut o
+		WHERE	status like 'erp%'
+				and status != 'erpretry'
+
+		-- null return:
+		SELECT sqlid, status, isnull(response, '') AS response, firstprocesstime, lastprocesstime, processcnt
+		FROM @messages
+		-- <<<
+		return (1);
+	END TRY
+	-- =============================================================================================
+
+	BEGIN CATCH
+		-- logitus:
+		SET @errorMessage = ERROR_MESSAGE()
+
+		EXECUTE @RC = [dbo].[TroLogita] 
+		   @source		= @procedureName
+		  ,@loglevel	= 0 -- 0=error
+		  ,@message		= @errorMessage
+		--
+		return (0);	
+	END CATCH
+END
+
+
+GO
+/****** Object:  StoredProcedure [dbo].[LogMonitorData]    Script Date: 11.3.2016 10:43:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Systems Garden Oy /TK
+-- Create date: 2.7.2015
+-- Description:	Tro monitor data: save message stats
+-- =============================================
+CREATE PROCEDURE [dbo].[LogMonitorData]
+	@messagetype			varchar(20),
+	@status					varchar(20),
+	@collectionname			varchar(100),
+	@isinbound				bit
+AS
+BEGIN
+	SET NOCOUNT ON;
+	
+	INSERT INTO log(created,source,loglevel,message) values (getdate(),'LogMonitorData',1,ISNULL(@messagetype,'NULL') +','+ ISNULL(@collectionname,'NULL') +','+ ISNULL(@status,'NULL'))
+
+	IF LOWER(@status) in ('in process','emptymessage') return; -- "in process": this is just a message status update; "emptymessage": the message handled was empty
+
+	IF EXISTS(SELECT 1 FROM dbo.Monitor WHERE messagetype=@messagetype and status=@status and collectionname=@collectionname and isinbound=@isinbound)
+		UPDATE dbo.Monitor  SET messagecnt = messagecnt + 1, lastprocesstime = GETDATE()
+			WHERE messagetype=@messagetype and status=@status and collectionname=@collectionname and isinbound=@isinbound
+	ELSE
+			INSERT INTO dbo.Monitor
+				 	(messagetype, status, collectionname, isinbound, messagecnt, lastprocesstime, firstprocesstime)
+			VALUES  (@messagetype, @status, @collectionname, @isinbound, 1, GETDATE(), GETDATE());
+		
+  	return (1)
+
+END
+
+
+GO
+/****** Object:  StoredProcedure [dbo].[TroInCloseMessage]    Script Date: 11.3.2016 10:43:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Systems Garden Oy /TK
+-- Create date: 8.8.2013
+-- Description:	Sanoman lähetys Tro -> 
+--				Päivittää inbound sanoman käsitellyksi. 
+--				Päivittä monitordatan.
+--				Return: 1 (OK)
+--						0 (Virhe)
+-- =============================================
+CREATE PROCEDURE [dbo].[TroInCloseMessage] 
+	@id				int
+	,@messagetype	varchar(20)=''
+	,@collectionname varchar(100)
+	,@status		varchar(20)
+	,@infotext		varchar(MAX)
+AS
+declare
+	@RC					int
+	,@procedureName		varchar(1000)
+	,@refid				varchar(MAX)
+	,@isinbound			bit=1
+BEGIN
+	SET NOCOUNT ON;
+	SET @procedureName=object_name(@@PROCID)
+	BEGIN TRY
+		SET @status=ISNULL(@status, '')
+		SET @collectionname=ISNULL(@collectionname, '')
+
+		UPDATE TroIntMessagesIn SET status=@status,lastprocesstime=getdate()
+				,processcnt=CASE WHEN LOWER(@status) in ('in process') THEN processcnt ELSE ISNULL(processcnt,0)+1 END
+				,infotext=ISNULL(infotext, '')+@infotext 
+				WHERE id=@id
+
+		EXECUTE @RC = [dbo].[LogMonitorData] 
+		   @messagetype
+		  ,@status
+		  ,@collectionname
+		  ,@isinbound
+
+		return (1);
+	END TRY
+	-- =============================================================================================
+
+	BEGIN CATCH
+		-- logitus:
+		declare @message varchar(MAX)=ERROR_MESSAGE()
+		EXECUTE @RC = [dbo].[TroLogita] 
+		   @source		= @procedureName
+		  ,@loglevel	= 0 -- 0=error
+		  ,@message		= @message
+		--
+		return (0);	
+	END CATCH
+END
+
+
+GO
+/****** Object:  StoredProcedure [dbo].[TroInNewMessage]    Script Date: 11.3.2016 10:43:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Systems Garden Oy /TK
+-- Create date: 8.8.2013
+-- Description:	Sanoman vastaanotto -> Tro 
+--				Kirjoittaa sanoman 
+--				Return: 1 (OK)
+--						0 (Virhe)
+-- =============================================
+CREATE PROCEDURE [dbo].[TroInNewMessage] 
+	@messagetype	varchar(20)
+	,@message		varchar(MAX)
+AS
+declare
+	@RC					int
+	,@id				int
+	,@procedureName	varchar(1000)
+BEGIN
+	SET NOCOUNT ON;
+	SET @procedureName=object_name(@@PROCID)
+	BEGIN TRY
+		IF @messagetype='ActivityType' BEGIN
+			set @messagetype='ignoredActivityType'
+		END
+		
+		INSERT INTO TroIntMessagesIn (messagetype,status,messagecontent) VALUES (@messagetype, 'new', @message)
+		SET @id=SCOPE_IDENTITY()
+		-- log:
+		declare @logmessu varchar(MAX)='New message '+cast(ISNULL(@id,-1) as varchar)
+		EXECUTE @RC = [dbo].[TroLogita] @source = @procedureName,@loglevel = 3,@message=@logmessu
+
+		return (1);
+	END TRY
+	-- =============================================================================================
+
+	BEGIN CATCH
+		-- logitus:
+		declare @logmessage varchar(MAX)=ERROR_MESSAGE()
+		EXECUTE @RC = [dbo].[TroLogita] 
+		   @source		= @procedureName
+		  ,@loglevel	= 0 -- 0=error
+		  ,@message		= @logmessage
+		--
+		return (0);	
+	END CATCH
+END
+
+
+GO
+/****** Object:  StoredProcedure [dbo].[TroLogita]    Script Date: 11.3.2016 10:43:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Systems Garden Oy /TK
+-- Create date: 2.7.2015
+-- Description:	Tro logitus: errors & log
+-- =============================================
+CREATE PROCEDURE [dbo].[TroLogita]
+	@source			varchar(50),
+	@loglevel		tinyint, 
+	@message		varchar(MAX),
+	@refid1			varchar(256) = NULL,
+	@refid2			varchar(256) = NULL
+AS
+declare
+	@RC					int
+	,@procedureName	varchar(1000)
+BEGIN
+	SET NOCOUNT ON;
+	SET @procedureName=object_name(@@PROCID)
+		
+	-- if (loglevel), insert log
+	if exists(SELECT 1 FROM TroIntParameters 
+				WHERE id='loglevel' and intvalue>=@loglevel) BEGIN	
+		INSERT INTO log(source,loglevel,message) VALUES (@source, @loglevel, @message)
+	END
+	return (1);
+
+END
+
+
+GO
+/****** Object:  StoredProcedure [dbo].[TroOutCloseMessage]    Script Date: 11.3.2016 10:43:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Systems Garden Oy /TK
+-- Create date: 8.8.2013
+-- Description:	Sanoman lähetys Tro -> 
+--				Päivittää sanoman käsitellyksi ('erpprocessed'/'erperror')
+--				Return: 1 (OK)
+--						0 (Virhe)
+-- =============================================
+CREATE PROCEDURE [dbo].[TroOutCloseMessage] 
+	@id			int
+	,@status	varchar(20)
+	,@response	varchar(MAX)=NULL
+	,@infotext	varchar(MAX)
+AS
+declare
+	@RC					int
+	,@procedureName		varchar(1000)
+	,@refid				varchar(MAX)
+	,@messagetype		varchar(20)
+	,@collectionname	varchar(100)
+	,@isinbound			bit
+
+BEGIN
+	SET NOCOUNT ON;
+	SET @procedureName=object_name(@@PROCID)
+	BEGIN TRY
+		SET @status=ISNULL(@status, '')
+		IF @response like '%<code>IWO_BAPI/124</code>%' and @status='error' begin
+			set @status='retry'
+		END
+		SET @status = 'erp' + @status -- 'erpprocessed'/'erperror'/'erpretry'
+
+		declare @monitorfields table(messagetype varchar(20), collectionname varchar(100))
+		UPDATE TroIntMessagesOut
+			SET status = @status
+				,processlog=ISNULL(processlog,'')+dbo.FormatTimeStamp(getdate())+':'+ISNULL(@status,'NULL')+' info='+ISNULL(@infotext,'NULL')+'.'
+				,refidexternal=ISNULL(@refid,'')
+				,infotext=@infotext,response=@response,lastprocesstime=getdate(),firstprocesstime=CASE WHEN firstprocesstime IS NULL THEN getdate() else firstprocesstime END
+		OUTPUT inserted.messagetype, inserted.collectionname INTO @monitorfields
+		WHERE id = @id
+		SET @RC=@@ROWCOUNT
+
+		-- Jos ei löydy, nostetaan virhe:
+		IF @RC != 1 BEGIN
+			declare @ErrorText varchar(MAX)
+			SET @ErrorText = 'Messages found '+cast(@RC as varchar)+'. Message ID='+ISNULL(cast(@id as varchar),'NULL')+'.'
+			RAISERROR(@ErrorText, 16, 1)
+		END
+
+		-- update monitor statistical data:
+		SELECT @messagetype=messagetype, @collectionname=collectionname FROM @monitorfields
+		SET @isinbound = 0
+
+		EXECUTE @RC = [dbo].[LogMonitorData] 
+		   @messagetype
+		  ,@status
+		  ,@collectionname
+		  ,@isinbound
+
+
+
+		return (1);
+	END TRY
+	-- =============================================================================================
+
+	BEGIN CATCH
+		-- logitus:
+		declare @message varchar(MAX)=ERROR_MESSAGE()
+		EXECUTE @RC = [dbo].[TroLogita] 
+		   @source		= @procedureName
+		  ,@loglevel	= 0 -- 0=error
+		  ,@message		= @message
+		--
+		return (0);	
+	END CATCH
+END
+
+
+GO
+/****** Object:  StoredProcedure [dbo].[TroOutGetMessages]    Script Date: 11.3.2016 10:43:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Systems Garden Oy /TK
+-- Create date: 8.8.2013
+-- Description:	Sanoman lähetys Tro -> 
+--				Hakee new-tilaiset sanomat.
+--				Return: 1 (OK)
+--						0 (Virhe)
+-- =============================================
+CREATE PROCEDURE [dbo].[TroOutGetMessages] 
+AS
+declare
+	@RC					int
+	,@procedureName	varchar(1000)
+BEGIN
+	SET NOCOUNT ON;
+	BEGIN TRY
+		SET @procedureName=object_name(@@PROCID)
+		
+		SELECT TOP(100) id,messagetype as messtype FROM TroIntMessagesOut
+			WHERE status = 'new' 
+			ORDER BY id
+
+		return (1);
+	END TRY
+	-- =============================================================================================
+
+	BEGIN CATCH
+		-- logitus:
+		declare @message varchar(MAX)=ERROR_MESSAGE()
+		EXECUTE @RC = [dbo].[TroLogita] 
+		   @source		= @procedureName
+		  ,@loglevel	= 0 -- 0=error
+		  ,@message		= @message
+		--
+		return (0);	
+	END CATCH
+END
+
+
+GO
+/****** Object:  StoredProcedure [dbo].[TroOutInitMessage]    Script Date: 11.3.2016 10:43:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Systems Garden Oy /TK
+-- Create date: 8.8.2013
+-- Description:	Sanoman lähetys Tro -> 
+--				Palauttaa sanoman sisällön (id)
+--				Return: 1 (OK)
+--						0 (Virhe)
+-- =============================================
+CREATE PROCEDURE [dbo].[TroOutInitMessage]
+	@id			int
+AS
+declare
+	@RC					int
+	,@procedureName	varchar(1000)
+BEGIN
+	SET NOCOUNT ON;
+	SET @procedureName=object_name(@@PROCID)
+	BEGIN TRY
+		
+		UPDATE TroIntMessagesOut
+			SET status = 'erpprocessing'
+				,lastprocesstime = getdate()
+				,processcnt=ISNULL(processcnt,0)+1
+				,processlog=ISNULL(processlog,'')+dbo.FormatTimeStamp(getdate())+':Processing. '
+		WHERE id = @id
+			and status in ('new','retry')
+		SET @RC=@@ROWCOUNT
+
+		-- sanoman on oltava new/retry -tilassa; Jos ei löydy, nostetaan virhe:
+		IF @RC != 1 BEGIN
+			declare @ErrorText varchar(MAX)
+			SET @ErrorText = 'New Messages found '+cast(@RC as varchar)+'. Message ID='+ISNULL(cast(@id as varchar),'NULL')+'.'
+			RAISERROR(@ErrorText, 16, 1)
+		END
+		-- ret message:
+		SELECT messagecontent as Message FROM TroIntMessagesOut WHERE id = @id
+		-- log:
+		declare @logmessu varchar(MAX)='Init message '+cast(ISNULL(@id,-1) as varchar)
+		EXECUTE @RC = [dbo].[TroLogita] @source = @procedureName,@loglevel = 3,@message=@logmessu
+
+		return (1);
+	END TRY
+	-- =============================================================================================
+
+	BEGIN CATCH
+		-- logitus:
+		declare @message varchar(MAX)=ERROR_MESSAGE()
+		EXECUTE @RC = [dbo].[TroLogita] 
+		   @source		= @procedureName
+		  ,@loglevel	= 0 -- 0=error
+		  ,@message		= @message
+		--
+		return (0);	
+	END CATCH
+END
+
+
+GO
+/****** Object:  StoredProcedure [dbo].[TroOutNewMessage]    Script Date: 11.3.2016 10:43:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Systems Garden Oy /TK
+-- Create date: 8.8.2013
+-- Description:	Create new message to SAP 
+--				Writes to TroIntMessagesOut
+--				Return: 1 (OK)
+--						0 (Exception)
+-- =============================================
+CREATE PROCEDURE [dbo].[TroOutNewMessage] 
+	@messagetype	varchar(20)
+	,@message		varchar(MAX)
+	,@collectionname	varchar(100)=''
+	,@RefId1		varchar(256)
+	,@RefId2		varchar(256)
+	,@retryCnt		int = 0
+	,@partNr		int = 0
+	,@errorMessage	varchar(MAX) out
+AS
+declare
+	@stringToRemove			varchar(1000) = '<?xml version="1.0" encoding="utf-16"?>'
+	,@RC					int
+	,@id				int
+	,@procedureName	varchar(1000)
+BEGIN
+	SET NOCOUNT ON;
+	SET @procedureName=object_name(@@PROCID)
+	SET @errorMessage=''
+	BEGIN TRY
+		
+		-- remove ?xml -tag from the message:
+		declare @p int=CHARINDEX(@stringToRemove, @message)
+		if ISNULL(@p, 0) > 0 begin
+			set @message=SUBSTRING(@message, len(@stringToRemove)+1, len(@message)-len(@stringToRemove))
+		end
+		-- insert new message:
+		INSERT INTO TroIntMessagesOut (messagetype, status, messagecontent, collectionname, RefId1, RefId2, processcnt, partNr) 
+				VALUES (@messagetype, 'new', @message, @collectionname, @RefId1, @RefId2, @retryCnt,@partNr)
+		SET @id=SCOPE_IDENTITY()
+
+		return (@id);
+	END TRY
+	-- =============================================================================================
+
+	BEGIN CATCH
+		-- logitus:
+		SET @errorMessage = ERROR_MESSAGE()
+
+		EXECUTE @RC = [dbo].[TroLogita] 
+		   @source		= @procedureName
+		  ,@loglevel	= 0 -- 0=error
+		  ,@message		= @errorMessage
+		--
+		return (0);	
+	END CATCH
+END
+
+
+GO
+/****** Object:  StoredProcedure [dbo].[updateRetryMessage]    Script Date: 11.3.2016 10:43:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Systems Garden Oy /TK
+-- Create date: 8.8.2013
+-- Description:	Update TroToSAP message "erpError" status to "retried" (Tro RetryDocuments process)
+-- =============================================
+CREATE PROCEDURE [dbo].[updateRetryMessage] 
+	@id	int 
+AS
+declare
+	@RC					int
+	,@procedureName	varchar(1000)
+	,@errorMessage varchar(MAX)
+BEGIN
+	SET NOCOUNT ON;
+	SET @procedureName=object_name(@@PROCID)
+	SET @errorMessage=''
+	BEGIN TRY
+
+		UPDATE TroIntMessagesOut SET status='retried' WHERE id=@id 
+
+		return (1);
+	END TRY
+	-- =============================================================================================
+
+	BEGIN CATCH
+		-- logitus:
+		SET @errorMessage = ERROR_MESSAGE()
+
+		EXECUTE @RC = [dbo].[TroLogita] 
+		   @source		= @procedureName
+		  ,@loglevel	= 0 -- 0=error
+		  ,@message		= @errorMessage
+		--
+		return (0);	
+	END CATCH
+END
+
+
+GO
+/****** Object:  UserDefinedFunction [dbo].[FormatTimeStamp]    Script Date: 11.3.2016 10:43:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		SystemsGarden Oy /tk
+-- Create date: 2.7.2015
+-- Description:	Format aikaleima -string
+-- =============================================
+CREATE FUNCTION [dbo].[FormatTimeStamp] 
+(
+	@datetime datetime
+)
+RETURNS varchar(20)
+AS
+BEGIN
+	DECLARE @Result varchar(20)
+
+	SELECT @Result = cast(datepart(dd,@datetime) as varchar)+'.'+cast(datepart(MM,@datetime) as varchar)+'.'+cast(datepart(YEAR,@datetime) as varchar)+' '+
+					right('0'+cast(datepart(HH,@datetime) as varchar),2)+':'+right('0'+cast(datepart(MINUTE,@datetime) as varchar),2)+':'+right('0'+cast(datepart(SECOND,@datetime) as varchar),2)
+
+	RETURN @Result
+
+END
+
+
+GO
+/****** Object:  UserDefinedFunction [dbo].[GetXml]    Script Date: 11.3.2016 10:43:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		ystems Garden Oy 2015/tk
+-- Create date: 21.9.2015
+-- Description:	Get xml without ?xml
+-- =============================================
+CREATE FUNCTION [dbo].[GetXml] 
+(	
+	@string varchar(MAX)
+) 
+RETURNS xml
+AS
+BEGIN
+	declare 
+		@string1ToRemove			varchar(1000) = '<?xml version="1.0" encoding="utf-16"?>'
+		,@string2ToRemove			varchar(1000) = '<?xml version="1.0" encoding="utf-8"?>'
+		,@p int
+	SET @p=CHARINDEX(@string1ToRemove, @string)
+	if ISNULL(@p, 0) > 0 begin
+		set @string=SUBSTRING(@string, len(@string1ToRemove)+1, len(@string)-len(@string1ToRemove))
+	end
+	SET @p=CHARINDEX(@string2ToRemove, @string)
+	if ISNULL(@p, 0) > 0 begin
+		set @string=SUBSTRING(@string, len(@string2ToRemove)+1, len(@string)-len(@string2ToRemove))
+	end
+
+	return cast(@string as xml)
+END
+
+GO
+/****** Object:  Table [dbo].[log]    Script Date: 11.3.2016 10:43:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[log](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[created] [datetime] NULL,
+	[source] [varchar](50) NULL,
+	[loglevel] [tinyint] NULL,
+	[message] [varchar](max) NULL,
+ CONSTRAINT [PK_log] PRIMARY KEY CLUSTERED 
+(
+	[id] DESC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[Monitor]    Script Date: 11.3.2016 10:43:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[Monitor](
+	[messagetype] [varchar](20) NOT NULL,
+	[status] [varchar](20) NOT NULL,
+	[collectionname] [varchar](100) NOT NULL,
+	[isinbound] [bit] NOT NULL,
+	[messagecnt] [int] NULL,
+	[lastprocesstime] [datetime] NULL,
+	[firstprocesstime] [datetime] NULL,
+ CONSTRAINT [PK_Monitor_1] PRIMARY KEY CLUSTERED 
+(
+	[messagetype] ASC,
+	[status] ASC,
+	[collectionname] ASC,
+	[isinbound] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[temp_monitor]    Script Date: 11.3.2016 10:43:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[temp_monitor](
+	[collectionname] [varchar](20) NULL,
+	[messagetype] [varchar](20) NULL,
+	[status] [varchar](20) NULL,
+	[direction] [varchar](20) NULL,
+	[count] [int] NULL
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[TroIntMessagesIn]    Script Date: 11.3.2016 10:43:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[TroIntMessagesIn](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[messagetype] [varchar](20) NULL,
+	[status] [varchar](20) NULL,
+	[created] [datetime] NULL,
+	[messagecontent] [varchar](max) NULL,
+	[lastprocesstime] [datetime] NULL,
+	[processcnt] [int] NULL,
+	[infotext] [varchar](max) NULL,
+ CONSTRAINT [PK_TroIntMessagesIn] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[TroIntMessagesInRef]    Script Date: 11.3.2016 10:43:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[TroIntMessagesInRef](
+	[refid] [varchar](256) NOT NULL,
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[messageId] [int] NULL,
+	[collectionName] [varchar](50) NULL,
+	[created] [datetime] NULL,
+ CONSTRAINT [PK_TroIntMessagesInRef] PRIMARY KEY CLUSTERED 
+(
+	[refid] ASC,
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[TroIntMessagesOut]    Script Date: 11.3.2016 10:43:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[TroIntMessagesOut](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[messagetype] [varchar](20) NULL,
+	[status] [varchar](20) NULL,
+	[created] [datetime] NULL,
+	[infotext] [varchar](max) NULL,
+	[response] [varchar](max) NULL,
+	[collectionname] [varchar](100) NULL,
+	[refid1] [varchar](256) NULL,
+	[refid2] [varchar](256) NULL,
+	[partNr] [int] NULL,
+	[refidexternal] [varchar](max) NULL,
+	[messagecontent] [varchar](max) NULL,
+	[processlog] [varchar](max) NULL,
+	[firstprocesstime] [datetime] NULL,
+	[lastprocesstime] [datetime] NULL,
+	[processcnt] [int] NULL,
+ CONSTRAINT [PK_TroIntMessagesOut] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[TroIntParameters]    Script Date: 11.3.2016 10:43:08 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[TroIntParameters](
+	[id] [varchar](20) NOT NULL,
+	[textvalue] [varchar](max) NULL,
+	[intvalue] [int] NULL,
+	[floatvalue] [float] NULL,
+	[description] [varchar](1024) NULL,
+	[created] [datetime] NULL,
+	[modified] [datetime] NULL,
+ CONSTRAINT [PK_TroIntParameters] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+SET ANSI_PADDING ON
+
+GO
+/****** Object:  Index [IX_TroIntMessagesIn]    Script Date: 11.3.2016 10:43:08 ******/
+CREATE NONCLUSTERED INDEX [IX_TroIntMessagesIn] ON [dbo].[TroIntMessagesIn]
+(
+	[status] ASC
+)
+INCLUDE ( 	[id],
+	[messagetype]) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+
+GO
+/****** Object:  Index [IX_TroIntMessagesOut]    Script Date: 11.3.2016 10:43:08 ******/
+CREATE NONCLUSTERED INDEX [IX_TroIntMessagesOut] ON [dbo].[TroIntMessagesOut]
+(
+	[status] ASC
+)
+INCLUDE ( 	[id],
+	[messagetype]) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[log] ADD  CONSTRAINT [DF_log_created]  DEFAULT (getdate()) FOR [created]
+GO
+ALTER TABLE [dbo].[TroIntMessagesIn] ADD  CONSTRAINT [DF_TroIntMessagesIn_created]  DEFAULT (getdate()) FOR [created]
+GO
+ALTER TABLE [dbo].[TroIntMessagesInRef] ADD  CONSTRAINT [DF_TroIntMessagesInRef_created]  DEFAULT (getdate()) FOR [created]
+GO
+ALTER TABLE [dbo].[TroIntMessagesOut] ADD  CONSTRAINT [DF_TroIntMessagesOut_created]  DEFAULT (getdate()) FOR [created]
+GO
+ALTER TABLE [dbo].[TroIntParameters] ADD  CONSTRAINT [DF_TroIntParameters_created]  DEFAULT (getdate()) FOR [created]
+GO
+ALTER TABLE [dbo].[TroIntParameters] ADD  CONSTRAINT [DF_TroIntParameters_modified]  DEFAULT (getdate()) FOR [modified]
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'”order”/...”' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TroIntMessagesIn', @level2type=N'COLUMN',@level2name=N'messagetype'
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'”new”/”processing”/”processed”/”error”/”cancelled”/"retry"/"emptymessage"' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TroIntMessagesIn', @level2type=N'COLUMN',@level2name=N'status'
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'”order”/”timesheet”/”materialsheet”' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TroIntMessagesOut', @level2type=N'COLUMN',@level2name=N'messagetype'
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'”new”/”processing”/”processed”/”error”/”cancelled”' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TroIntMessagesOut', @level2type=N'COLUMN',@level2name=N'status'
+GO
+USE [master]
+GO
+ALTER DATABASE [AreTro2_test] SET  READ_WRITE 
+GO

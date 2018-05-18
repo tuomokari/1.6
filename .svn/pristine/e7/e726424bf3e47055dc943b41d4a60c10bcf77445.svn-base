@@ -1,0 +1,2918 @@
+﻿tro
+	controller
+		collection
+			navigation: false
+				userlevels
+					5: true
+
+	customer
+		identifier
+			searchfield: true
+
+		name
+			namefield: true
+			searchfield: true
+			required: true
+			max: 200
+
+		name2
+			searchfield: false
+			hidden: true
+			max: 200
+
+		streetaddress
+			max: 200
+			hiddenfromlistview: true
+
+		city
+			max: 100
+			hiddenfromlistview: true
+
+		postalcode
+			max: 10
+			hiddenfromlistview: true
+
+		country
+			max: 100
+			hiddenfromlistview: true
+
+		state
+			hidden: true
+			max: 100
+			hiddenfromlistview: true
+
+		contactpersonname
+			hiddenfromlistview: true
+			
+		phonenumber
+			max: 100
+			hiddenfromlistview: true
+
+		email
+			stringtype: email
+			max: 100
+			hiddenfromlistview: true
+
+		modified
+			type: datetime
+			datetimetype: datetime
+			hiddenfromlistview: true
+
+		created
+			type: datetime
+			datetimetype: datetime
+			hiddenfromlistview: true
+
+		disabled
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+			hiddenfromlistview: true
+
+		entryintegrationwidget
+			type: widget
+			hidden: false
+				userlevels
+					1: true
+					2: true
+					3: true
+					4: true
+					6: true
+
+	project
+		collection
+			listfilter: { disabled: {$ne: true }, identifier: { $ne: "__socialproject"} }
+			searchfilter:  { disabled: {$ne: true }, identifier: { $ne: "__socialproject"}, $and: [ { status: { $ne: "Done" } }] }
+			archive
+				featureson
+					archive: true
+			archivefilter: { status: "Done", projecttype: {$ne: "PROJECT"}}
+			archiveagedaysmodified: 180
+
+		identifier
+			searchfield: true
+			translated: true
+			indexed: true
+
+		name
+			namefield: true
+			searchfield: true
+			max: 200
+			translated: true
+			indexed: true
+
+		projectleadmodule
+			type: widget
+			hidden: false
+
+		projectmanager
+			relation: user
+			hideonnarrowview: true
+			preventnavigation: false
+				userlevels
+					1: true
+					2: true
+
+		customer
+			relationtype: one
+			preventnavigation: false
+				userlevels
+					1: true
+					2: true
+
+		status			
+			readonly: true
+				userlevels
+					5: false
+			stringtype: dropdown
+			options
+				Unallocated
+				In progress
+				Done
+				Subcontract
+			indexed: true
+
+		parentproject
+			relation: project
+			hidden: true
+				userlevels
+					5: false
+		
+		note
+			stringtype: memo
+			hiddenfromlistview: true
+			max: 4000
+				
+		projectstart
+			type: datetime
+			datetimetype: datetime
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					3: false
+					4: false
+					5: false
+					6: false
+			indexed: true
+
+		projectend
+			type: datetime
+			datetimetype: datetime
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					3: false
+					4: false
+					5: false
+					6: false
+			indexed: true
+
+		duedate
+			type: datetime
+			datetimetype: datetime
+			hideonnarrowview: true
+			hidden: false
+
+		profitcenter
+			relationtype: one
+			hiddenfromlistview: true
+			hidden: true
+				userlevels
+					3: false
+					4: false
+					5: false
+					6: false
+			preventnavigation: true
+
+		businessarea
+			relationtype: one
+			hiddenfromlistview: true
+			hidden: true
+				userlevels
+					3: false
+					4: false
+					5: false
+					6: false
+			preventnavigation: true
+
+		functionalarea
+			relationtype: one
+			hiddenfromlistview: true
+			hidden: true
+				userlevels
+					3: false
+					4: false
+					5: false
+					6: false
+			preventnavigation: true
+
+		projectcategory
+			relationtype: one
+			hiddenfromlistview: true
+			hidden: true
+				userlevels
+					3: false
+					4: false
+					5: false
+					6: false
+			preventnavigation: true
+
+		streetaddress
+			max: 200
+			hiddenfromlistview: true
+
+		city
+			max: 100
+			hiddenfromlistview: true
+
+		postalcode
+			max: 10
+			hiddenfromlistview: true
+
+		country
+			max: 100
+			hiddenfromlistview: true
+			hidden: true
+				userlevels
+					5: false
+
+		state
+			max: 100
+			hiddenfromlistview: true
+			hidden: true
+				userlevels
+					5: false
+
+		contactpersonname
+			hiddenfromlistview: true
+			max: 100
+
+		phonenumber
+			max: 100
+			hiddenfromlistview: true
+
+		email
+			stringtype: email
+			max: 100
+			hiddenfromlistview: true
+
+		noresourcing
+			type: bool
+			hiddenfromlistview: true
+			hidden: true
+		
+		projecttype
+			max: 100
+			hiddenfromlistview: true
+			hidden: true
+				userlevels
+					5: false
+			indexed: true
+
+		modified
+			type: datetime
+			datetimetype: datetime
+			hiddenfromlistview: true
+
+		created
+			type: datetime
+			datetimetype: datetime
+			hiddenfromlistview: true
+
+		disabled
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+			hiddenfromlistview: true
+
+		projectlead
+			relationtype: many
+			relation: user
+			hidden: false
+				featuresoff
+					projectleads: true
+			hidenew: true
+
+		entryintegrationwidget
+			type: widget
+			hidden: false
+				userlevels
+					1: true
+					2: true
+					3: true
+					4: true
+					6: true
+
+				featuresoff
+					showintegrationevents: true
+
+	asset
+		collection
+			hidden : true
+				featureson
+					assets: false 
+
+		identifier
+			searchfield: true
+
+		licenseplate
+			searchfield: true
+			namefield: true			
+
+		name
+			namefield: true
+			searchfield: true
+			required: true
+
+		description
+			stringtype: memo
+			hiddenfromlistview: true
+
+		office
+			hideonnarrowview: true
+
+		supervisor
+			relation: user
+			hiddenfromlistview: true
+
+		projectcategory
+			relationtype: one
+			hideonnarrowview: true
+
+		profitcenter
+			relationtype: one
+			hideonnarrowview: true
+
+		businessarea
+			relationtype: one
+			hiddenfromlistview: true
+
+		functionalarea
+			relationtype: one
+			hiddenfromlistview: true
+
+		entryintegrationwidget
+			type: widget
+			hidden: false
+				userlevels
+					1: true
+					2: true
+					3: true
+					4: true
+					6: true
+
+				featuresoff
+					showintegrationevents: true
+
+	assetlocationentry
+		collection
+			hidden: true
+				featureson
+					assets: false 				
+
+		asset
+			relationtype: one
+			required: true
+		
+		location
+	
+		timestamp
+			type: datetime
+			datetimetype: datetime
+			required: true
+
+		note
+			stringtype: memo
+			max: 1000
+			hiddenfromlistview: true
+	
+	timesheetentry
+		collection
+			audittrail: true
+			hidetools: true
+			preventlinktolist: false
+				userlevels
+					1: true
+					2: true
+			query: listview_timesheetentry
+			showinternalrelations: false
+				featureson
+					timetracking: true
+			inlinerelations: true
+			archive
+				featureson
+					archive: true
+			archiveagedayscreated: 180
+
+		user
+			relationtype: one
+			defaultvaluecontroller: defaultvalues
+			defaultvalueaction: timesheetentryuser
+			hidden: false
+				userlevels
+					1: true
+			searchfield: true
+			hideinsert: true
+			removeaction: deletelocal
+			readonly: false
+				userlevels
+					6: true
+			audittrail: true
+		
+		timesheetentrypaytypewidget
+			type: widget
+			hidden: true
+				featureson
+					filterbasedonclacontract_timesheetentry: false
+
+		timesheetentrydetailpaytype
+			filtercontroller: trofilters
+			filteraction: timesheetentrydetailpaytype
+			displayhint: dropdown
+			relationtype: one
+			required: false
+				featuresoff
+					dailyentries: false
+			preventnavigation: true
+			hideontarget: true
+			hidden: true
+				featureson
+					paytypeforworkentries: false
+			noinitialupdate: true
+			favourites: true
+
+		projectcategory
+			relationtype: one
+			displayhint: dropdown
+			hideonnarrowview: true
+			preventnavigation: true
+			hideontarget: true
+			hidden: true
+				featureson
+					usedirectprojectcategory: false
+			noinitialupdate: true
+			favourites: true
+
+		date
+			type: datetime
+			defaultvaluecontroller: defaultvalues
+			defaultvalueaction: selecteddate
+			datetimetype: date
+			required: true
+			hidden: true
+				featureson
+					dailyentries: false
+
+		starttimestamp
+			type: datetime
+			defaultvaluecontroller: defaultvalues
+			defaultvalueaction: selectedstart
+			datetimetype: datetime
+			required: true
+			timeaccuracy: 15
+			hidden: true
+				featureson
+					timetracking: false
+	
+		endtimestamp
+			type: datetime
+			datetimetype: datetime
+			defaultvaluecontroller: defaultvalues
+			defaultvalueaction: selectedend
+			required: true
+			timeaccuracy: 15
+			hideonnarrowview: false
+			hideonviewform: true
+			hidden: true
+				featureson
+					timetracking: false
+
+		duration
+			defaultvaluecontroller: defaultvalues
+			defaultvalueaction: duration
+			defaultdurationminutes: 60
+			type: int
+			inttype: timespan
+			timeaccuracy: 15
+			required: false
+				featureson
+					dailyentries: true
+			min: 0
+				featureson
+					dailyentries: 1
+
+		project
+			defaultvalueaction: trocurrentproject
+			defaultvaluecontroller: defaultvalues
+			relationtype: one
+			required: true
+			hideontarget: false
+			hideinsert: true
+			hidetools: true
+			searchfield: true
+			searchfilterdelay: 500
+			removeaction: deletelocal
+
+		differentdurationforbilling
+			type: bool
+			hideonviewform: true
+				userlevels
+					5: false
+			hiddenfromlistview: true			
+			hidden: false
+				featuresoff
+					allowdifferentdurationforbilling: true
+
+		billingduration
+			type: int
+			inttype: timespan
+			timeaccuracy: 15
+			defaultvalue: 0
+			min: 0
+			hidden: false
+				featuresoff
+					allowdifferentdurationforbilling: true
+			hiddenfromlistview: true
+
+		hasprice
+			type: bool
+			hidden: false
+			hiddenfromlistview: true
+
+		price
+			type: decimal
+			min: 0
+			max 999999
+			hiddenfromlistview: true
+			
+		istraveltime
+			type: bool
+			hiddenfromlistview: true
+			tiptext: true
+			hidden: true
+				featureson
+					traveltime: false
+
+		details
+			programmedfield: true
+			hideonviewform: true
+			hiddenfromlistview: true
+				featureson
+					timetracking: false
+
+		countsasregularhours
+			type: bool
+			readonly: true
+			hiddenfromlistview: true
+			hidden: true
+				userlevels
+					5: false
+				featuresoff
+					dailyentries: true
+
+		clacontract
+			relationtype: one
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+			removeaction: deletelocal
+
+		profitcenter
+			relationtype: one
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+			removeaction: deletelocal
+
+		userprofitcenter
+			relationtype: one
+			hideonnarrowview: true
+			relation: profitcenter
+			hidden: true
+				userlevels
+					5: false
+			removeaction: deletelocal
+
+		userbusinessarea
+			relationtype: one
+			relation: businessarea
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+			searchfield: true
+			removeaction: deletelocal
+
+		userfunctionalarea
+			relationtype: one
+			relation: functionalarea
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+			searchfield: true
+			removeaction: deletelocal
+
+		projectmanager
+			relationtype: one
+			relation: user
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+			hideontarget: true
+			removeaction: deletelocal
+
+		internalworker
+			type: bool
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+		
+		approvedbyworker
+			type: bool
+			hideonnarrowview: true
+			hideoneditform: false
+				userlevels
+					1: true
+					2: true
+					3: true
+
+		approvedbymanager
+			type: bool
+			hideonnarrowview: true
+			hideoneditform: false
+				userlevels
+					1: true
+					2: true
+					3: true
+
+		note
+			max: 1000
+			searchfield: true
+			hiddenfromlistview: true
+
+		exported_ax
+			type: bool
+			hideonnarrowview: true
+			hideoneditform: true
+			hidden: true
+				userlevels
+					5: false
+
+		exportfailurecount_ax
+			type: int
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+
+		exporttimestamp_ax
+			type: datetime
+			datetimetype: datetime
+			hideonnarrowview: true
+			hideoneditform: true
+			hidden: true
+				userlevels
+					3: false
+					4: false
+					5: false
+
+		exportnote
+			type: string
+			hideonnarrowview: true
+			hideoneditform: true
+			searchfield: true
+			hiddenfromlistview: true
+			readonly: true
+			hidden: true
+				userlevels
+					3: false
+					4: false
+					5: false
+
+		exported_visma
+			type: bool
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+
+		exporttimestamp_visma
+			type: datetime
+			datetimetype: datetime
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+
+		parent
+			relation: timesheetentry
+			relationtype: one
+			hideinsert: true
+			hiddenfromlistview: true
+			removeaction: deletelocal
+			directediting: true
+
+		entryintegrationwidget
+			type: widget
+			hidden: false
+				userlevels
+					1: true
+					2: true
+					3: true
+					4: true
+					6: true
+
+				featuresoff
+					showintegrationevents: true
+
+	timesheetentrydetailpaytype
+		collection
+			listfilter: { disabled: { $ne: true } }
+			// Note that these values are loaded by timesheetentrypaytypewidget directly
+			orderby: name
+			ascending: true
+			audittrail: true
+
+		identifier
+			searchfield: true
+
+		identifier2
+
+		name
+			translated: false
+			searchfield: true
+			namefield: true
+
+		abbreviation
+			hideonnarrowview: true
+
+		icon
+			hideonnarrowview: true
+			
+		projectcategory
+			relationtype: one
+			displayhint: dropdown
+			hideonnarrowview: true
+			preventnavigation: true
+			hideontarget: true
+			hidden: true
+				featureson
+					usedirectprojectcategory: false
+			favourites: true
+
+		order
+			type: int
+			hidden: true
+				userlevels
+					5: false			
+			hiddenf
+
+		exporttoax
+			type: bool
+			hidden: true
+				userlevels
+					5: false			
+		
+		countsasregularhours
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+
+		invalidatesregularhours
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+			hiddenfromlistview: true
+
+		isbasepaytype
+			type: bool
+			hiddenfromlistview: true
+			hidden: true
+				userlevels
+					5: false
+				featuresoff
+					timetracking: true
+		
+		substractlunchbreak
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+			hiddenfromlistview: true
+
+		isovertime50
+			type: bool
+			hidden: true
+				userlevels
+					5: false			
+
+		isovertime100
+			type: bool
+			hidden: true
+				userlevels
+					5: false			
+
+		isovertime150
+			type: bool
+			hidden: true
+				userlevels
+					5: false			
+
+		isovertime200
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+
+		issocialpaytype
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+
+		istraveltime
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+
+		enabledclacontracts
+			relation: clacontract
+			relationtype: many
+			hidden: true
+				userlevels
+					5: false
+
+		paytypefactor
+			type: decimal
+			defaultvalue: 1
+			hiddenfromlistview: true
+
+		paytypefactor2
+			type: decimal
+			defaultvalue: 1
+			hiddenfromlistview: true
+
+		noduration
+			type: bool
+
+		hasprice
+			type: bool
+
+		priceonlyformanagers
+			type: bool
+			hiddenfromlistview: true
+
+		priceoptional
+			type: bool
+			hiddenfromlistview: true
+
+		mandatorynote
+			type: bool
+			hiddenfromlistview: true
+
+		totalsgroup
+			type: string
+			hiddenfromlistview: true
+
+		payrollexporttype
+			stringtype: dropdown
+			emptyoption: true
+			options
+				hours
+				amount
+			hiddenfromlistview: true
+
+		disabled
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+			hiddenfromlistview: true
+
+	dayentry
+		collection
+			navigation: false
+			hidetools: true
+			audittrail: true
+			preventlinktolist: false
+				userlevels
+					1: true
+					2: true
+			archive
+				featureson
+					archive: true
+			archiveagedayscreated: 180
+
+		user
+			relationtype: one
+			defaultvalue: currentuser
+			hidden: false
+				userlevels
+					1: true
+			required: true
+			searchfield: true
+			removeaction: deletelocal
+			readonly: false
+				userlevels
+					6: true
+
+		dayentrytype
+			relationtype: one
+			required: true
+			displayhint: dropdown
+			preventnavigation: true
+			audittrail: true
+			removeaction: deletelocal
+			favourites: true
+
+		date
+			type: datetime
+			defaultvaluecontroller: defaultvalues
+			defaultvalueaction: selecteddate
+			datetimetype: date
+			required: true
+
+		amount
+			type: int
+			required: true
+			defaultvalue: 1
+			max: 999
+			min: 1
+
+		starttime
+			type: datetime
+			datetimetype: time			
+			hiddenfromlistview: true
+			timeaccuracy: 15
+
+		endtime
+			type: datetime
+			datetimetype: time			
+			hiddenfromlistview: true
+			timeaccuracy: 15
+
+		project
+			relationtype: one
+			hideontarget: false
+			required: true
+			defaultvalueaction: trocurrentproject
+			defaultvaluecontroller: defaultvalues
+			hideinsert: true
+			hidetools: true
+			searchfield: true
+			searchfilterdelay: 500
+			removeaction: deletelocal
+
+		projectcategory
+			relationtype: one
+			displayhint: dropdown
+			removeaction: deletelocal
+			favourites: true
+			
+		timesheetentrypaytypewidget
+			type: widget
+			hidden: true
+				featureson
+					filterbasedonclacontract_dayentry: false
+
+		route
+			type: widget
+			hiddenfromlistview: true
+			action: routefieldwidget
+			controller: routefieldwidget
+
+		hasprice
+			type: bool
+			hidden: false
+			hiddenfromlistview: true
+
+		price
+			type: decimal
+			min: 0
+			max 999999
+			hiddenfromlistview: true
+
+		note
+			searchfield: true
+			namefield: true
+			hiddenfromlistview: true
+			max: 1000
+
+		clacontract
+			relationtype: one
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+			removeaction: deletelocal
+
+		internalworker
+			type: bool
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+
+		approvedbyworker
+			type: bool
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					4: false
+					5: false
+
+		approvedbymanager
+			type: bool
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					3: false
+					4: false
+					5: false
+					6: false
+			hideoneditform: false
+				userlevels
+					3: true
+
+		exported_ax
+			type: bool
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+
+		exportfailurecount_ax
+			type: int
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+
+		exporttimestamp_ax
+			type: datetime
+			datetimetype: datetime
+			hideonnarrowview: true
+			hideoneditform: true
+			hidden: true
+				userlevels
+					3: false
+					4: false
+					5: false
+
+		exportnote
+			type: string
+			hideonnarrowview: true
+			hideoneditform: true
+			searchfield: true
+			hiddenfromlistview: true
+			readonly: true
+			hidden: true
+				userlevels
+					3: false
+					4: false
+					5: false
+
+		exported_visma
+			type: bool
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+
+		exportfailurecount_visma
+			type: int
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+
+		exporttimestamp_visma:
+			type: datetime
+			datetimetype: datetime
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+
+		profitcenter
+			relationtype: one
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+			removeaction: deletelocal
+
+		userprofitcenter
+			relationtype: one
+			hideonnarrowview: true
+			relation: profitcenter
+			hidden: true
+				userlevels
+					5: false
+			removeaction: deletelocal
+
+		details
+			programmedfield: true
+			hideonviewform: true
+			hiddenfromlistview: true
+
+		projectmanager
+			relationtype: one
+			relation: user
+			hideonnarrowview: true
+			hidden: true
+			hideontarget: true
+			preventnavigation: false
+				userlevels
+					1: true
+					2: true
+			removeaction: deletelocal
+
+		entryintegrationwidget
+			type: widget
+			hidden: false
+				userlevels
+					1: true
+					2: true
+					3: true
+					4: true
+					6: true
+
+				featuresoff
+					showintegrationevents: true
+
+		userbusinessarea
+			relationtype: one
+			relation: businessarea
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+			searchfield: true
+			removeaction: deletelocal
+
+		userfunctionalarea
+			relationtype: one
+			relation: functionalarea
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+			searchfield: true
+			removeaction: deletelocal
+
+	dayentrytype
+		collection
+			// Note that these values are loaded by timesheetentrypaytypewidget directly
+			orderby: name
+			ascending: false
+			listfilter: { disabled: { $ne: true } }
+
+		identifier
+			searchfield: true
+
+		name
+			namefield: true
+			searchfield: true
+
+		projectcategory
+			relationtype: one
+			hidden: true
+				userlevels
+					5: false
+
+		unit
+
+		abbreviation
+			hideonnarrowview: true
+
+		icon
+			hideonnarrowview: true
+
+		hasroute
+			type: bool
+
+		exporttoerp
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+
+		enabledclacontracts
+			relation: clacontract
+			relationtype: many
+			hidden: true
+				userlevels
+					5: false
+
+		issocialpaytype
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+
+		disabled
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+
+		hasprice
+			type: bool
+
+		priceonlyformanagers
+			type: bool
+
+		priceoptional
+			type: bool
+
+		hastime
+			type: bool
+
+		noamountselection
+			type: bool
+
+		mandatorynote
+			type: bool
+			hiddenfromlistview: true
+
+		totalsgroup
+			type: string
+			hiddenfromlistview: true
+
+		payrollexporttype
+			stringtype: dropdown
+			emptyoption: true
+			options
+				hours
+				amount
+
+	// Only for allocating asset or user resources
+	allocationentry
+		collection
+			audittrail: true
+			archive
+				featureson
+					archive: true
+			archivefilter: { status: "Done" }
+			archiveagedaysmodified: 180
+
+		user
+			relationtype: one
+			removeaction: deletelocal
+			hidden: true
+				userlevels
+					5: false
+					3: false				
+
+		initials
+			hidden: true
+				userlevels
+					5: false
+					3: false
+
+		asset
+			relationtype: one
+			searchfield: true
+			hidden: true
+				userlevels
+					5: false
+					3: false				
+				featuresoff
+					assets: true
+			removeaction: deletelocal
+
+		status
+			defaultvalue: In progress
+			hidden: true
+				userlevels
+					5: false
+					3: false
+			stringtype: dropdown
+			options
+				Not started
+				In progress
+				Done
+
+		project
+			relationtype: one
+			hideontarget: true
+			searchfield: true
+			searchfilterdelay: 500
+			removeaction: deletelocal
+			hidden: true
+				userlevels
+					5: false
+					3: false
+		
+		starttimestamp
+			type: datetime
+			datetimetype: datetime
+			timeaccuracy: 15
+			indexed: true
+			hidden: false
+				featuresoff
+					allocationshavetimestamps: true
+
+		
+		endtimestamp
+			type: datetime
+			datetimetype: datetime
+			hideonnarrowview: true
+			timeaccuracy: 15
+			indexed: true
+			hidden: false
+				featuresoff
+					allocationshavetimestamps: true
+
+		date
+			type: datetime
+			datetimetype: date
+			readonly: true
+			hideoneditform: true
+
+		duration
+			type: int
+			inttype: timespan
+			timeaccuracy: 15
+			min: 1
+			readonly: true
+			hideoneditform: true
+
+		note
+			stringtype: memo
+			max: 1000
+			hiddenfromlistview: true
+
+		modified
+			type: datetime
+			datetimetype: datetime
+			hiddenfromlistview: true
+			hidden: true
+
+		created
+			type: datetime
+			datetimetype: datetime
+			hiddenfromlistview: true
+			hidden: true
+
+		userprofitcenter
+			relation: profitcenter
+			hidden: true
+
+		projectprofitcenter
+			relation: profitcenter
+			hidden: true
+
+		projectcustomer
+			relation: customer
+			hidden: true
+
+		projectnote
+			readonly: true
+			hidden: true
+
+		entryintegrationwidget
+			type: widget
+			hidden: false
+				userlevels
+					1: true
+					2: true
+					3: true
+					4: true
+					6: true
+
+				featuresoff
+					showintegrationevents: true
+
+	articleentry
+		collection
+			navigation: false
+			audittrail: true
+			hidetools: true
+			preventlinktolist: false
+				userlevels
+					1: true
+					2: true
+			archive
+				featureson
+					archive: true
+			archiveagedayscreated: 180
+
+		user
+			relationtype: one
+			required: true
+			defaultvalue: currentuser
+			searchfield: true
+			hidden: false
+				userlevels
+					1: true
+			removeaction: deletelocal
+			readonly: false
+				userlevels
+					1: true
+
+		article
+			relationtype: one
+			required: true
+			preventnavigation: true
+			searchfield: true
+			hideinsert: true
+			searchfilterdelay: 700
+			removeaction: deletelocal
+
+		timestamp
+			hidden: true
+				featureson
+					articleshavetimestamp: false
+			type: datetime
+			datetimetype: datetime
+			defaultvaluecontroller: defaultvalues
+			defaultvalueaction: selectedstart
+			hideonnarrowview: true
+			required: true
+			timeaccuracy: 15
+
+		amount
+			type: decimal
+			max: 999999
+			min: 0
+			required: true
+			defaultvalue: 1
+
+		project
+			relationtype: one
+			required: true
+			hideontarget: false
+			defaultvalueaction: trocurrentproject
+			defaultvaluecontroller: defaultvalues
+			hideinsert: true
+			hidetools: true
+			searchfield: true
+			searchfilterdelay: 500
+			removeaction: deletelocal
+
+		note
+			max: 1000
+			hideonnarrowview: true
+			hiddenfromlistview: true
+
+		date
+			type: datetime
+			datetimetype: date
+			defaultvaluecontroller: defaultvalues 
+			defaultvalueaction: selecteddate
+			hidden: true
+				featuresoff
+					articleshavetimestamp: false
+
+		approvedbyworker
+			type: bool
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					4: false
+					5: false
+
+		approvedbymanager
+			type: bool
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					3: false
+					4: false
+					5: false
+					6: false
+			hideoneditform: false
+				userlevels
+					3: true
+
+		exported_ax
+			hidden: true
+				userlevels
+					5: false
+			type: bool
+			hideonnarrowview: true
+
+		exporttimestamp_ax
+			type: datetime
+			datetimetype: datetime
+			hideonnarrowview: true
+			hideoneditform: true
+			hidden: true
+				userlevels
+					3: false
+					4: false
+					5: false
+
+		exportnote
+			type: string
+			hideonnarrowview: true
+			hideoneditform: true
+			searchfield: true
+			hiddenfromlistview: true
+			readonly: true
+			hidden: true
+				userlevels
+					3: false
+					4: false
+					5: false
+
+		exportfailurecount_ax
+			type: int
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+
+		profitcenter
+			relationtype: one
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+			removeaction: deletelocal
+
+		userprofitcenter
+			relationtype: one
+			hideonnarrowview: true
+			relation: profitcenter
+			hidden: true
+				userlevels
+					5: false
+			removeaction: deletelocal
+
+		clacontract
+			relationtype: one
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+
+		details
+			programmedfield: true
+			hideonviewform: true
+			hiddenfromlistview: true
+
+		projectmanager
+			relationtype: one
+			relation: user
+			hideonnarrowview: true
+			hidden: true
+			hideontarget: true
+			removeaction: deletelocal
+
+		userbusinessarea
+			relationtype: one
+			relation: businessarea
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+			searchfield: true
+			removeaction: deletelocal
+
+		userfunctionalarea
+			relationtype: one
+			relation: functionalarea
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+			searchfield: true
+			removeaction: deletelocal
+
+		entryintegrationwidget
+			type: widget
+			hidden: false
+				userlevels
+					1: true
+					2: true
+					3: true
+					4: true
+					6: true
+
+				featuresoff
+					showintegrationevents: true
+
+
+	articlegroup
+		identifier
+			searchfield: true
+			required: true
+
+		name
+			searchfield: true
+			namefiled: true
+			required: true
+
+		created
+			type: datetime
+			datetimetype: datetime
+			hiddenfromlistview: true
+
+		modified
+			type: datetime
+			datetimetype: datetime
+			hiddenfromlistview: true
+
+		disabled
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+
+		entryintegrationwidget
+			type: widget
+			hidden: false
+				userlevels
+					1: true
+					2: true
+					3: true
+					4: true
+					6: true
+
+				featuresoff
+					showintegrationevents: true
+
+	article
+		collection
+			listfilter: { disabled: { $ne: true } }
+
+		identifier
+			max: 100
+			searchfield: true
+			required: true
+
+		name
+			max: 100
+			namefield: true
+			searchfield: true
+			required: true
+
+		articlegroup
+			relationtype: one
+			displayhint: dropdown
+
+		unit
+			max: 30
+
+		disabled
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+
+		created
+			type: datetime
+			datetimetype: datetime
+			hiddenfromlistview: true
+
+		modified
+			type: datetime
+			datetimetype: datetime
+			hiddenfromlistview: true
+
+		entryintegrationwidget
+			type: widget
+			hidden: false
+				userlevels
+					1: true
+					2: true
+					3: true
+					4: true
+					6: true
+
+				featuresoff
+					showintegrationevents: true
+
+	payrollperiod
+		collection
+			navigation: false
+				userlevels
+					4: true
+					6: true
+		name
+			required: true
+			namefield: true
+
+		startdate
+			type: datetime
+			datetimetype: date
+			required: true
+
+		enddate
+			type: datetime
+			datetimetype: date
+			isenddate: true
+			required: true
+
+		paydate
+			type: datetime
+			datetimetype: date
+			required: false
+
+		clacontract
+			relationtype: one
+			required: true
+			displayhint: dropdown
+
+		locked
+			type: bool
+
+		automaticallyexported
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+		
+		automaticallylocked
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+
+
+	clacontract
+		identifier
+			searchfield: true
+
+		name
+			namefield: true
+			searchfield: true
+
+		created
+			type: datetime
+			datetimetype: datetime
+			hiddenfromlistview: true
+
+		disabled
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+
+	paymentgroup
+		identifier
+			searchfield: true
+
+		name
+			namefield: true
+			searchfield: true
+
+		disabled
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+
+		created
+			type: datetime
+			datetimetype: datetime
+			hiddenfromlistview: true
+
+	projectcategory
+		collection
+			listfilter: { disabled: { $ne: true } }
+			orderby: name
+			ascending: true
+
+		identifier
+			required: true
+			searchfield: true
+			namefield: true
+
+		identifier2
+
+		name
+			required: true
+			searchfield: true
+			namefield: true
+	
+		type
+
+		projectcategorygroup
+			searchfield: true
+
+		description
+			stringtype: memo
+			hiddenfromlistview: true
+
+		isovertime50
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+			hideonnarrowview: true		
+
+		isovertime100
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+			hideonnarrowview: true	
+
+		isovertime150
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+			hideonnarrowview: true
+
+		isovertime200
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+			hideonnarrowview: true
+
+		disabled
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+			hiddenfromlistview: true
+
+		modified
+			type: datetime
+			datetimetype: datetime
+			hiddenfromlistview: true
+
+		created
+			type: datetime
+			datetimetype: datetime
+			hiddenfromlistview: true
+
+		entryintegrationwidget
+			type: widget
+			hidden: false
+				userlevels
+					1: true
+					2: true
+					3: true
+					4: true
+					6: true
+
+				featuresoff
+					showintegrationevents: true
+
+	profitcenter
+		identifier
+			searchfield: true
+			max: 50
+
+		categoryid
+			type: string
+			searchfield: true
+
+		name
+			namefield: true
+			max: 100
+			searchfield: true
+
+		modified
+			type: datetime
+			datetimetype: datetime
+			hiddenfromlistview: true
+
+		disabled
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+
+		created
+			type: datetime
+			datetimetype: datetime
+			hiddenfromlistview: true
+
+		entryintegrationwidget
+			type: widget
+			hidden: false
+				userlevels
+					1: true
+					2: true
+					3: true
+					4: true
+					6: true
+
+				featuresoff
+					showintegrationevents: true
+
+	businessarea
+		identifier
+			searchfield: true
+			max: 50
+
+		name
+			namefield: true
+			max: 100
+			searchfield: true
+
+		modified
+			type: datetime
+			datetimetype: datetime
+			hiddenfromlistview: true
+
+		disabled
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+
+		created
+			type: datetime
+			datetimetype: datetime
+			hiddenfromlistview: true
+
+		entryintegrationwidget
+			type: widget
+			hidden: false
+				userlevels
+					1: true
+					2: true
+					3: true
+					4: true
+					6: true
+
+				featuresoff
+					showintegrationevents: true
+
+	functionalarea
+		identifier
+			searchfield: true
+			max: 50
+
+		name
+			namefield: true
+			max: 100
+			searchfield: true
+
+		modified
+			type: datetime
+			datetimetype: datetime
+			hiddenfromlistview: true
+
+		disabled
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+
+		created
+			type: datetime
+			datetimetype: datetime
+			hiddenfromlistview: true
+
+		entryintegrationwidget
+			type: widget
+			hidden: false
+				userlevels
+					1: true
+					2: true
+					3: true
+					4: true
+					6: true
+
+				featuresoff
+					showintegrationevents: true
+
+	absenceentry
+		collection
+			navigation: false
+			audittrail: true
+			hidetools: true
+			preventlinktolist: false
+				userlevels
+					1: true
+					2: true
+			archive
+				featureson
+					archive: true
+			archiveagedayscreated: 180
+
+		user
+			relationtype: one
+			defaultvalue: currentuser
+			hidden: false
+				userlevels
+					1: true
+			searchfield: true
+			removeaction: deletelocal
+			readonly: false
+				userlevels
+					6: true
+
+		absenceentrytype
+			relationtype: one
+			displayhint: dropdown
+			required: true
+			searchfield: true
+			audittrail: true
+			removeaction: deletelocal
+			preventnavigation: false
+				userlevels
+					1: true
+					2: true
+			favourites: true
+
+		timesheetentrypaytypewidget
+			type: widget
+			hidden: true
+				featureson
+					filterbasedonclacontract_absenceentry: false
+
+		starttimestamp
+			type: datetime
+			defaultvaluecontroller: defaultvalues
+			defaultvalueaction: selectedstart
+			datetimetype: datetime
+			required: true
+			timeaccuracy: 15
+			hidden: true
+				featureson
+					timetracking: false
+	
+		// if not set, the entry is considered running
+		endtimestamp
+			type: datetime
+			datetimetype: datetime
+			required: true
+			timeaccuracy: 15
+			hideonnarrowview: true
+			defaultvaluecontroller: defaultvalues
+			defaultvalueaction: selectedend			
+			hideonviewform: true
+			hidden: true
+				featureson
+					timetracking: false
+
+		date
+			type: datetime
+			defaultvaluecontroller: defaultvalues
+			defaultvalueaction: selecteddate
+			datetimetype: date
+			required: true
+			hidden: true
+				featureson
+					dailyentries: false
+
+		duration
+			type: int
+			inttype: timespan
+			timeaccuracy: 15
+			min: 1
+			hideoneditform: false
+				featuresoff
+					dailyentries: true
+			defaultvaluecontroller: defaultvalues
+			defaultvalueaction: duration
+			defaultdurationminutes: 60
+
+		clacontract
+			relationtype: one
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+
+		internalworker
+			type: bool
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+
+		userprofitcenter
+			relationtype: one
+			hideonnarrowview: true
+			relation: profitcenter
+			hidden: true
+				userlevels
+					5: false
+			removeaction: deletelocal
+		
+		approvedbyworker
+			type: bool
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					4: false
+					5: false
+					6: false
+
+		approvedbymanager
+			type: bool
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					3: false
+					4: false
+					5: false
+					6: false
+			hideoneditform: false
+				userlevels
+					3: true
+
+		note
+			type: string
+			stringtype: memo
+			max: 1000
+			searchfield: true
+			hiddenfromlistview: true
+
+		exported_visma
+			type: bool
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+
+		exporttimestamp_visma:
+			type: datetime
+			datetimetype: datetime
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+
+		details
+			programmedfield: true
+			hideonviewform: true
+			hiddenfromlistview: true
+
+		entryintegrationwidget
+			type: widget
+			hidden: false
+				userlevels
+					1: true
+					2: true
+					3: true
+					4: true
+					6: true
+
+				featuresoff
+					showintegrationevents: true
+
+		userbusinessarea
+			relationtype: one
+			relation: businessarea
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+			searchfield: true
+			removeaction: deletelocal
+
+		userfunctionalarea
+			relationtype: one
+			relation: functionalarea
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+			searchfield: true
+			removeaction: deletelocal
+
+	absenceentrytype
+		// Note that these values are loaded by timesheetentrypaytypewidget directly
+		collection
+			listfilter: { disabled: { $ne: true } }
+			orderby: name
+			ascending: false
+			preventlinktolist: false
+				userlevels
+					1: true
+					2: true
+
+		identifier
+			searchfield: true
+
+		name
+			namefield: true
+			searchfield: true
+
+		enabledclacontracts
+			relation: clacontract
+			relationtype: many
+			hidden: true
+				userlevels
+					5: false
+
+		projectcategory
+			relationtype: one
+			hidden: true
+				userlevels
+					5: false
+
+		countsasregularhours
+			type: bool
+			hidden: true
+				userlevels
+					5: false			
+
+		exporttoerp
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+
+		payrollexporttype
+			stringtype: dropdown
+			emptyoption: true
+			options
+				hours
+				amount
+
+		disabled
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+			hiddenfromlistview: true
+
+	assetentry
+		collection
+			audittrail: true
+			hidetools: true
+			preventlinktolist: false
+				userlevels
+					1: true
+					2: true
+			hidden : true
+				featureson
+					assets: false 				
+
+		asset
+			relationtype: one
+			required: true
+			searchfield: true
+			defaultresultscontroller: defaultvalues
+			defaultresultsblock: defaultassets
+			removeaction: deletelocal
+		
+		project
+			defaultvalueaction: trocurrentproject
+			defaultvaluecontroller: defaultvalues
+			relationtype: one
+			required: true
+			hideontarget: false
+			hideinsert: true
+			hidetools: true
+			searchfield: true
+			searchfilterdelay: 500
+			removeaction: deletelocal
+
+		starttimestamp
+			type: datetime
+			defaultvaluecontroller: defaultvalues
+			defaultvalueaction: selectedstart
+			datetimetype: datetime
+			required: true
+			timeaccuracy: 15
+			hidden: true
+				featureson
+					timetracking: false
+	
+		endtimestamp
+			type: datetime
+			datetimetype: datetime
+			required: true
+			defaultvaluecontroller: defaultvalues
+			defaultvalueaction: selectedend
+			timeaccuracy: 15
+			hideonnarrowview: true
+			hideonviewform: true
+			hidden: true
+				featureson
+					timetracking: false
+
+		date
+			type: datetime
+			defaultvaluecontroller: defaultvalues
+			defaultvalueaction: selecteddate
+			datetimetype: date
+			required: true
+			hidden: true
+				featureson
+					dailyentries: false
+
+		duration
+			type: int
+			inttype: timespan
+			timeaccuracy: 15
+			min: 1
+			hideoneditform: false
+				featuresoff
+					dailyentries: true
+
+		approvedbyworker
+			type: bool
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					4: false
+					5: false
+					6: false
+
+		approvedbymanager
+			type: bool
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					3: false
+					4: false
+					5: false
+					6: false
+			hideoneditform: false
+				userlevels
+					3: true
+
+		note
+			type: string
+			max: 1000
+			searchfield: true
+			hiddenfromlistview: true
+
+		profitcenter
+			relationtype: one
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+			searchfield: true
+			removeaction: deletelocal
+
+		assetprofitcenter
+			relationtype: one
+			relation: profitcenter
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+			searchfield: true
+			removeaction: deletelocal
+
+		assetbusinessarea
+			relationtype: one
+			relation: businessarea
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+			searchfield: true
+			removeaction: deletelocal
+
+		assetfunctionalarea
+			relationtype: one
+			relation: functionalarea
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+			searchfield: true
+			removeaction: deletelocal
+
+		exported_ax
+			type: bool
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+
+		exporttimestamp_ax
+			type: datetime
+			datetimetype: datetime
+			hideonnarrowview: true
+			hideoneditform: true
+			hidden: true
+				userlevels
+					3: false
+					4: false
+					5: false
+
+		exportnote
+			type: string
+			hideonnarrowview: true
+			hideoneditform: true
+			searchfield: true
+			hiddenfromlistview: true
+			readonly: true
+			hidden: true
+				userlevels
+					3: false
+					4: false
+					5: false
+
+		exportfailurecount_ax
+			type: int
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					5: false
+
+		details
+			programmedfield: true
+			hideonviewform: true
+			hiddenfromlistview: true
+
+		projectmanager
+			relationtype: one
+			relation: user
+			hideonnarrowview: true
+			hidden: true
+			searchfield: true
+			hideontarget: true
+			removeaction: deletelocal
+
+		assetentrywidget
+			type: widget
+
+		entryintegrationwidget
+			type: widget
+			hidden: false
+				userlevels
+					1: true
+					2: true
+					3: true
+					4: true
+					6: true
+
+				featuresoff
+					showintegrationevents: true
+
+		creator
+			hidden: true
+				userlevels
+					3: false
+					5: false
+
+	entryupdate_erp
+		collection
+			hidetools: true
+			hidden : true
+				featureson
+					useerpupdatetable: false
+				userlevels
+					5 : false
+
+		objectidstring
+			unique: true
+			uniqueaction: update
+
+		collectionname
+
+	entryupdate_erp_error
+		collection
+			hidetools: true
+			hidden : true
+				featureson
+					useerpupdatetable: false
+				userlevels
+					5 : false
+
+		objectidstring
+
+		collectionname
+
+		infotext
+
+		handlingtime
+			type: datetime
+			datetimetype: datetime
+
+	payrollexport
+		collection
+			hidden: false
+				featuresoff
+					usebackgroundpayrollexport: true
+				userlevels
+					1: true
+					2: true
+					3: true
+					7: true
+			disablecopy: true
+
+		target
+			stringtype: dropdown
+			options
+				CSV
+				CSV Automatic
+				Excel
+
+		payrollperiod
+			relationtype: one
+
+		user
+			relationtype: one
+		
+		created
+			hidden: false
+
+		status
+			stringtype: dropdown
+			options
+				WaitingToStart
+				Starting
+				ProcessingData
+				GeneratingCSV
+				GeneratingAudit
+				Finalizing
+				Completed
+				CompletedAutomatically
+				Failed
+				CompletedWithErrors
+
+		onlyentriesnotacceptedbymanager
+			type: bool
+			hiddenfromlistview: true
+
+		onlyentriesnotacceptedbyworker
+			type: bool
+			hiddenfromlistview: true
+
+		onlyexportedentries
+			type: bool
+			hiddenfromlistview: true
+
+	user
+		collection
+			hidden: true
+				userlevels
+					5: false
+
+			listfilter: { disabled: { $ne: true } }
+
+		identifier
+			searchfield: true
+			readonly: true
+				userlevels
+					5: false
+
+		userformwidget
+			type: widget
+
+		firstname
+			readonly: true
+				userlevels
+					5: false
+		middlename
+			readonly: true
+				userlevels
+					5: false
+		lastname
+			readonly: true
+				userlevels
+					5: false
+
+		email
+			searchfield: true
+			readonly: true
+				userlevels
+					5: false
+										
+		organizationcode
+			hideonnarrowview: true
+			readonly: true
+				userlevels
+					5: false
+
+		countrycode
+			// reserved for future use
+			hidden: true
+			hideonnarrowview: true
+
+		employmentstart
+			type: datetime
+			datetimetype: date
+			hiddenfromlistview: true
+			readonly: true
+				userlevels
+					5: false
+
+		employmentend
+			type: datetime
+			datetimetype: date
+			isenddate: true
+			hiddenfromlistview: true
+			readonly: true
+				userlevels
+					5: false
+
+		probationend
+			type: datetime
+			datetimetype: date
+			isenddate: true
+			hiddenfromlistview: true
+			readonly: true
+				userlevels
+					5: false
+
+		profitcenter
+			relationtype: one
+			hiddenfromlistview: true
+			readonly: true
+				userlevels
+					5: false
+
+		businessarea
+			relationtype: one
+			hideonnarrowview: true
+			hiddenfromlistview: true
+			readonly: true
+				userlevels
+					5: false
+
+		functionalarea
+			relationtype: one
+			hideonnarrowview: true
+			hiddenfromlistview: true
+			readonly: true
+				userlevels
+					5: false
+
+		paymentgroup
+			relationtype: one
+			hiddenfromlistview: true
+			readonly: true
+				userlevels
+					5: false
+
+		office
+			hiddenfromlistview: true
+			readonly: true
+				userlevels
+					5: false
+
+		title
+			hiddenfromlistview: true
+			readonly: true
+				userlevels
+					5: false
+
+		taxregistrationid
+			hiddenfromlistview: true
+			readonly: true
+				userlevels
+					5: false
+
+		supervisor
+			relation: user
+			hideonnarrowview: true
+			readonly: true
+				userlevels
+					5: false
+
+		weeklyworkinghours
+			type: string
+			hiddenfromlistview: true
+			readonly: true
+				userlevels
+					5: false
+
+		clacontract
+			relationtype: one
+			hideonnarrowview: true			
+			readonly: true
+				userlevels
+					5: false
+		
+		personnelgroup
+			hiddenfromlistview: true
+			readonly: true
+				userlevels
+					5: false
+
+		currentproject
+			relation: project
+			hiddenfromlistview: true
+			hideontarget: true
+			hidden: true
+
+		currenttimesheet
+			relation: timesheetentry
+			hiddenfromlistview: true
+			hideontarget: true
+			hidden: true
+
+		internalworker
+			type: bool
+			hideonnarrowview: true
+			hidden: true
+				userlevels
+					3: false
+					4: false
+					5: false
+					6: false
+			readonly: true
+				userlevels
+					5: false
+
+		entrieslastapproved
+			type: datetime
+			hidden: true
+				userlevels
+					5: false
+			hiddenfromlistview: true
+			datetimetype: datetime
+
+		exported_silmu
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+			hiddenfromlistview: true
+
+		exporttimestamp_silmu
+			type: datetime
+			datetimetype: datetime
+			hidden: true
+				userlevels
+					5: false
+			hiddenfromlistview: true
+
+		phonenumber
+			max: 100
+			hiddenfromlistview: true
+			readonly: true
+				userlevels
+					5: false
+
+		modified
+			type: datetime
+			datetimetype: datetime
+			hiddenfromlistview: true
+
+		created
+			type: datetime
+			datetimetype: datetime
+			hiddenfromlistview: true
+
+		disableintegrationchangesfordocument
+			type: bool
+			hidden: true
+				userlevels
+					5: false
+					4: false
+			hideonnarrowview: true
+
+		level
+			disableintegrationchanges: true
+			max: 7
+				userlevels
+					4: 3
+			min: 1
+				userlevels
+					4: 1
+
+		language
+			hidden: true
+			userlevels
+				5: false
+
+		picture
+			type: file
+			readonly: true
+				userlevels
+					5: false
+			hidden: true
+				featureson
+					useprofilepictures: false			
+
+		entryintegrationwidget
+			type: widget
+			hidden: false
+				userlevels
+					1: true
+					2: true
+					3: true
+					4: true
+					6: true
+
+				featuresoff
+					showintegrationevents: true
+
+		disabled
+			type: bool
+			hidden: true
+			userlevels
+				5: false
+
+	location
+		name
+			max: 1000
+			required: true
+			namefield: true
+			searchfield: true
+
+		coordinates
+			max: 100
+			hidden: true
+
+	favouriteusers
+		collection
+			disablecopy: true
+
+		name
+			max: 200
+			required: true
+			namefield: true
+			searchfield: true
+
+		user
+			relationtype: many
+			hidenew: true
+
+	monitorinfo
+		info
+
+	integrationevent
+		collection
+			hidden: false
+				featuresoff
+					showintegrationevents: true
+
+				userlevels
+					5: false
+					7: false
+			archive
+				featureson
+					archive: true
+			archiveagedayscreated: 63
+
+
+			archive
+				featureson
+					archive: true
+			archiveagedayscreated: 50
+
+			disablecopy: true
+
+			navigation: false
+				userlevels
+					5: true
+					7: true
+				featuresoff
+					showintegrationevents: false
+
+		objectid
+			hiddenfromlistview: true
+
+		collectionname
+			hiddenfromlistview: true
+
+		status
+
+		direction
+
+		messagetype
+
+		exported
+			type: bool
+
+		failed
+			type: bool
+
+		handledtime
+			type: datetime
+
+		project
+			relationtype: one
+			searchfield: true
+
+		user
+			relationtype: one
+			searchfield: true
+
+
+		userprofitcenter
+			hidden: true
+				userlevels
+					5: false
+
+		profitcenter
+			hidden: true
+				userlevels
+					5: false
+
+		handledcount
+			type: int
+			hiddenfromlistview: true
+
+		firsthandledtime
+			type: datetime
+			hiddenfromlistview: true
+
+		integrationeventwidget
+			type: widget
+		

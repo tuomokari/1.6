@@ -1,0 +1,13 @@
+﻿capacityutilizationwidget
+	en-US
+		capacityutilization: My capacityutilizationwidget widget
+		users: Workers
+		daymonthformat: MM/DD
+		showpast: Past entries
+		showfuture: Resourcing
+	fi
+		title: Oma capacityutilizationwidget widgetti
+		users: Työntekijät
+		daymonthformat: DD.MM.
+		showpast: Tehdyt kirjaukset
+		showfuture: Resursointi

@@ -1,0 +1,127 @@
+﻿.__searchfilter-wrapper {
+
+    label { // disabled focus on label click
+        pointer-events: none;
+    }
+
+    &.__single {
+        .__fieldcontrol {
+            margin-top: 0;
+        }
+    }
+	&[resolved='true'] .__control:not([data-readonly='true']) {
+		label {
+			&:after {
+				content: @fa-var-check-circle;
+				font-family: FontAwesome;
+				color: @color-ok;
+				padding-right: @basemeasure;
+				.__bounce();
+			}
+		}
+	}
+}
+
+.__searchfilter-resultwrapper {
+    /*position: relative;*/
+    position: absolute;
+}
+
+.__dialog {
+    .__searchfilter-resultwrapper:not(:empty) {
+        max-height: 50vh;
+    }
+}
+
+.__searchfilter_filterfield {
+    background: @color-field-background;
+    background: url('/images/core/arrowdown-narrow.svg') rgba(255, 255, 255, 0.85);
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: contain;
+
+    &.__active {
+        border-bottom-left-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+        background-image: none;
+    }
+
+    &:focus {
+        .field-focus();
+        background-image: none;
+    }
+}
+
+.__panel.__searchfilterresult {
+    margin-top: 0;
+    border-radius: 0;
+    border-bottom-left-radius: @border-radius;
+    border-bottom-right-radius: @border-radius;
+    position: absolute;
+    z-index: 9000;
+    max-width: 100vw;
+    width: auto;
+    left: @form-label-width;
+    .desktop({
+        max-height: calc(~"100vh - "@form-input-targetheight + @basemeasure + @menu-height);
+    });
+     .smartphone({
+         max-height: calc(~"100vh - "@form-input-targetheight + @basemeasure);
+    });
+    overflow: auto;
+    
+    &.__searchfilter-empty, &.__searchfilter-noresults {
+        font-style: italic;
+    }
+    box-sizing: border-box;
+    padding: 0;
+    background: #fff;
+    border: 1px solid @color-border-field;
+    border-top: 0;
+
+    &:hover {
+        .__searchfilter_resultitem {
+            background: transparent;
+        }
+    }
+
+    tr {
+        background: transparent;
+    }
+
+    th, td, .__searchfilter-result-display {
+        font-size: 14px;
+        white-space: nowrap;
+        padding: 2px 10px;
+        text-align: left;
+    }
+
+    th {
+        font-weight: 700;
+    }
+
+    .__searchfilter-result-display {
+        padding: @basemeasure;
+    }
+}
+
+.__resolved {
+    color: @color-ok;
+}
+
+.__panel.__searchfilterresult tr.__searchfilter_resultitem.__activerow, .__panel.__searchfilterresult tr.__searchfilter_resultitem:hover {
+    background: @color-table-highlight !important; //todo: get rid of important clause
+    cursor: pointer;
+    color: @color-text-table-highlight;
+}
+
+// the following is bound to break in case the structure of the searchfilter has been altered
+.__searchfilter-wrapper.__no-label + input + .__searchfilter-resultwrapper > .__panel  {
+    left: 0;
+}
+
+@media only screen and (max-width: @screen-smartphone) {
+    .__searchfilter-resultwrapper .__panel  {
+        left: 0;
+    }
+}

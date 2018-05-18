@@ -1,0 +1,67 @@
+﻿[controller(tro)
+	
+	[using(form)]
+	[using(table)]
+	[using(layout)]
+	[using(text)]
+	[using(navigation)]
+	[using(defaultaction)]
+	[using(menubar)]
+
+	[manage()
+		[html
+			[head(title: [$pagetitle_manage])
+				[defaultviewhead]
+			]
+			
+			[body
+				[application
+					[managebody]
+				]
+			]
+		]
+	]
+
+	[private]
+	[managebody
+		[panel(
+			heading: [$collections],
+			titlepanel: true)
+			[actionbutton(
+				label: $schema_project,
+				action: "project",
+				controllername: "tro",
+				extraparams: "actiontype=listview")]
+
+			[actionbutton(
+				label: $schema_user,
+				action: "user",
+				controllername: "tro",
+				extraparams: "actiontype=listview")]
+
+			[if (config.application.features.assets)
+				[actionbutton(
+					label: $schema_asset,
+					action: "asset",
+					controllername: "tro",
+					extraparams: "actiontype=listview")]
+			]
+
+			[actionbutton(
+				label: $schema_article,
+				action: "article",
+				controllername: "tro",
+				extraparams: "actiontype=listview")]
+
+			[if (!config.application.resourcing)
+				[actionbutton(
+					label: $schema_allocationentry,
+					action: "allocationentry",
+					controllername: "tro",
+					extraparams: "actiontype=listview")]
+			]
+
+			[troadditions.manageactions]
+		]
+	]
+]

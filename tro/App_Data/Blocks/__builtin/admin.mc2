@@ -1,0 +1,111 @@
+﻿[controller(admin)
+
+	[using(dataform)]
+	[using(form)]
+	[using(table)]
+	[using(navigation)]
+	[using(layout)]
+	[using(schemautils)]
+	[using(text)]
+	[using(menubar)]
+
+	[adminactions()
+		[html
+			[head(title: [$pagetitle_home])
+				[defaultaction.defaultviewhead]
+			]
+			[body
+				[application
+					[adminbody]
+				]
+			]
+		]
+	]
+
+	[adminbody		
+		[application
+			[tabs(
+				class: "resourcingtooltabs",
+				opaque: true,
+				margin: "none",
+				alwayshorizontal: true)
+				[tab(
+					label: $refreshdata,
+					class: "refreshdatata",
+					hidetitle: true,
+					full: false)						
+					[panel
+						[refreshdocumentwidget.refreshdocumentwidget]
+					]
+				]		
+				[tab(
+					label: $querytester,
+					class: "querytester",
+					hidetitle: true,
+					full: false)						
+					[panel
+						[querytesterwidget.querytesterwidget]
+					]
+				]		
+				[tab(
+					label: $runtimeinfo,
+					class: "runtimeinfo",
+					hidetitle: true,
+					full: false)						
+					[panel
+						[runtime.info]
+					]
+				]		
+
+				[tab(
+					label: $timedtasks,
+					class: "timedtasks",
+					hidetitle: true,
+					full: false)						
+					[panel
+						[runtime.timedtasks]
+					]
+				]		
+			]	
+		]	
+	]
+
+	[restoredatabase
+		[html
+			[body
+				[application
+					<h1>Database restore operation completed. Success not verified</h1>
+				]
+			]
+		]
+	]
+
+	[setnowfortesting
+		[html
+			[body
+				[application
+					<h1>Setting datetime for test completed. Success not verified</h1>
+				]
+			]
+		]
+	]
+
+	[memoryinfo
+		[html
+			[head
+				[defaultviewhead]
+			]
+			[body
+				[application
+					[memoryinfobody]							
+				]			
+			]			
+		]	
+	]
+
+	[private]
+	[memoryinfobody
+		<h1>Memory info</h1>
+		[tree.show(viewbag)]
+	]
+]

@@ -1,0 +1,31 @@
+﻿[controller(capacityutilizationwidget)
+	[using(table)]
+	[using(layout)]
+	[using(form)]
+
+	[capacityutilizationwidget(userprofitcenter, numberofdays = 30, completedlimit = 8, overlimit = 8)
+		[widget(variables, currentblockname, currentcontroller, class: "__hidden")
+			[panel()
+				[selectiondropdown(
+					collectionname: "profitcenter",
+					name: "resourcingcalendarwidget_profitcenter",
+					label: txt("schema_profitcenter", "tro"),
+					historyenabled: false,
+					class: "profitcenter-select",
+					inline: true)]
+
+				<div class="dataselectors">
+					<input type="radio" name="capacityutilizationwidget_viewtype" value="future" checked="checked" id="__radio_viewtype_future" /><label for="__radio_viewtype_future">[$showfuture]</label>
+					<input type="radio" name="capacityutilizationwidget_viewtype" value="past" id="__radio_viewtype_past" /><label for="__radio_viewtype_past">[$showpast]</label>
+				</div>
+			]
+
+			[panel(class: "capacityutilizations")
+				[table(class: "utilizationtable")
+					[tableheader(class: "utilizationtableheader")]
+					[tablebody(class: "utilizationtablebody")]
+				]
+			]
+		]
+	]
+]

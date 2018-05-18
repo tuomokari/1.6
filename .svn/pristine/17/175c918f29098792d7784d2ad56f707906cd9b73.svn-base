@@ -1,0 +1,50 @@
+﻿[controller(tro)
+
+	[using(dataform)]
+	[using(form)]
+	[using(table)]
+	[using(navigation)]
+	[using(layout)]
+	[using(schema)]
+	[using(text)]
+	[using(menubar)]
+	[using(documentstructure)]
+
+	[monitoring()
+		[html
+			[head(title: [$pagetitle_home])
+				[defaultaction.defaultviewhead]
+			]
+			
+			[body
+				[application("__home")
+					[monitoringbody]
+				]
+			]
+		]
+	]	
+			
+	[private]
+	[monitoringbody
+		[tabs(
+			class: "monitoringtabs",
+			opaque: true,
+			margin: "none",
+			alwayshorizontal: true)
+
+			[foreach graphgroup in config.monitoring.graphs
+				[tab(
+					label: txt("monitoring_" + nameof(graphgroup)),
+					class: "graphg_" + nameof(graphgroup),
+					hidetitle: true,
+					full: false)						
+					[panel
+						[foreach graph in graphgroup
+							[prtgwidget.prtgwidget(nameof(graphgroup), nameof(graph), txt("monitoring_" + nameof(graph)))]
+						]
+					]
+				]
+			]
+		]	
+	]
+]

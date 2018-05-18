@@ -1,0 +1,138 @@
+﻿connections
+	mc2developmentserver
+		handlers
+
+			messageloggerhandler
+				loggers
+					Development Server Messages
+						loggertype:"namedpipe"
+						loglevel:"finetrace"
+
+			mongodbhandler
+			payrollintegrationhandler
+				export
+					exportautomatically: true
+					lockautomatically: true
+					//0.5h default (1800000) -> ms 
+					automaticexportinterval: 10000
+					//9h default (32400000)-> ms
+					payrolllockoffset: 32400000
+					//2d default (172800000) -> ms
+					payrollexportoffset: 32400000
+					
+					// ************ Data location region ************
+
+					//Default integration\payroll should not be used with exportrootfolder
+					//integrationfolder:integration\trotovisma
+					
+					//default remoteConnection.GetDataPath()
+					exportrootfolder:c:\systemsgarden
+
+					// ************ CSV region ************
+
+					//wether to assign csv-header or not default is false, true espcially for the testing purposes
+					showcsvheader:true
+
+					//if numeric value is empty show zero 0, default is true
+					allowzerovaluesindouble: false
+					// ************ Entry types and fields region ************
+					validtypescountandtypes: 3
+						absence: 0
+						day: 1
+						timesheet: 2
+					fields
+						paymentgroup
+							index:0
+							valid
+								absence
+								day
+								timesheet
+						useridentifier
+							index:1
+							valid
+								absence
+								day
+								timesheet
+							//whether remove preceding zeros from identifier, default is false
+							removeprecedingzeroes:true
+						startdate
+							index:2
+							valid
+								absence
+								day
+								timesheet
+							format:d.M.yyyy
+						//By deafult enddate is same as startdate
+						enddate
+							index:3
+							valid
+								absence
+								day
+								timesheet
+							format:d.M.yyyy
+						//identifier:projectid default value
+						//required 3 fields, 1 field length is 8
+						projectnumber:array
+							identifier:poski
+							fieldspan:3
+							length:8
+							index:4
+							valid
+								day
+								timesheet
+						workorder
+							index:7
+							valid
+								day
+								timesheet
+						paytypeid
+							index:8
+							valid
+								absence
+								day
+								timesheet
+						hours
+							index:9
+							valid
+								absence
+								day
+								timesheet
+							//calculation function, requires precedingoperator
+							calculationfunction:1000/60/60
+							//to start arithmetic calculation, required if calculationfunction, creates hours{precedingoperator}1000/60/60
+							precedingoperator:/
+						amount
+							index:10
+							valid
+								day
+						hourlyrate
+							index:11
+							valid
+								day
+						quantityrate
+							index:12
+							valid
+								day
+
+			//axintegrationhandler
+			//vismaintegrationhandler
+
+			//sapintegrationhandler
+			//	connectionstring:"Data Source=localhost;Initial Catalog=AreTro2;User Id=aretro2_user;Password=s4l41n3n;Application Name=aretro2;MultipleActiveResultSets=True"
+
+			trohelpershandler
+
+			reversetcphandler
+				sslport:26263
+				sslcertificatefile:localhost.pfx
+				requirecertificate:false
+
+loggers
+	Development server
+		loggertype:"namedpipe"
+		loglevel:"finetrace"
+
+	Development server filelog
+		loggertype:"file"
+		loglevel:"finetrace"
+		filename:"D:\Projects\tro\tro\trunk\Tools\DevelopmentServer\integration\saptotro\devserver.log"

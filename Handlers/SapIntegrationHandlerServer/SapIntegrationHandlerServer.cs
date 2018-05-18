@@ -1,0 +1,186 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Threading;
+using SystemsGarden.mc2.RemoteConnector.Handlers;
+using SystemsGarden.mc2.Common;
+using SystemsGarden.mc2.Common.Constants;
+using SystemsGarden.mc2.RemoteConnector.Handlers.CoreServerHandlers.MongoDBHandler;
+using System.IO;
+using MongoDB.Bson;
+using MongoDB.Shared;
+using MongoDB.Driver;
+using MongoDB.Driver.Builders;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace SystemsGarden.mc2.RemoteConnector.Handlers.SapIntegrationHandlerServer
+{
+    public class SapIntegrationHandlerServer : BaseHandler
+    {
+        private static string IntegrationSapToTroFolder = "integration\\saptotro";
+
+        private string SqlConnectionString;
+
+        private SapToTroImport sapToTroImport;
+        private static object sapToTroLock = new object();
+        private TroToSapExport troToSapExport;
+        private static object troToSapLock = new object();
+
+        private int sapToTroPollingInterval;
+        private int troToSapPollingInterval;
+        private int troToSapRetryInterval;
+
+        private static Thread sapToTroPollingThread;
+        private static Thread troToSapPollingThread;
+        private object pollLockObject = new object();
+
+        public SapIntegrationHandlerServer(
+            IRemoteConnection remoteConnection,
+            ILogger parentLogger,
+            IHandlerContainer handlerContainer)
+            : base(remoteConnection, parentLogger, SapIntegrationHandlerServerInfo.HandlerName, handlerContainer)
+        {
+            _handlerInfo = new SapIntegrationHandlerServerInfo();
+        }
+
+        public override void HandleMessageInternal()
+        {
+            switch ((string)Message[RCConstants.action])
+            {
+                case "monitorpoll":
+                    GetMonitorData();
+                    break;
+
+                case "getinvalidatedcacheitems":
+
+                    GetInvalidatedCacheItems();
+                    break;
+            }
+
+            ForwardMessage();
+        }
+
+        private void GetInvalidatedCacheItems()
+        {
+            if (Response.Contains("invalidatedcacheitems"))
+                Response["invalidatedcacheitems"].Merge(sapToTroImport.GeAndClearInvalidatedCacheItems());
+            else
+                Response["invalidatedcacheitems"] = sapToTroImport.GeAndClearInvalidatedCacheItems();
+        }
+
+        // Note that integration must be set AFTER the MongoDB handler module
+        protected override void Initialize()
+        {
+            sapToTroPollingInterval = (int)Message["saptotropollinginterval"].GetValueOrDefault(10000);
+            troToSapPollingInterval = (int)Message["trotosappollinginterval"].GetValueOrDefault(10000);
+            troToSapRetryInterval = (int)Message["trotosapretrypollinginterval"].GetValueOrDefault(500000);
+            SqlConnectionString = Message["connectionstring"];
+            string integrationFolderSapToTro = remoteConnection.GetDataPath() + Path.DirectorySeparatorChar + IntegrationSapToTroFolder;
+
+            var mongoDBHandler = ((MongoDBHandlerServer)handlerContainer.GetHandler("mongodbhandler")); // !!
+
+            lock (sapToTroLock)
+            {
+                if (sapToTroPollingThread == null)
+                {
+                    sapToTroImport = new SapToTroImport(
+                        logger,
+                        integrationFolderSapToTro,
+                        mongoDBHandler,
+                        SqlConnectionString,
+                        (DataTree)Message.Clone(),
+                        this.stopping);
+
+                    sapToTroPollingThread = new Thread(RunSapToTroImport);
+                    sapToTroPollingThread.Start();
+                }
+            }
+
+            lock (troToSapLock)
+            {
+                if (troToSapPollingThread == null)
+                {
+                    troToSapExport = new TroToSapExport(
+                        logger,
+                        mongoDBHandler,
+                        SqlConnectionString,
+                        (DataTree)Message.Clone());
+
+                    troToSapPollingThread = new Thread(RunTroToSapExport);
+                    troToSapPollingThread.Start();
+                }
+            }
+        }
+
+        private void RunSapToTroImport()
+        {
+            logger.LogDebug("Running SAP to Tro import thread.");
+
+            while (!stopping.WaitOne(0))
+            {
+                try
+                {
+                    lock (pollLockObject)
+                    {
+                        sapToTroImport.ImportDocuments();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError("Failed import entries from SAP.", ex);
+                }
+
+                stopping.WaitOne(sapToTroPollingInterval);
+            }
+        }
+
+        private void RunTroToSapExport()
+        {
+            logger.LogDebug("Running TRO to SAP export thread.");
+
+            while (!stopping.WaitOne(0))
+            {
+                try
+                {
+                    lock (pollLockObject)
+                    {
+                        troToSapExport.ExportDocuments();
+                        troToSapExport.HandleErpProcessedMessages(troToSapRetryInterval);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError("Failed to export entries to SAP.", ex);
+                }
+
+                stopping.WaitOne(troToSapPollingInterval);
+            }
+        }
+
+        private void GetMonitorData()
+        {
+			try
+			{
+				using (SqlConnection sqlConnection = new SqlConnection(SqlConnectionString))
+				{
+					SqlCommand sqlCommand = new SqlCommand("dbo.GetMonitorData", sqlConnection);
+					sqlCommand.CommandType = CommandType.StoredProcedure;
+					sqlConnection.Open();
+					SqlDataReader reader = sqlCommand.ExecuteReader();
+					while (reader.Read())
+					{
+						string monitorName = (string)reader[1] + "_" + (string)reader[0]; // direction_status
+						Response[monitorName.ToLower()] = (Int32)reader[2];
+					}
+				}
+			}
+			catch(Exception ex)
+            {
+				logger.LogError("Failed to get monitor data", ex);
+			}
+        }
+    }
+}

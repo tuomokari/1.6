@@ -1,0 +1,57 @@
+﻿[controller(querytesterwidget)
+
+	[using(form)]
+	[using(layout)]
+
+	[querytesterwidget(parameter1, parameter2)
+		[widget(variables, currentblockname, currentcontroller, class: "__hidden __querytesterwidget")
+
+			[panel($title)
+				
+				[textfield(name: "querycontroller",label: $querycontroller)]
+				[textfield(name: "queryname",label: $queryname)]
+
+				[button(
+					name: "addparameter", 
+					label: $addparameter)]
+
+				<div class = "parameters"></div>
+							
+				[button(
+					name: "executequery", 
+					label: $executequery)]
+
+				[memo(
+					name: "results",
+					label: $results)]
+			]
+
+			[templates]
+		]
+	]
+
+	[private]
+	[templates
+		<div class="querytesterwidget_templates __hidden">
+			<div class="querytesterwidget_parameter widgettemplate">
+
+				[card
+					[textfield(label: $name, name: "name")]
+					
+					[dropdown(label: $type, name: "type")
+						[option(label: $string, value: "string")]
+						[option(label: $int, value: "int")]
+						[option(label: $float, value: "float")]
+						[option(label: $identifier, value: "identifier")]
+						[option(label: $bool, value: "bool")]
+						[option(label: $date, value: "date")]
+					]
+
+					[textfield(label: $value, name: "value")]
+
+					[button(name: "remove", label: $remove)]
+				]
+			</div>
+		</div>
+	]
+]

@@ -1,0 +1,42 @@
+﻿[controller(menubar)
+	[using(navigation)]
+
+	[override]
+	[mobilemenu
+		[menucontent = tree.clone(tree.get(navigation, callingcontroller))]
+
+		[if (currentuser.level == 5 && menucontent != null)
+			[newitem = tree.addnodewithindex(menucontent)]
+			[newitem.title =  "impersonate"]
+			[newitem.action = "impersonate"]
+			[newitem.controller = "login"]
+		]
+		[if (isset(currentuser.level) && currentuser.level != 0 && menucontent != null)
+			[newitem = tree.addnodewithindex(menucontent)]
+			[newitem.title =  "logout"]
+			[newitem.action = "logout"]
+			[newitem.controller = "login"]
+		]
+
+		[menufor(navigation: menucontent, id: "__mobilemenu")]
+		<div id="__menubutton" class="__floatbutton __float">
+			<i class="material-icons">menu</i><i class="material-icons">close</i>
+		</div>
+							
+	]
+
+	[private]
+	[override]
+	[desktopmenu
+		[menucontent = tree.clone(tree.get(navigation, callingcontroller))]
+
+		[if (currentuser.level == 5 && menucontent != null)
+			[newitem = tree.addnodewithindex(menucontent)]
+			[newitem.title =  "impersonate"]
+			[newitem.action = "impersonate"]
+			[newitem.controller = "login"]
+		]
+
+		[menufor(navigation: menucontent, id: "__desktopmenu")]
+	]
+]

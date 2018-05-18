@@ -1,0 +1,251 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Globalization;
+using System.Threading.Tasks;
+using SystemsGarden.mc2.MC2SiteEnvironment;
+using SystemsGarden.mc2.Core.Runtime;
+using SystemsGarden.mc2.Common;
+using MongoDB.Driver.Builders;
+using MongoDB.Driver;
+using MongoDB.Bson;
+using SystemsGarden.mc2.Core.Runtime;
+using SystemsGarden.mc2.Common;
+using MongoDB.Driver.Builders;
+using MongoDB.Driver;
+using MongoDB.Bson;
+using SystemsGarden.mc2.Core.Runtime;
+
+namespace SystemsGarden.mc2.widgets.workentries
+{
+	public class workentries : MC2Controller
+	{
+		#region Actions
+
+		[GrantAccessToGroup("authenticated")]
+		public ActionResult adddetail(string parent, string paytype, int duration = 0, int price = 0)
+		{
+			if (string.IsNullOrEmpty("parent"))
+				return new AjaxResult("Missing parent when adding detail", System.Net.HttpStatusCode.InternalServerError);
+
+			if (string.IsNullOrEmpty("paytype"))
+				return new AjaxResult("Missing paytype when adding detail", System.Net.HttpStatusCode.InternalServerError);
+
+			if (duration == 0 && price == 0)
+				return new AjaxResult("Missing duration and price when adding detail", System.Net.HttpStatusCode.InternalServerError);
+
+			DBDocument detail = new DBDocument("timesheetentry");
+
+			if (duration != 0)
+				detail["duration"] = duration;
+
+			if (price != 0)
+				detail["price"] = price;
+
+			detail.AddRelation("user", Runtime.SessionManager.CurrentUser[DBQuery.Id]);
+			detail.AddRelation("timesheetentrydetailpaytype", paytype);
+			detail.AddRelation("parent", parent);
+
+			detail.UpdateDatabase();
+
+			// Todo: handle errors
+			return new AjaxResult("success");
+		}
+
+		[GrantAccessToGroup("authenticated")]
+		public ActionResult editdetail(string id, string paytype, int duration = 0, int price = 0)
+		{
+			if (string.IsNullOrEmpty("id"))
+				return new AjaxResult("Missing id when editing detail", System.Net.HttpStatusCode.InternalServerError);
+
+			if (string.IsNullOrEmpty("paytype"))
+				return new AjaxResult("Missing paytype when editing detail", System.Net.HttpStatusCode.InternalServerError);
+
+			if (duration == 0 && price == 0)
+				return new AjaxResult("Missing duration and price when editing detail", System.Net.HttpStatusCode.InternalServerError);
+
+			DBDocument detail = DBDocument.FindOne("timesheetentry", id);
+
+			if (detail == null)
+				return new AjaxResult("Could not find detail when editing detail", System.Net.HttpStatusCode.InternalServerError);
+
+			if (duration != 0)
+				detail["duration"] = duration;
+
+			if (price != 0)
+				detail["price"] = price;
+
+			detail.AddRelation("timesheetentrydetailpaytype", paytype);
+
+			detail.UpdateDatabase();
+
+			// Todo: handle errors
+			return new AjaxResult("success");
+		}
+
+		[GrantAccessToGroup("authenticated")]
+		public ActionResult approveday(string selectedday)
+		{
+			DateTime day = DateTime.ParseExact(selectedday, "yyyyMMdd", CultureInfo.InvariantCulture);
+			day = new DateTime(day.Year, day.Month, day.Day, day.Hour, day.Minute, day.Second, DateTimeKind.Utc);
+
+			var query = new DBQuery("workentries", "unacceptedentrydata");
+			query.AddParameter("start", day);
+			query.AddParameter("end", day);
+			query.AddParameter("user", new ObjectId(Runtime.SessionManager.CurrentUser[DBQuery.Id]));
+
+			DBResponse response = query.Find();
+
+			DBCollection timesheetEntries = response["timesheetentry"];
+			DBCollection abseneceEntries = response["absenceentry"];
+			DBCollection dayEntries = response["dayentry"];
+			DBCollection articleEntries = response["articleentry"];
+			DBCollection assetEntries = response["assetentry"];
+
+			var tasks = new List<Task<DBUpdateResponse>>();
+
+			tasks.Add(ApproveEntriesInCollection(timesheetEntries));
+			tasks.Add(ApproveEntriesInCollection(abseneceEntries));
+			tasks.Add(ApproveEntriesInCollection(dayEntries));
+			tasks.Add(ApproveEntriesInCollection(articleEntries));
+			tasks.Add(ApproveEntriesInCollection(assetEntries));
+
+			Task.WaitAll(tasks.ToArray());
+
+			return new AjaxResult("success");
+		}
+
+		private async Task<DBUpdateResponse> ApproveEntriesInCollection(DBCollection collection)
+		{
+			if (collection.Count == 0)
+				return null;
+
+			foreach (DBDocument doc in collection)
+			{
+				doc["approvedbyworker"] = true;
+			}
+
+			return await collection.UpdateDatabaseAsync(new DBCallProperties()
+			{
+				DisableEventFiring = true,
+				RunWithPrivileges = 5,
+				SkipValidityChecks = true,
+				SkipDefaultValues = true
+			});
+		}
+
+		[GrantAccessToGroup("authenticated")]
+		public ActionResult pasteday(string sourceday, string targetday)
+		{
+			if ((bool)Runtime.Features["timetracking"])
+				return new AjaxResult("Copying not supported for timetracking.");
+
+			logger.LogInfo("copying entries from one date to another", sourceday, targetday);
+
+			DateTime sourceDay = DateTime.ParseExact(sourceday, "yyyyMMdd", CultureInfo.InvariantCulture);
+			sourceDay = new DateTime(sourceDay.Year, sourceDay.Month, sourceDay.Day, sourceDay.Hour, sourceDay.Minute, sourceDay.Second, DateTimeKind.Utc);
+
+			DateTime targetDay = DateTime.ParseExact(targetday, "yyyyMMdd", CultureInfo.InvariantCulture);
+			targetDay = new DateTime(targetDay.Year, targetDay.Month, targetDay.Day, targetDay.Hour, targetDay.Minute, targetDay.Second, DateTimeKind.Utc);
+
+			var query = new DBQuery("workentries", "workforday");
+			query.AddParameter("start", sourceDay);
+			query.AddParameter("end", sourceDay);
+			query.AddParameter("user", new ObjectId(Runtime.SessionManager.CurrentUser[DBQuery.Id]));
+
+			DBResponse response = query.Find();
+
+			DBCollection timesheetEntries = response["timesheetentry"];
+			DBCollection abseneceEntries = response["absenceentry"];
+			DBCollection dayEntries = response["dayentry"];
+
+			var tasks = new List<Task<bool>>();
+
+			bool isTargetInThePast = (DateTime.Compare(DateTime.UtcNow, targetDay) > 0);
+
+
+			// Only ever copy absences for future
+			if (isTargetInThePast)
+			{
+				tasks.Add(CopyEntriesToDay(timesheetEntries, targetDay));
+				tasks.Add(CopyEntriesToDay(dayEntries, targetDay));
+				tasks.Add(CopyEntriesToDay(abseneceEntries, targetDay));
+			}
+			else 
+			{
+				logger.LogDebug("Copy target date is in the future");
+
+				if ((bool)Runtime.Features["allowfutureabsences"])
+					tasks.Add(CopyEntriesToDay(abseneceEntries, targetDay));
+			}
+
+			Task.WaitAll(tasks.ToArray());
+
+            bool somethingFiltered = false;
+            foreach (var task in tasks)
+            {
+                if (task.Result)
+                    somethingFiltered = true;
+            }
+
+			return new AjaxResult(somethingFiltered ? "filtered" : "success");
+		}
+
+		private async Task<bool> CopyEntriesToDay(DBCollection collection, DateTime targetDay)
+		{
+			if (collection.Count == 0)
+				return false;
+
+            var newCollection = new DBCollection(new DataTree(collection.Name));
+
+            var somethingFiltered = false;
+
+			foreach (DBDocument doc in collection)
+			{
+				// Remove id to make as new
+				doc[DBDocument.Id].Remove();
+
+				// Remove timestamps, they will be applied automatically based on date
+				doc["starttimestamp"].Remove();
+				doc["endtimestamp"].Remove();
+
+				// Remove approval and export data. All pasted entries must be approved again.
+				doc["approvedbymanager"] = false;
+				doc["approvedbyworker"] = false;
+				doc["exported_ax"] = false;
+				doc["exportfailurecount_ax"] = 0;
+				doc["exporttimestamp_ax"].Remove();
+				doc["exported_visma"] = false;
+				doc["exporttimestamp_visma"].Remove();
+
+				// Set target date
+				doc["date"] = targetDay;
+
+                bool filtered = false;
+                if (!doc["project"].Empty)
+                {
+                    var project = DBDocument.FindOne("project", doc["project"][DBDocument.Id]);
+                    if (project != null && project["status"] == "Done")
+                    {
+                        filtered = true;
+                        somethingFiltered = true;
+                    }
+                }
+
+
+                if (!filtered)
+                    newCollection.Add(doc);
+			}
+
+			await newCollection.UpdateDatabaseAsync(new DBCallProperties()
+			{
+				RunWithPrivileges = 5
+			});
+
+            return somethingFiltered;
+		}
+
+		#endregion
+	}
+}

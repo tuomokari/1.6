@@ -1,0 +1,6 @@
+﻿[controller(approveworkresultshelper)
+	[approveworkresultshelper(parameter1, parameter2)
+			[widget(variables, currentblockname, currentcontroller, class: "__hidden __approveworkresultshelper")
+		]
+	]
+]

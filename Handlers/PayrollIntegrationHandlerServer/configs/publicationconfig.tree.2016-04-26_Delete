@@ -1,0 +1,30 @@
+application
+	features
+		reports: false
+		articles: true
+		assets: true
+		traveltime: true
+		resourcing: true
+		enablesocialproject: false
+		timetracking: true
+		dailyentries: false
+		allowdifferentdurationforbilling: false
+		usedirectprojectcategory: false
+		entrybuttonsforindividualprojects: false
+		showactiveallocations: false
+		showfutureallocations: false
+		usebackgroundpayrollexport: false
+		showentrieslastapproved: true
+		articleshavetimestamp: false
+		usedefaultbasepaytype: true
+		timedprojectstatuscontrols: false
+		untimedprojectstatuscontrols: true
+security
+	debug: true
+	defaultuser: jari.kallonen@systemsgarden.com
+	//defaultuser: ilkka.hartikainen@systemsgarden.com
+	loginguid: 6746F4D3-1E6E-4B1B-A1A9-35EE7E33C13B
+
+runtime
+	nostart: false
+	defaultlanguage: fi

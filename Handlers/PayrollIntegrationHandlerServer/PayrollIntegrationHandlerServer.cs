@@ -1,0 +1,243 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Threading;
+using System.IO;
+using SystemsGarden.mc2.Common;
+using SystemsGarden.mc2.RemoteConnector.Handlers;
+using SystemsGarden.mc2.Common.Constants;
+using SystemsGarden.mc2.RemoteConnector.Handlers.CoreServerHandlers.MongoDBHandler;
+using MongoDB.Bson;
+using MongoDB.Shared;
+using MongoDB.Driver;
+using MongoDB.Driver.Builders;
+using System.Diagnostics;
+
+namespace SystemsGarden.mc2.RemoteConnector.Handlers.PayrollIntegrationHandlerServer
+{
+    /// <summary>
+    /// Payroll Handler
+    /// </summary>
+    public class PayrollIntegrationHandlerServer : BaseHandler
+    {
+        private static PayrollExport payrollExport;
+        private static object payrollExportLock = new object();
+        private static Thread payrollExportPollingThread;
+        private static MongoDatabase database;
+        private static DataTree config;
+        private static DataTree translations;
+        private static PayrollExportTask exportTask;
+
+        private static int payrollExportPollingInterval;
+
+        private static string IntegrationTroToPayrollFolder = "integration\\payroll";
+
+        /// <summary>
+        /// Constructor for PayrollIntegrationHandlerServer
+        /// </summary>
+        /// <param name="remoteConnection">IRemoteConnection implmentation</param>
+        /// <param name="parentLogger">ILogger loging implementation</param>
+        /// <param name="handlerContainer">IHandlerContainer implementation</param>
+        public PayrollIntegrationHandlerServer(
+            IRemoteConnection remoteConnection,
+            ILogger parentLogger,
+            IHandlerContainer handlerContainer)
+            : base(remoteConnection, parentLogger, PayrollIntegrationHandlerServerInfo.HandlerName, handlerContainer)
+        {
+            _handlerInfo = new PayrollIntegrationHandlerServerInfo();
+        }
+
+        /// <summary>
+        /// PayrollIntegrationHandlerServer Message loop for RCConstants.action
+        /// </summary>
+        public override void HandleMessageInternal()
+        {
+            switch ((string)Message[RCConstants.action])
+            {
+                // Monitoring message. Implemented later
+                case "monitorpoll":
+                    break;
+
+                case "payrollrevertexport":
+                    {
+                        PayrollRevertExport();
+                    }
+                    break;
+            }
+            ForwardMessage();
+        }
+
+        /// Note that integration must be set AFTER the MongoDB handler module
+        protected override void Initialize()
+        {
+            if (payrollExportPollingThread != null)
+                return;
+
+            var mongoDbHandler = (MongoDBHandlerServer)handlerContainer.GetHandler("mongodbhandler");
+
+            database = mongoDbHandler.Database;
+            translations = MongoDBHandlerServer.Translations;
+
+            string integrationFolderTroToPayroll = remoteConnection.GetDataPath();
+            // IntegrationFolder Visma, Payroll etc
+            IntegrationTroToPayrollFolder = Path.Combine(integrationFolderTroToPayroll, Message["export"]["integrationfolder"].GetValueOrDefault(IntegrationTroToPayrollFolder).ToString());
+            payrollExportPollingInterval = (int)Message["payrollexportpollinginterval"].GetValueOrDefault(10000);
+
+            config = Message["export"];
+
+            lock (payrollExportLock)
+            {
+                if (payrollExportPollingThread == null)
+                {
+                    payrollExportPollingThread = new Thread(RunTroToPayrollExport);
+                    payrollExportPollingThread.Start();
+                }
+            }
+        }
+
+        private void RunTroToPayrollExport()
+        {
+            logger.LogDebug("Starting TRO to payroll export thread.");
+
+            {
+                var sw = new Stopwatch();
+
+                DateTime lockDayOffset;
+                DateTime exportDayOffset;
+                long payrollLockOffset = 0; // = 32400000;  //9h
+                long payrollExportOffset = 0; ;
+                long stopwatchInterval = (long)config["automaticexportinterval"].GetValueOrDefault(1800000);
+
+                bool lockAutomatically = (bool)config["lockautomatically"].GetValueOrDefault(false);
+                if (lockAutomatically)
+                {
+                    //Default 3h -> ms
+                    payrollLockOffset = (long)config["payrolllockoffset"].GetValueOrDefault(10800000);
+                    sw.Start();
+                }
+                bool exportAutomatically = (bool)config["exportautomatically"].GetValueOrDefault(false);
+                if (exportAutomatically)
+                {
+                    //Default 1d -> ms
+                    payrollExportOffset = (long)config["payrollexportoffset"].GetValueOrDefault(86400000);
+                    if (!sw.IsRunning)
+                        sw.Start();
+                }
+
+                while (!stopping.WaitOne(5021))
+                {
+                    try
+                    {
+                        lock (payrollExportLock)
+                        {
+                            exportTask = PayrollExport.GetNextPayrollExportTask(database);
+                            if (exportTask != null)
+                            {
+                                logger.LogInfo("Handling next payroll export task");
+                                payrollExport = new PayrollExport(logger, IntegrationTroToPayrollFolder, database, config);
+                                payrollExport.ExportDocuments(exportTask);
+                            }
+                            //Check for locking payroll
+                            if (lockAutomatically || exportAutomatically)
+                            {
+                                if (sw.Elapsed.TotalMilliseconds > stopwatchInterval)
+                                {
+                                    if (lockAutomatically)
+                                    {
+                                        lockDayOffset = DateTime.Today + TimeSpan.FromMilliseconds(payrollLockOffset);
+                                        if (lockDayOffset < DateTime.Now)
+                                        {
+                                            var andQueries = new List<IMongoQuery>();
+                                            andQueries.Add(Query.LTE("enddate", lockDayOffset));
+                                            andQueries.Add(Query.EQ("locked", false));
+                                            andQueries.Add(Query.EQ("automaticallylocked", false));
+
+                                            MongoCollection<BsonDocument> collection = database.GetCollection("payrollperiod");
+                                            MongoCursor<BsonDocument> cursor = collection.Find(Query.And(andQueries));
+                                            if (cursor.Count() > 0)
+                                            {
+                                                foreach (var item in cursor)
+                                                {
+                                                    if((DateTime)item["enddate"] < lockDayOffset)
+                                                    {
+                                                        logger.LogInfo("Automatically locking payroll period", item[DBDocument.Id]);
+                                                        item["automaticallylocked"] = true;
+                                                        item["locked"] = true;
+                                                        item["automaticallylocked_time"] = DateTime.UtcNow;
+                                                        collection.Save(item, WriteConcern.Acknowledged);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (exportAutomatically)
+                                    {
+                                        var andQueries = new List<IMongoQuery>();
+                                        exportDayOffset = DateTime.Today + TimeSpan.FromMilliseconds(payrollExportOffset);
+                                        andQueries.Add(Query.LTE("enddate", exportDayOffset));
+                                        andQueries.Add(Query.EQ("locked", true));
+                                        andQueries.Add(Query.EQ("automaticallyexported", false));
+
+                                        MongoCollection<BsonDocument> collection = database.GetCollection("payrollperiod");
+                                        MongoCursor<BsonDocument> cursor = collection.Find(Query.And(andQueries));
+                                        if (cursor.Count() > 0)
+                                        {
+                                            if (exportDayOffset < DateTime.Now)
+                                            {
+                                                foreach (var item in cursor)
+                                                {
+                                                    logger.LogInfo("Add automatical export task for payroll", item[DBDocument.Id]);
+                                                    exportTask = PayrollExport.GetNextPayrollExportTask(database, true, item);
+                                                    payrollExport = new PayrollExport(logger, IntegrationTroToPayrollFolder, database, config);
+                                                    payrollExport.ExportDocuments(exportTask);
+                                                    item["automaticallyexported"] = true;
+                                                    collection.Save(item, WriteConcern.Acknowledged);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    //Reset stopwatch for next interval
+                                    sw.Reset();
+                                    sw.Start();
+                                }
+                            }
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogError("Failed import entries to payroll.", ex);
+                    }
+
+                    stopping.WaitOne(payrollExportPollingInterval);
+                }
+            }
+
+            logger.LogError("Tro to payroll export thread stopping.");
+        }
+
+
+        private void PayrollRevertExport()
+        {
+            lock (payrollExportLock)
+            {
+                logger.LogDebug("Restoring exported items to unexported state.");
+
+                try
+                {
+                    // Allow only one export at a time to run.
+                    payrollExport = new PayrollExport(logger, IntegrationTroToPayrollFolder, database, config);
+                    payrollExport.PayrollRevert(Message);
+
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError("Failed to revert payroll document export.", ex);
+                    remoteConnection.ReportError(originalMessage.Value, originalResponse.Value, ex.Message);
+                }
+            }
+        }
+    }
+}

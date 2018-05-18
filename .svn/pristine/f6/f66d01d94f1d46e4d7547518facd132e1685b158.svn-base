@@ -1,0 +1,417 @@
+﻿.dailyresourcingwidget {
+    @color-asset: #caceaa;
+    @color-user: #aaceb2;
+    height: 100%;
+    .display-flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    
+    .dailyresourcingitems {
+        padding-bottom: 30px; // todo: this padding should not be necessary
+    }
+
+    .dailyresourcingwidget_projectcard {
+        .card();
+        transition-property: opacity, transform;
+        position: relative;
+        padding: 0 10px;
+        margin: 10px;
+        opacity: 0;
+        transform: scaleY(0);
+        overflow: hidden;
+
+        &.show {
+            opacity: 1;
+            transform: none;
+        }
+
+        .project-tools {
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+        h3 { // todo: these are somewhat arbitrary
+            font-weight: 500;
+            margin-right: 40px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            .smartphone ({
+                font-size: 14px;
+            });
+        }
+    }
+    
+    .allocations {
+        .display-flex;
+        flex-wrap: wrap;
+        &.list {
+            -ms-flex-direction: column;
+            flex-direction: column;
+        }
+    }
+
+    .dailyresourcingwidget_allocationcard {
+        display: inline-block;
+        &[data-type='user'] {
+            .card(@cardcolor: @color-user);
+            margin: 0 10px 10px 0;
+        }
+        &[data-type='asset'] {
+            .card(@cardcolor: @color-asset);
+            margin: 0 10px 10px 0;
+        }
+        position: relative;
+        overflow: hidden;
+        flex-basis: 25%;
+        flex-grow: 1;
+
+        .username {
+            margin: 0;
+        }
+
+        .time {
+            font-size: 12px;
+            margin: 0;
+        }
+
+        .__button {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            color: #fff;
+            font-weight: 700;
+            .center-align;
+            .center-content;
+            text-shadow: 0 0 10px #000;
+            padding: 0;
+            margin: 0;
+            border-radius: 0;
+            .display-flex;
+            opacity: 0;
+            .animate();
+            font-size: 12px;
+            
+            &.dailyresourcingwidget_allocationcard_removebutton {
+                right: 0;
+                &:hover {
+                    background: rgba(0, 0, 0, 0.75);
+                }
+            }
+
+            &.dailyresourcingwidget_allocationcard_modifybutton {
+                left: 0;
+                &:hover {
+                    background: rgba(0, 0, 0, 0.75);
+                }
+            }
+        }
+
+        &:hover {
+            h5, p { // fade out and blur texts on chrome
+                -webkit-filter: blur(2px);
+                opacity: 0.5;
+            }
+            .__button { // show buttons
+                opacity: 1;
+            }
+        }
+    
+    }
+
+    .dailyresourcingwidget_usercard, .dailyresourcingwidget_assetcard {
+        min-height: 50px;
+        h3 {
+            color:#072c4c;
+            margin: 0;
+        }
+        &.dailyresourcingwidget_usercard {
+            .card(@cardcolor: @color-user; @chrome: "none");
+            transition-property: all;
+            position: static;
+            overflow: hidden;
+        }
+        &.dailyresourcingwidget_assetcard {
+            .card(@cardcolor: @color-asset; @chrome: "none");
+            transition-property: all;
+            position: static;
+            overflow: hidden;
+        }
+        cursor: pointer;
+        cursor: -webkit-grab;
+        cursor: -moz-grab;
+        cursor: grab;
+        .display-flex;
+        .center-align;
+        padding: 5px;
+        overflow: hidden;
+        color: #273948;
+        font-weight: 400;
+        
+        .dailyresourcingwidget_allocationcard_userpicture_wrapper {
+            border-radius: 2px;
+            background-color: transparent;
+            width: 40px;
+            height: 40px;
+            overflow: hidden;
+            .display-flex;
+            .center-align;
+            .center-content;
+            font-weight: 100;
+            font-size: 28px;
+            letter-spacing: -1px;
+            line-height: 0;
+            color: #fff;
+            margin-right: @basemeasure;
+            position: relative;
+            .flex-values(0 0 auto);
+                
+            .dailyresourcingwidget_allocationcard_userpicture {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                left: 0;
+                top: 0;
+                &:not([src]) {
+                    display: none;
+                }
+            }
+
+            .smartphone({
+                width: 20px;
+                height: 20px;
+                font-size: 12px;
+                letter-spacing: 0;
+                margin-right: 5px;
+                font-weight: 400;
+            });
+
+        }
+        &.is-dragging {
+            .dragging;
+            cursor: pointer;
+            cursor: -webkit-grabbing;
+            cursor: -moz-grabbing;
+            cursor: grabbing;
+            .dailyresourcingwidget_allocationcard_userallocatedhours, .dailyresourcingwidget_allocationcard_assetallocatedhours {
+                display: none;
+            }
+            z-index: 10000; // todo: this is too arbitrary
+            position: absolute;
+        }
+        .dailyresourcingwidget_allocationcard_username, .dailyresourcingwidget_allocationcard_assetname {
+            display: inline;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            .flex-values(1 1 auto);
+        }
+
+        .dailyresourcingwidget_allocationcard_userallocatedhours, .dailyresourcingwidget_allocationcard_assetallocatedhours {
+            .__itemcounter;
+            animation: none !important; // temporarily disabled due to reloads
+            margin: 0 0 0 @basemeasure;
+            &:empty {
+                display: none;
+            }
+        }
+        .smartphone({
+            padding: 5px;
+            min-height: 20px;
+        });
+    }
+
+    .__flexpanel-column.allocationboard {
+        background-color: #666;
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAALElEQVQIW2NkgABjKA2izoIIRmyC6BJglTATYDpQBGE6kBQi7ALpgGtHdgAAuCEFoEYdfmUAAAAASUVORK5CYII=');
+    }
+
+    .__flexpanel-column.resources, .__flexpanel-column.projects {
+       flex-basis: 25%;
+
+       &.projects {
+           background: @color-inner-panel-background;
+       }
+   
+       &.resources .__flexpanel-column-content {
+           padding-top: 0 !important;
+       }
+
+       &.resources:not(.collapsed) {
+           overflow: visible;
+           z-index: 100;
+        }
+    }
+
+    .scheduledprojects, .unscheduledprojects { //todo: refactor the important rules out
+        overflow: hidden; // todo: should all panels have this?
+        // todo: there should be a better way to turn off chrome for panels, or maybe use here a region
+        border: none !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        background: none !important;
+        padding: 0;
+
+
+        &:first-child {
+            border-top-left-radius: @border-radius !important;
+        }
+         .__panelhead {
+            h2 {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                margin: 0;
+            }
+        }
+    }
+
+    .dailyresourcingsetup {
+        margin-bottom: @basemeasure;
+        overflow: visible;
+        box-sizing: content-box;
+
+        .resourcingtools-wrapper {
+            .display-flex;
+            overflow: hidden;
+            overflow-x: auto;
+
+            .profitcenter-select {
+                .smartphone({
+                    select {
+                        width: 100%;
+                    }
+                });
+                .__control:first-child {
+                    display: block;
+                }
+                #show-secondary-profitcenter:checked+label { // todo: this could maybe handled better
+                    overflow: hidden;
+                    width: 40px;
+                    min-width: 0;
+                    +.__control {
+                        float: right;
+                    }
+                }
+            }
+            .display-options {
+                label {
+                    display: block;
+                }
+            }
+            .dailyresourcingcontrols {
+                flex-grow: 1;
+                .display-flex;
+                justify-content: flex-end;
+                align-items: flex-start;
+
+                .datecontrols {
+                    flex-grow: 1;
+                    .display-flex;    
+                    .center-align;
+                    justify-content: flex-end;
+                    white-space: nowrap;
+                    overflow-x: auto;
+                    overflow-y: hidden;
+
+                    .smartphone({
+                        .center-content;
+                    });
+	    
+                    .date {
+		                font-size: 22px;
+		                font-weight: 200;
+                        display: inline;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        text-align: center;
+                        .desktop({
+                            width: 175px;
+
+                            .short {
+                                display: none;
+                            }
+                        });
+                         .smartphone({
+                             .long {
+                                 display: none;
+                             }
+                         });
+	                }
+                }
+            }
+            .settings {
+                display: none;
+                .smartphone({
+                    display: inline-block;
+                });
+            }
+        }
+        .smartphone({
+            &:not(.expanded) {
+                .profitcenter-select, .display-options {
+                    display: none;
+                }
+            }
+            &.expanded {
+                .resourcingtools-wrapper {
+                    -ms-flex-direction: column-reverse;
+                    flex-direction: column-reverse;
+                    select {
+                        max-width: 80% !important; // todo: find a proper way
+                    }
+                }
+            }
+        });
+    
+        // todo: revise, selection element margins
+        select {
+            margin-right: 15px;
+        }
+        label {
+            width: auto;
+            min-width: 100px;
+        }
+    }
+
+    .__checkbox.__active {
+        font-weight: 700;
+    }
+
+    #show-secondary-profitcenter { // secondary profit center
+        +label {
+            +div {
+                display: none;
+            }
+        }
+        &:checked {
+            +label {
+                // todo: revise, content hidden in a crude way
+                overflow: hidden;
+                width: 32px;
+                +div {
+                    display: inline-block;
+                }
+            }
+        }
+    }
+
+    // the "accordion" for the users and assets
+    .resources-assets, .resources-users {
+        &::before {
+            content: attr(data-title);
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 700;
+            font-size: 19px;
+            color: @color-text-positive;
+        }
+    }
+    .smartphone({
+        .iScrollLoneScrollbar {
+            opacity: 0.5 !important;
+        }
+    });
+}

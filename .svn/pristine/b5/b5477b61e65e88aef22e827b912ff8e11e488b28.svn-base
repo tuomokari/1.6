@@ -1,0 +1,33 @@
+﻿dailyresourcingwidget
+	en-US
+		next: Next
+		previous: Pervious
+		today: Today
+		selecteddate: Selected date
+		scheduledprojects: Scheduled for today
+		unscheduledprojects: Unshceduled projects
+		modify: Modify
+		confirmunallocate: Do you wish to remove allocation for {0}?
+		confirmconflict: Conflicting resource allocation exists. Allocate anyway?
+		users: Users
+		assets: Assets
+		showusers: Users
+		showassets: Assets
+		showsecondaryprofitcenter: Select profit center for resources
+		profitcenterresources: Profit center for resources
+	fi
+		next: Seuraava
+		previous: Edellinen
+		today: Tänään
+		selecteddate: Valittu päivä
+		scheduledprojects: Tänään aktiiviset projektit
+		unscheduledprojects: Ajastamattomat projektit
+		modify: Muokkaa
+		confirmunallocate: Haluatko poistaa varauksen kohteelle {0}?
+		confirmconflict: Päällekkäinen resursointi havaittu. Resursoidaanko tästä huolimatta?
+		users: Henkilöt
+		assets: Laitteet
+		showusers: Henkilöt
+		showassets: Laitteet
+		showsecondaryprofitcenter: Valitse resurssien tulosyksikkö
+		profitcenterresources: Resurssien tulosyksikkö

@@ -1,0 +1,115 @@
+﻿.__panel {
+    .__panel();
+    .__panelhead {
+        overflow: hidden;
+    }
+
+    .__paneltools {
+        position: absolute;
+		right: @basemeasure;
+		.display-flex;
+		flex-direction: column;
+        z-index: 0;
+
+        .smartphone({
+            margin-top: 75px;
+        });
+    }
+}
+
+.__panel-core(@panelcontentcolor: @color-panel-background; @shadow: true) {
+    //width: 100%;
+    position: relative; // enables absolute positioning
+    overflow: visible;
+    clear: both;
+    border-radius: @border-radius;
+    &::before {
+        border-radius: @border-radius; // for blockscreens
+    }
+    .__clear;
+    
+    & when (@shadow = true) {
+        .desktop({
+            box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1), 0 0 2px 0 rgba(0, 0, 0, 0.025), 0 3px 8px -3px rgba(0,0,0,.15), 0 1px fade(lighten(@panelcontentcolor, 5%), 75%) inset;
+        });
+    }
+    .desktop({
+        background: @panelcontentcolor;
+    });
+
+     .smartphone({
+         background: fade(@panelcontentcolor, 100%);
+     });
+
+    &.__opaque {
+        background: fade(@panelcontentcolor, 100%); // todo: consider using this calculated color or the one set in the theme
+    }
+}
+
+.__panel(@panelcolor: @color-panel-background; @shadow: true) {
+            
+    .__panel-core(@panelcolor; @shadow);
+
+    .__panel, &.__inner { // inner panel
+        border: @border;
+        background: @color-inner-panel-background;
+    
+        & when (@shadow = true) {
+            .desktop({
+                box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.15), 0 0 2px 0 rgba(0, 0, 0, 0.015), 0 3px 8px -3px rgba(0, 0, 0, 0.015), 0 1px fade(lighten(@panelcolor, 5%), 85%) inset;
+            });
+        }
+    }
+
+    &.__margin {
+        margin: @basemeasure;
+    }
+
+    padding: @basemeasure/2 @basemeasure;
+    box-sizing: border-box;
+
+    h2 {
+
+        a, a:hover, a:active {
+            color: @color-text-title-float;
+        }
+            
+        &.__titlepanel-title {
+            color: @color-text-title-float;
+            font-size: 32px;
+            font-weight: 100;
+            margin: 0;
+            float: left;
+                
+            .smartphone({
+                margin-left: 50px; // to facilitate back-button
+                max-width: calc(~"100% - 110px"); // to also facilitate right-hand side button menu
+                overflow-x: hidden;
+                text-overflow: ellipsis;
+            });
+        }
+    }
+    
+    & + &, & + form>& { // if two panels are atop each other, have a gutter
+        margin-top: @basemeasure;
+    }
+}
+
+body.__isdialog .__panel h2.__titlepanel-title {
+    .smartphone({
+        margin-left: 0;
+    });
+}
+
+.__table-wrapper+.__panel { // Panels following a table have a top margin. todo: this should be more specific
+    margin-top: @basemeasure;
+}
+
+// prevent mobile title padding on homepage (where no back button is expected)
+body[data-action='home'] .__panel {
+    .__panelhead {
+        h2.__titlepanel-title {
+            margin-left: 0;
+        }
+    }
+}

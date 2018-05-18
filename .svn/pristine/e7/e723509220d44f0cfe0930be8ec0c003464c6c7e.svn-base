@@ -1,0 +1,10 @@
+﻿.__calendarwidget {
+    .fc-icon-right-single-arrow {
+        .fa-icon();
+        &:before { content: @fa-var-chevron-right; }
+    }
+    .fc-icon-left-single-arrow {
+        .fa-icon();
+        &:before { content: @fa-var-chevron-left; }
+    }
+}

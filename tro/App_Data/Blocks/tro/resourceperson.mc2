@@ -1,0 +1,71 @@
+﻿[controller(tro)
+
+	[using(dataform)]
+	[using(form)]
+	[using(table)]
+	[using(navigation)]
+	[using(layout)]
+	[using(schema)]
+	[using(text)]
+	[using(menubar)]
+	[using(timeline)]
+
+	[resourceperson(personid)
+		[html
+			[head(title: [$pagetitle_resourceperson])
+				[defaultaction.defaultviewhead]
+			]
+			
+			[body
+				[application
+					[resourcepersonbody(personid)]
+				]
+			]
+		]
+	]
+	
+	[private]
+	[resourcepersonbody(personid)
+	[grid(
+		columns: "2-1",
+		padding: false)
+		[column
+			[panel(
+				heading: [$schema_project],
+				padding: false)
+				[region
+					[timeline(
+						action: "timelinepersondata",
+						personid: personid
+					)]
+				]
+			]
+		]
+		[column
+			[region(
+				padding: false)
+				[listview.listview(
+					schema: schemafor("person"),
+					listviewcontroller: "resourcinglistview",
+					listviewaction: "personslist",
+					extraparams: extraparams,
+					allownew: false,
+					renderpanel: true,
+					padding: false,
+					allowback: false)
+				]
+			]
+		]
+	]
+
+		//[listview.listview(
+		//	schema: schemafor("asset"),
+		//	listviewcontroller: "resourcinglistview",
+		//	listviewaction: "assetslist",
+		//	extraparams: extraparams,
+		//	allownew: false,
+		//  allowback: false)
+		//]
+	]
+	
+]

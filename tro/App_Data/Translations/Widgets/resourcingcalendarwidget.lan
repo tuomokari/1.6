@@ -1,0 +1,23 @@
+﻿resourcingcalendarwidget
+	en-US
+		next: Next
+		previous: Pervious
+		today: Today
+		selecteddate: Selected month
+		showprojects: Show projects
+		allentries: Show all
+		showallocationsforproject: Show allocations for projects
+		showallocationsforperson: Show allocations for persons
+		projectnotfound: No project
+		usernotfound: No user
+	fi
+		next: Seuraava
+		previous: Edellinen
+		today: Tänään
+		selecteddate: Valittu kuukausi
+		showprojects: Näytä projektit
+		allentries: Näytä kaikki
+		showallocationsforproject: Näytä varaukset projekteille
+		showallocationsforperson: Näytä varaukset henkilöille
+		projectnotfound: Ei projektia
+		usernotfound: Ei työntekijää

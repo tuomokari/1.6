@@ -1,0 +1,19 @@
+capacityutilizationwidget
+	allocationsbyuserprofitcenter
+		allocationentry
+			__condition: { date: { $lt: [@end] }, $or: [{endtimestamp: { $gt: [@start] }}, {"endtimestamp": { $exists: false }} ], userprofitcenter: [@profitcenter] }
+
+	workhistory
+		timesheetentry
+			__condition: { $and: [ {date: { $lte: [@end] }}, {date: { $gte: [@start] }}, {userprofitcenter: [@profitcenter]}] }
+
+		absenceentry
+			__condition: { $and: [ {date: { $lte: [@end] }}, {date: { $gte: [@start] }}, {userprofitcenter: [@profitcenter]}] }
+
+	usersforprofitcenter
+		user
+			__condition: { profitcenter: [@profitcenter] }
+			__specifiedonly: true
+			firstname
+			lastname
+

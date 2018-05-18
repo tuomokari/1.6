@@ -1,0 +1,51 @@
+﻿.resourcingcalendarwidget {
+    height: 100%;
+    .display-flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+.resourcingcalendarsetup {
+    margin-bottom: @basemeasure;
+    overflow: visible;
+
+    label {
+        width: auto;
+        min-width: auto;
+    }
+
+    .dataselectors {
+        white-space: nowrap;
+        display: inline-block;
+    }
+}
+
+.resourcingcalendarcontrols {
+    overflow: auto;
+    padding: 5px 10px;
+    border-bottom: 1px solid darken(@color-panel-background-opaque, 10%);
+
+    h2 {
+        font-size: 14px !important;
+        margin-left: 25px;
+        .selecteddate {
+            font-weight: 700;
+        }
+    }
+}
+
+.__flexpanel-column.projects {
+   flex-basis: 350px;
+}
+
+.resourcecalendar {
+    padding-left: @basemeasure;
+}
+
+td.fc-day-number {
+    cursor: pointer;
+    font-weight: 400;
+    &:hover {
+        font-weight: 700;
+    }       
+}

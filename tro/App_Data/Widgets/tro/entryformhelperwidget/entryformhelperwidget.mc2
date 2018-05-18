@@ -1,0 +1,6 @@
+﻿[controller(entryformhelperwidget)
+	[entryformhelperwidget(viewtype)
+			[widget(variables, currentblockname, currentcontroller, class: "__hidden __entryformhelperwidget")
+		]
+	]
+]

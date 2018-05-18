@@ -1,0 +1,22 @@
+﻿[controller(timesheetentrypaytypewidget)
+
+	[using(form)]
+
+	// Add your widget's parameters to timesheetentrypaytypewidget block. These parameters will be passed
+	// to script and can be used inside the block.
+	// Example:
+	// timesheetentrypaytypewidget(myparam1 = 2, myparam2 = true)
+	//
+	// this can be called from any other block, for example
+	// [timesheetentrypaytypewidget.timesheetentrypaytypewidget(10, false)]
+	//
+	[timesheetentrypaytypewidget(viewtype)
+			[widget(variables, currentblockname, currentcontroller, class: "__hidden")
+			[session.scriptedvalues.addtimesheetentryform.selectedform = null]
+
+			// Used to track whether project category is selectable and if "required" value needs to be checked.
+			[hiddenfield(name: "requireprojectcategory")]
+			[hiddenfield(name: "requiretime")]
+		]
+	]
+]

@@ -1,0 +1,26 @@
+﻿core
+	en-US
+		admin_skip: Skip
+		admin_limit: Limit
+		admin_collection: Collection
+	
+		refreshdocuments_title: Refresh display names
+		refreshdocuments_title_refresh: Refresh
+		refreshdocuments_results: Results
+
+		querytester: Query tester
+
+		refreshdata: Refresh data
+
+	fi
+		admin_skip: Ohita
+		admin_limit: Käsittele enintään
+		admin_collection: Kokoelma
+
+		refreshdocuments_title: Päivitä dokumenttien näyttönimet
+		refreshdocuments_refresh: Päivitä
+		refreshdocuments_results: Tulokset
+
+		querytester: Haut
+
+		refreshdata: Datan tuoreutus

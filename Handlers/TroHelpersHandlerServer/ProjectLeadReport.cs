@@ -1,0 +1,543 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using MongoDB.Bson;
+using MongoDB.Shared;
+using MongoDB.Driver;
+using MongoDB.Driver.Builders;
+using SystemsGarden.mc2.Common;
+
+namespace SystemsGarden.mc2.RemoteConnector.Handlers.TroHelpersHandlerServer
+{
+	class ProjectLeadReport
+	{
+		// Cached data
+		private static Dictionary<string, Dictionary<string, BsonDocument>> cache = new Dictionary<string, Dictionary<string, BsonDocument>>();
+
+		private MongoDatabase database;
+		private ILogger logger;
+
+		private ObjectId? projectId;
+		private DateTime? start;
+		private DateTime? end;
+		private ObjectId? payrollPeriodId;
+		private ObjectId? claContractId = new ObjectId?();
+		private ObjectId? userId = new ObjectId?();
+		private ObjectId? userFilterId = new ObjectId?();
+		private ObjectId? userListId = new ObjectId?();
+		private string userIdStr = null;
+		private string userFilterIdStr = null;
+		private BsonDocument user;
+		// True if report is generated for one user only
+		private bool userScope = true;
+		private Dictionary<string, Dictionary<ObjectId, List<BsonDocument>>> reportDocuments;
+		private HashSet<string> userListUsers = null;
+
+		private DataTree report;
+
+		private string[] documentTypes = { "timesheetentry", "dayentry", "articleentry" };
+		private Dictionary<string, string[]> supportedDocumentValues =  new Dictionary<string, string[]>()
+		{
+			{ "timesheetentry", new string[] {
+					"_id",
+					"date",
+					"user",
+					"timesheetentrydetailpaytype",
+					"__user",
+					"__datetime",
+					"duration",
+					"note",
+					"approvedbyworker",
+					"approvedbymanager"
+				}
+			},
+			{ "dayentry", new string[] {
+					"_id",
+					"date",
+					"user",
+					"dayentrytype",
+					"__user",
+					"__datetime",
+					"amount",
+					"note",
+					"approvedbyworker",
+					"approvedbymanager"
+				}
+			},
+			{ "articleentry", new string[] {
+					"_id",
+					"date",
+					"user",
+					"article",
+					"__user",
+					"__datetime",
+					"amount",
+					"note",
+					"approvedbyworker",
+					"approvedbymanager"
+				}
+			}
+		};
+
+		public ProjectLeadReport(
+			ILogger logger,
+			MongoDatabase database,
+			ObjectId projectId,
+			ObjectId? payrollPeriod,
+			ObjectId? userId,
+			DateTime? start,
+			DateTime? end,
+			ObjectId? userFilterId,
+			ObjectId? userListId)
+		{
+			this.database = database;
+			this.logger = logger;
+			this.projectId = projectId;
+			this.payrollPeriodId = payrollPeriod;
+			this.userId = userId;
+			this.userIdStr = Convert.ToString(userId);
+			this.start = start;
+			this.end = end;
+			this.userFilterId = userFilterId;
+			this.userFilterIdStr = Convert.ToString(userFilterId);
+			this.userListId = userListId;
+		}
+
+		public DataTree GenerateProjectLeadReport()
+		{
+			Init();
+			GetFilterValues();
+			GetUserScope();
+			GetAllProjectEntries();
+			BuildSipmlifiedAuditTrail();
+			FilterDocuments();
+
+			return report;
+		}
+
+		private static BsonDocument GetFromCache(string id, string type,  MongoDatabase database)
+		{
+			if (string.IsNullOrEmpty(id))
+				return null;
+
+			lock (cache)
+			{
+				if (!cache.ContainsKey(type))
+					cache[type] = new Dictionary<string, BsonDocument>();
+
+				var cachedCollection = cache[type];
+
+				Dictionary<string, BsonDocument> users = cache[type];
+				if (cachedCollection.ContainsKey(id))
+					return cachedCollection[id];
+
+				BsonDocument document = database.GetCollection(type).FindOne(Query.EQ("_id", new ObjectId(id)));
+
+				if (document == null)
+					return null;
+
+				cachedCollection[id] = document;
+				return document;
+			}
+		}
+
+		private void Init()
+		{
+			reportDocuments = new Dictionary<string, Dictionary<ObjectId, List<BsonDocument>>>();
+            
+            report = new DataTree();
+            
+            foreach(string documentType in documentTypes)
+            {
+                report[documentType].Create();
+            }
+		}
+
+		private void GetFilterValues()
+		{
+			InitPayrollFilter();
+			InitUserList();
+		}
+
+		private void InitUserList()
+		{
+			if (userListId.HasValue)
+			{
+				BsonDocument userList = database.GetCollection("favouriteusers").FindOne(Query.EQ("_id", userListId));
+
+				foreach (var user in (BsonArray)userList["user"])
+				{
+					if (userListUsers == null)
+						userListUsers = new HashSet<string>();
+
+					userListUsers.Add(user.ToString());
+				}
+			}
+		}
+
+		private void InitPayrollFilter()
+		{
+			if (payrollPeriodId.HasValue)
+			{
+				// Get payroll period if set and determine CLA contract and limit start and end based on it
+				BsonDocument payrollPeriod = database.GetCollection("payrollperiod").FindOne(Query.EQ("_id", payrollPeriodId));
+
+				if (!start.HasValue)
+					start = (DateTime)payrollPeriod["startdate"];
+				else
+					start = ((DateTime)payrollPeriod["startdate"] > start) ? (DateTime)payrollPeriod["startdate"] : start;
+
+				if (!end.HasValue)
+					end = (DateTime)payrollPeriod["enddate"];
+				end = ((DateTime)payrollPeriod["enddate"] < end) ? (DateTime)payrollPeriod["enddate"] : end;
+
+				claContractId = (ObjectId)((BsonArray)payrollPeriod["clacontract"])[0];
+			}
+		}
+
+		private void GetUserScope()
+		{
+			user = database.GetCollection("user").FindOne(Query.EQ("_id", userId));
+			int level = (int)user["level"];
+			
+			// Always generate full report for managers and HR
+			if (level >= 3 && level <= 6)
+			{
+				logger.LogDebug("Creating report for all entries due to user level.");
+				userScope = false;
+			}
+
+			// Check whether project lead date exists for given user and project
+			var project = database.GetCollection("project").FindOne(Query.EQ("_id", projectId));
+
+			if (userScope && project.Contains("projectlead"))
+			{
+				BsonArray projectLeads = (BsonArray)project["projectlead"];
+				foreach(BsonValue projectLead in projectLeads) { 
+					if ((ObjectId)projectLead == (ObjectId)userId)
+					{
+						logger.LogDebug("Creating report for all entries due user being set as project lead for project.");
+						userScope = false;
+						break;
+					}
+				}
+			}
+
+			if (userScope)
+				logger.LogDebug("Creating report for specific user only", userId);
+		}
+
+		private void GetAllProjectEntries()
+		{
+			foreach(var documentType in documentTypes)
+			{
+				GetAllProjectEntries(documentType);
+			}
+		}
+
+		private void GetAllProjectEntries(string documentType)
+		{
+			logger.LogDebug("Getting all entries of type", documentType);
+
+			if (!reportDocuments.ContainsKey(documentType))
+				reportDocuments[documentType] = new Dictionary<ObjectId, List<BsonDocument>>(); 
+
+			var reportDocumentsOfType = reportDocuments[documentType];
+
+			var auditCollection = database.GetCollection(documentType + "__audittrail");
+
+			// Collect all potential entries
+			IMongoQuery query = Query.EQ("project", projectId);
+			MongoCursor<BsonDocument> entryParts = auditCollection.Find(query);
+			var documentIds = new HashSet<BsonValue>();
+
+			int partsFound = 0;
+			foreach(var entry in entryParts)
+			{
+				if (entry.Contains("__originalid"))
+				{
+					documentIds.Add((ObjectId)entry["__originalid"]);
+					partsFound++;
+				}
+				else
+				{
+					logger.LogWarning("Audit entry with no original id found.", entry["_id"]);
+				}
+			}
+
+			logger.LogDebug("Found entry parts", partsFound);
+
+			// Get full audit log data for each entry
+			MongoCursor<BsonDocument> fullDocumentData = auditCollection.Find(Query.In("__originalid", documentIds)).SetSortOrder(SortBy.Ascending("__datetime"));
+
+			int fullDocumentParts = 0;
+			// Add all enries to dictionary split by entry ids
+			foreach (var document in fullDocumentData)
+			{
+				if (!reportDocumentsOfType.ContainsKey((ObjectId)document["__originalid"]))
+					reportDocumentsOfType[(ObjectId)document["__originalid"]] = new List<BsonDocument>();
+
+				reportDocumentsOfType[(ObjectId)document["__originalid"]].Add(document);
+				fullDocumentParts++;
+			}
+
+			logger.LogDebug("Complete entries total parts.", fullDocumentParts);
+			logger.LogDebug("Complete entries", reportDocumentsOfType.Count);
+		}
+
+		private void BuildSipmlifiedAuditTrail()
+		{
+			foreach (var documentType in documentTypes)
+			{
+				BuildSipmlifiedAuditTrail(documentType);
+			}
+		}
+
+		private void BuildSipmlifiedAuditTrail(string documentType)
+		{
+			foreach(List<BsonDocument> auditDocuments in reportDocuments[documentType].Values)
+			{
+				BuildSipmlifiedAuditTrail(documentType, auditDocuments);
+			}
+		}
+
+		private void BuildSipmlifiedAuditTrail(string documentType, List<BsonDocument> auditDocuments)
+		{
+			string id = auditDocuments[0]["__originalid"].ToString();
+
+			DataTree reportDocument = report[documentType][id];
+
+			DataTree currentDocument = new DataTree();
+			foreach (BsonDocument auditDocument in auditDocuments)
+			{
+				ApplyAuditTrailDocumentToReportDocument(auditDocument, currentDocument, documentType);
+
+				// We assume all changes after manager approval are done by payroll. This is asimplification
+				// and may create confusing results if approval states are switched on and off.
+				if (!reportDocument["manager"].Empty)
+				{
+					reportDocument["payroll"] = (DataTree)currentDocument.Clone();
+				}
+				else if ((bool)auditDocument.GetValue("approvedbymanager", false))
+				{
+					reportDocument["manager"] = (DataTree)currentDocument.Clone();
+				}
+				else if ((bool)auditDocument.GetValue("approvedbyworker", false))
+				{
+					reportDocument["worker"] = (DataTree)currentDocument.Clone();
+				}
+			}
+
+			// Unapproved entries that haven't been deletd are shown.
+			if (!reportDocument.Contains("worker") && !(bool)currentDocument["__deleted"])
+				reportDocument["worker"] = (DataTree)currentDocument.Clone();
+
+			// Deleted by manager
+			if (!reportDocument.Contains("manager") && !(bool)reportDocument["worker"]["__deleted"] && (bool)currentDocument["__deleted"])
+				reportDocument["manager"] = (DataTree)currentDocument.Clone();
+
+			// Deleted by payroll
+			if (!reportDocument.Contains("payroll") && !(bool)reportDocument["manager"]["__deleted"] && (bool)currentDocument["__deleted"])
+				reportDocument["payroll"] = (DataTree)currentDocument.Clone();
+
+		}
+
+		/// <summary>
+		/// Update relevent parts of bson document to data tree entry.
+		/// </summary>
+		/// <param name="bsonDocument"></param>
+		/// <param name="dataTreeDocument"></param>
+		private void ApplyAuditTrailDocumentToReportDocument(BsonDocument bsonDocument, DataTree dataTreeDocument, string documenType)
+		{
+			foreach (string valueName in supportedDocumentValues[documenType])
+			{
+				if (bsonDocument.Contains(valueName))
+				{
+					dataTreeDocument[valueName] = BsonValueToMC2Value(bsonDocument[valueName]);
+				}
+			}
+
+			if (dataTreeDocument.Contains("user"))
+			{
+				BsonDocument user = GetFromCache(dataTreeDocument["user"], "user", database);
+				dataTreeDocument["user"]["__displayname"] = $"{(string)user.GetValue("firstname", "")} {(string)user.GetValue("lastname", "")}";
+				dataTreeDocument["user"]["_id"] = (string)dataTreeDocument["user"].Value;
+			}
+
+			if (dataTreeDocument.Contains("__user"))
+			{
+				BsonDocument user = GetFromCache(dataTreeDocument["__user"], "user", database);
+				dataTreeDocument["__user"]["__displayname"] = $"{(string)user.GetValue("firstname", "")} {(string)user.GetValue("lastname", "")}";
+				dataTreeDocument["__user"]["_id"] = (string)dataTreeDocument["__user"].Value;
+			}
+
+			if (dataTreeDocument.Contains("timesheetentrydetailpaytype"))
+			{
+				BsonDocument payType = GetFromCache(dataTreeDocument["timesheetentrydetailpaytype"], "timesheetentrydetailpaytype",  database);
+				dataTreeDocument["paytype"]["__displayname"] = (string)payType.GetValue("name", "");
+			}
+
+			if (dataTreeDocument.Contains("dayentrytype"))
+			{
+				BsonDocument payType = GetFromCache(dataTreeDocument["dayentrytype"], "dayentrytype", database);
+				dataTreeDocument["paytype"]["__displayname"] = (string)payType.GetValue("name", "");
+			}
+
+			if (dataTreeDocument.Contains("article"))
+			{
+				BsonDocument payType = GetFromCache(dataTreeDocument["article"], "article", database);
+				dataTreeDocument["article"]["__displayname"] = (string)payType.GetValue("name", "");
+			}
+
+			if (bsonDocument["__type"] == "Delete")
+				dataTreeDocument["__deleted"] = true;
+		}
+
+		private void FilterDocuments()
+		{
+			foreach (var documentType in documentTypes)
+			{
+				FilterDocuments(documentType);
+			}
+		}
+
+		private void FilterDocuments(string documentType)
+		{
+			DataTree reportOfType = report[documentType];
+			int totalDocumentsStart = reportOfType.Length;
+
+			for (int i = reportOfType.Length - 1; i >= 0; i--)
+			{
+				DataTree reportDocument = reportOfType[i];
+
+				bool filterWorker = FilterDocument(reportDocument["worker"]);
+				bool filterManager = FilterDocument(reportDocument["manager"]);
+				bool filterPayroll = FilterDocument(reportDocument["payroll"]);
+
+				// Skipd document if none of the filters match or if the document hasn't been approved by manager
+				if (reportDocument["worker"].Empty ||  
+					(!filterWorker && !filterManager && !filterPayroll))
+					reportOfType[i].Remove();
+			}
+
+			logger.LogDebug("Documents after filtering", reportOfType.Length + "/" + totalDocumentsStart);
+		}
+
+		private bool FilterDocument(DataTree reportDocument)
+		{
+			if (!FilterDocumentByDate(reportDocument))
+				return false;
+
+			if (!FilterDocumentByUser(reportDocument))
+				return false;
+
+			if (!FilterDocumentByUserList(reportDocument))
+				return false;
+
+			if (!FilterDocumentByClaContract(reportDocument))
+				return false;
+
+			return true;
+		}
+
+		private bool FilterDocumentByDate(DataTree reportDocument)
+		{
+			if (!reportDocument.Contains("date"))
+				return false;
+
+			DateTime date = (DateTime)reportDocument["date"];
+
+			if (start.HasValue && date < start)
+				return false;
+
+			if (end.HasValue && date > end)
+				return false;
+
+			return true;
+		}
+
+		private bool FilterDocumentByUser(DataTree reportDocument)
+		{
+			bool returnValue = true;
+			if (userScope && !string.IsNullOrEmpty(userIdStr) && reportDocument["user"] != userIdStr)
+				returnValue = false;
+
+			if (!string.IsNullOrEmpty(userFilterIdStr) && reportDocument["user"] != userFilterIdStr)
+				returnValue = false;
+
+			return returnValue;
+		}
+
+		private bool FilterDocumentByUserList(DataTree reportDocument)
+		{
+			if (userListUsers == null)
+				return true;
+
+			return userListUsers.Contains(reportDocument["user"]);
+		}
+
+		private bool FilterDocumentByClaContract(DataTree reportDocument)
+		{
+			if (claContractId == null)
+				return true;
+
+			BsonDocument user = GetFromCache(reportDocument["user"], "user", database);
+
+			if (user.Contains("clacontract") &&
+				user["clacontract"].IsBsonArray &&
+				((BsonArray)user["clacontract"]).Count > 0 &&
+				(ObjectId)(((BsonArray)user["clacontract"])[0]) == claContractId)
+				return true;
+
+			return false;
+		}
+
+		private MC2Value BsonValueToMC2Value(BsonValue bsonValue)
+		{
+			if (bsonValue.IsBoolean)
+			{
+				return new MC2BoolValue((bool)bsonValue);
+			}
+			else if (bsonValue.IsInt32)
+			{
+				return new MC2IntValue((int)bsonValue);
+			}
+			else if (bsonValue.IsDouble)
+			{
+				return new MC2DecimalValue((decimal)(double)bsonValue);
+			}
+			else if (bsonValue.IsString)
+			{
+				return new MC2StringValue(Convert.ToString(bsonValue));
+			}
+			else if (bsonValue.IsValidDateTime)
+			{
+				return new MC2DateTimeValue((DateTime)bsonValue);
+			}
+			else if (bsonValue.IsBsonNull)
+			{
+				return MC2EmptyValue.EmptyValue;
+			}
+			else if (bsonValue.IsObjectId)
+			{
+				return new MC2StringValue(Convert.ToString(bsonValue));
+			}
+			else if (bsonValue is BsonArray)
+			{
+				// Support only remote relations and don't get display name yet.
+				BsonArray array = (BsonArray)bsonValue;
+				if (array.Count > 0)
+					return new MC2StringValue(Convert.ToString(array[0]));
+				else
+					return null;
+			}
+			else
+			{
+				logger.LogWarning("Unknown BSON value type in database", bsonValue.BsonType);
+				return null;
+			}
+		}
+	}
+}

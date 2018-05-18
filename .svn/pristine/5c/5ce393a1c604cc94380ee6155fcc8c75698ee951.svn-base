@@ -1,0 +1,12 @@
+﻿
+// Stub controller for troaddtions. These can be overridden by specific TRO configurations.
+[controller(troadditions)
+
+	[siteheadcontent]
+		
+	[defaultviewheader]
+
+	[defaultviewfooter]
+
+	[manageactions]
+]

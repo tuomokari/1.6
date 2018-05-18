@@ -1,0 +1,6 @@
+startproject
+	unscheduledallocation
+		allocationentry
+			__collectionname: allocationentry
+			__condition: { user: [@user], project: [@project], "date": { $exists: false}  }
+			__specifiedonly: false

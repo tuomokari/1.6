@@ -1,0 +1,8 @@
+Always use personal account for web deploiy and never save passwords as they would then be uploaded to SVN.
+
+http://www.iis.net/learn/publish/troubleshooting-web-deploy/web-deploy-error-codes#ERROR_USER_NOT_ADMIN
+
+ERROR_USER_NOT_ADMINDiagnosis - This happens if you try to connect to the Remote Agent Service but have not provided appropriate administrator credentials.Resolution - The Remote Agent Service accepts either built-in Administrator or Domain Administrator credentials. If you have a non-domain setup and want to use account other that built-in administrator, please do following: •Create a separate user group MSDepSvcUsers on remote computer.
+- Create an local account A on both local & remote computer.
+- Add A to MSDepSvcUsers on remote computer.
+- Use account A to publish, this will allow you to publish without needing to use built-in admin account.

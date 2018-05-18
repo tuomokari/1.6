@@ -1,0 +1,21 @@
+﻿totalwork
+	en-US
+		regular_hours: Regular hours
+		absences: Absences
+		overtime: Overtime
+		socialproject: Administrative
+		user: Name
+		totaltypes_mealallowance: Meal allowances
+		totaltypes_dailyallowance: Per Diem
+		totalhours: Total hours
+		toomanyresults: Too many results. Please apply more filters.
+	fi
+		regular_hours: Säännöllisen työajan tunnit
+		absences: Poissaolot
+		overtime: Ylityö
+		socialproject: Hallinnolliset
+		user: Nimi
+		totaltypes_mealallowance: Ateriakorvaukset
+		totaltypes_dailyallowance: Päiväraha
+		totalhours: Kaikki tunnit
+		toomanyresults: Liian monta tulosta. Tarkenna hakua.

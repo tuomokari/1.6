@@ -1,0 +1,29 @@
+﻿[controller(searchhelpers)
+	[using(layout)]
+	[using(form)]
+	[using(table)]
+	[using(searchfilter)]
+
+
+	[searchfilterforproject(name, label, required = false, userid=null)
+		
+		[resultid = newid]
+		[targetid = newid]
+		[searchfilter(
+			name: name,
+			label: label,
+			targetid: targetid,
+			resultid: resultid,
+			controllername: "searchhelpers",
+			action: "getprojectresults",
+			immediate: true,
+			extraparams: "userid=" + currentuser._id,
+			required: required)]
+
+		[validatemessage(validationerror)]
+		[hiddenfield(name, value, targetid)]
+
+		<div id="[resultid]"></div>
+			
+	]
+]

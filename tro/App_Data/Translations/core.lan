@@ -1,0 +1,466 @@
+﻿core
+	en-US
+
+	// Variable
+		languagecode: en-US
+
+	// Labels
+		relations: Related fields
+		signedinas: Signed in as
+		select: Select
+		all: All
+		password: Password
+		username: Username		
+		logout: Logout
+		search: Search
+		email: Email
+		impersonate: Impersonate
+
+	// Navigation
+		navigation_impersonate: Impersonate
+
+	// Dates
+		day_0: Sunday
+		day_1: Monday
+		day_2: Tuesday
+		day_3: Wednesday
+		day_4: Thursday
+		day_5: Friday
+		day_6: Saturday
+
+		day_abbreviated_0: Su
+		day_abbreviated_1: Mo
+		day_abbreviated_2: Tu
+		day_abbreviated_3: We
+		day_abbreviated_4: Th
+		day_abbreviated_5: Fr
+		day_abbreviated_6: Sa
+
+		month_0: January
+		month_1: February
+		month_2: March
+		month_3: April
+		month_4: May
+		month_5: June
+		month_6: July
+		month_7: August
+		month_8: September
+		month_9: October
+		month_10: November
+		month_11: December
+
+		month_abbreviated_0: Jan
+		month_abbreviated_1: Feb
+		month_abbreviated_2: Mar
+		month_abbreviated_3: Apr
+		month_abbreviated_4: May
+		month_abbreviated_5: Jun
+		month_abbreviated_6: Jul
+		month_abbreviated_7: Aug
+		month_abbreviated_8: Sep
+		month_abbreviated_9: Oct
+		month_abbreviated_10: Nov
+		month_abbreviated_11: Dec
+
+	// Buttons
+		submit: Submit
+		ok: Ok
+		cancel: Cancel
+		add: Add
+		addnew: Add new
+		new: New
+		remove: Remove
+		next: Next
+		previous: Previous
+		next_plural: Seuraavat
+		previous_plural: Edelliset
+		menu: Main Menu
+		today: Today
+		now: Now
+		clear: Clear
+		change: Change
+		filter: Filter
+		login: Login
+		gosearch: Go!
+		request_password: Request password
+		back: Back
+		recent: Recent
+
+	// Validation messages
+		validate_required: Please enter a value
+		validate___invalidtype: Please enter value in correct format
+		validate_min: Value is too low.
+		validate_max: Value is too high.
+
+	// Confirmation messages
+		confirm_remove: Are you sure you wish to remove this entry?
+		confirm_remove_relations: Are you sure you wish to remove selected entries?
+		confirm_remove_many: Are you sure you wish to remove selected entries?
+	
+	// Errors
+		error_erroroccurred: An error occurred. We are sorry for the inconvenience. Please try again later. Correlation id for error:
+		error_erroroccurreddebug: Runtime Error
+		error_invalidlogin: Invalid username or password.
+		error_technicaldifficulties: You cannot sign in at this time. Please try again later.
+		error_error: Error
+		
+	// Error and info forms
+		stacktrace: Stack Trace
+		stacktracenet: .NET Stack Trace
+		exception: Exception
+		runtimeinfo: Runtime info
+		locationinfile: Location in file
+		file: File
+		edit: Edit
+		collections: Collections
+		true: True
+		false: False
+		copy: Copy
+		addanother: Add another
+
+	// Units
+		unit_hours: h
+		unit_minutes: min
+		unit_days: days
+		unit_euro: €
+		unit_km: km
+
+	// Default schema
+
+		schema_login: Login
+		schema_login_timestamp: Timestamp
+		schema_login_user: Login credential
+
+		schema_user: User
+		schema_user_login: Login
+		schema_user_email: Email
+		schema_user_level: Access level
+		schema_user_language: Language
+		schema_user_disabled: Disabled
+		schema_user_phonenumber: Phone number
+
+	// datetime
+	
+		monday: Monday
+		tuesday: Tuesday
+		wednesday: Wednesday
+		thursday: Thursday
+		friday: Friday
+		saturday: Saturday
+		sunday: Sunday
+
+		monday_short: Mo
+		tuesday_short: Tu
+		wednesday_short: We
+		thursday_short: Th
+		friday_short: Fr
+		saturday_short: Sa
+		sunday_short: Su
+
+		week: Week
+		week_short: Wk
+	
+		january: January
+		february: February
+		march: March
+		april: April
+		may: May
+		june: June
+		july: July
+		august: August
+		september: September
+		october: October
+		november: November
+		december: December
+		
+		january_alt: January
+		february_alt: February
+		march_alt: March
+		april_alt: April
+		may_alt: May
+		june_alt: June
+		july_alt: July
+		august_alt: August
+		september_alt: September
+		october_alt: October
+		november_alt: November
+		december_alt: December
+		
+		january_short: Jan
+		february_short: Feb
+		march_short: Mar
+		april_short: Apr
+		may_short: May
+		june_short: Jun
+		july_short: Jul
+		august_short: Aug
+		september_short: Sep
+		october_short: Oct
+		november_short: Nov
+		december_short: Dec
+
+	// login
+		pagetitle_login: Login
+		login_request_password: Request a new password
+		login_new_password_email_subject: Password request
+		login_new_password_email_body: "Hi,
+Here is your new password information: 
+
+User: {0}
+Password: {1}
+
+Regards,
+{2}"
+
+	// request password
+		pagetitle_request_password: Request a new password
+		requestpassword_requestsent: A new password was sent to the address you provided.
+		requestpassword_invalidemail: Please check your email address.
+		requestpassword_go_to_login: Return to login
+		requestpassword_send: Send
+
+	// listview
+		listview_noelements: No elements to display
+		listview_show_all_columns: All columns
+
+	// About
+		about_versionmc2: MC2 Version
+		about_versionapplication: Application version
+
+	// Searchfilter
+		searchfilter_empty: Type to search
+		searchfilter_noresults: No results found
+
+	fi
+
+	// Variable
+		languagecode: fi
+	
+	// Labels
+		relations: Liitetyt kentät
+		signedinas: Kirjautunut käyttäjä
+		select: Valitse
+		all: Kaikki
+		password: Salasana
+		username: Käyttäjänimi		
+		logout: Kirjaudu ulos
+		search: Hae
+		email: Sähköpostiosoite
+		impersonate: Impersonoidu
+
+	// Navigation
+		navigation_impersonate: Impersonoidu
+
+	// Dates
+		day_0: Sunnuntai
+		day_1: Maanantai
+		day_2: Tiistai
+		day_3: Keskiviikko
+		day_4: Torstai
+		day_5: Perjantai
+		day_6: Lauantai
+
+		day_abbreviated_0: Su
+		day_abbreviated_1: Ma
+		day_abbreviated_2: Ti
+		day_abbreviated_3: Ke
+		day_abbreviated_4: To
+		day_abbreviated_5: Pe
+		day_abbreviated_6: La
+
+		month_0: Tammikuu
+		month_1: Helmikuu
+		month_2: Maaliskuu
+		month_3: Huhtikuu
+		month_4: Toukokuu
+		month_5: Kesäkuu
+		month_6: Heinäkuu
+		month_7: Elokuu
+		month_8: Syyskuu
+		month_9: Lokakuu
+		month_10: Marraskuu
+		month_11: Joulukuu
+
+		month_abbreviated_0: Tammi
+		month_abbreviated_1: Helmi
+		month_abbreviated_2: Maalis
+		month_abbreviated_3: Huhti
+		month_abbreviated_4: Touko
+		month_abbreviated_5: Kesä
+		month_abbreviated_6: Heinä
+		month_abbreviated_7: Elo
+		month_abbreviated_8: Syys
+		month_abbreviated_9: Loka
+		month_abbreviated_10: Marras
+		month_abbreviated_11: Joulu
+
+	// Buttons
+		submit: Kähetä
+		ok: Ok
+		cancel: Peru
+		add: Lisää
+		addnew: Lisää uusi
+		new: Uusi
+		remove: Poista
+		next: Seuraava
+		previous: Edellinen
+		next_plural: Seuraavat
+		previous_plural: Edelliset
+		menu: Valikko
+		today: Tänään
+		now: Nyt
+		clear: Tyhjennä
+		change: Muuta
+		filter: Suodata
+		login: Kirjaudu sisään
+		gosearch: Hae!
+		request_password: Pyydä uusi salasana
+		back: Takaisin
+		recent: Viimeisimmät
+
+	// Validation messages
+		validate_required: Ole hyvä ja syötä arvo
+		validate___invalidtype: Syötä arvo oikeassa muodossa
+		validate_min: Arvo on liian pieni.
+		validate_max: Arvo on liian suuri.
+
+	// Confirmation messages
+		confirm_remove: Haluatko poistaa tämän kohteen?
+		confirm_remove_relations: Haluatko poistaa valitut kohteet?
+		confirm_remove_many: Haluatko poistaa valitut kohteet?
+		
+	// Errors
+		error_erroroccurred: Järjestelmässä tapahtui virhe. Pahoittelemme tapahtunutta. Ole hyvä ja yritä myöhemmin uudelleen. Virhetapahtuman tunniste:
+		error_erroroccurreddebug: Ajonaikainen virhe.
+		error_invalidlogin: Virheellinen käyttäjänimi tai salasana.
+		error_technicaldifficulties: Kirjautuminen ei onnistu tällä hetkellä. Ole hyvä ja yritä myöhemmin uudelleen.
+		error_error: Virhe
+
+	// Error and info forms
+		stacktrace: Pino
+		stacktracenet: .NET Pino
+		exception: Poikkeus
+		runtimeinfo: Ajonaikaiset tiedot
+		locationinfile: Sijainti tiedostossa
+		file: Tiedosto
+		edit: Muokkaa
+		collections: Kokoelmat
+		true: Kyllä
+		false: Ei
+		copy: Kopioi
+		addanother: Lisää toinen
+
+	// Units
+		unit_hours: h
+		unit_minutes: min
+		unit_days: päivää
+		unit_euro: €
+		unit_km: km
+
+	// Default schema
+
+		schema_login: Kirjautuminen
+		schema_login_timestamp: Aikaleima
+		schema_login_user: Kirjautumistieto
+
+		schema_user: Käyttäjä
+		schema_user_login: Kirjautuminen
+		schema_user_email: Sähköpostiosoite
+		schema_user_level: Käyttöoikeustaso
+		schema_user_language: Kieli
+		schema_user_disabled: Poissa käytöstä
+		schema_user_phonenumber: Puhelinnumero
+
+	// datetime
+	
+		monday: Maanantai
+		tuesday: Tiistai
+		wednesday: Keskiviikko
+		thursday: Torstai
+		friday: Perjantai
+		saturday: Lauantai
+		sunday: Sunnuntai
+
+		monday_short: Ma
+		tuesday_short: Ti
+		wednesday_short: Ke
+		thursday_short: To
+		friday_short: Pe
+		saturday_short: La
+		sunday_short: Su
+
+		week: Viikko
+		week_short: Vk
+
+		january: Tammikuu
+		february: Helmikuu
+		march: Maaliskuu
+		april: Huhtikuu
+		may: Toukokuu
+		june: Kesäkuu
+		july: Heinäkuu
+		august: Elokuu
+		september: Syyskuu
+		october: Lokakuu
+		november: Marraskuu
+		december: Joulukuu
+
+		january_alt: tammikuuta
+		february_alt: helmikuuta
+		march_alt: maaliskuuta
+		april_alt: huhtikuuta
+		may_alt: toukokuuta
+		june_alt: kesäkuuta
+		july_alt: heinäkuuta
+		august_alt: elokuuta
+		september_alt: syyskuuta
+		october_alt: lokakuuta
+		november_alt: marraskuuta
+		december_alt: joulukuuta
+
+		january_short: tammi
+		february_short: helmi
+		march_short: maalis
+		april_short: huhti
+		may_short: touko
+		june_short: kesä
+		july_short: heinä
+		august_short: elo
+		september_short: syys
+		october_short: loka
+		november_short: marras
+		december_short: joulu
+
+	// login
+		pagetitle_login: Kirjautuminen
+		login_request_password: Pyydä uusi salasana
+		login_new_password_email_subject: Salasanapyyntö
+		login_new_password_email_body: "Hei,
+
+tässä uusi käyttäjätunnus ja salasanasi.
+
+Käyttäjätunnus: {0},
+Salasana: {1}
+
+Ystävällisin Terveisin,
+{2}"
+
+	// request password
+		pagetitle_request_password: Pyydä uusi salasana
+		requestpassword_requestsent: Uusi salasana lähetetty
+		requestpassword_invalidemail: Virheellinen sähköpostiosoite
+		requestpassword_go_to_login: Palaa sisäänkirjautumiseen
+		requestpassword_send: Lähetä
+
+
+	// listview
+		listview_noelements: Listassa ei ole yhtään kohdetta.
+		listview_show_all_columns: Kaikki sarakkeet
+
+	// About
+		about_versionmc2: MC2 versio
+		about_versionapplication: Sovelluksen versio
+
+	// Searchfilter
+		searchfilter_empty: Hae kirjoittamalla
+		searchfilter_noresults: Kohteita ei löytynyt

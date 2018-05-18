@@ -1,0 +1,42 @@
+﻿[controller(routefieldwidget)
+
+	[using(form)]
+	[using(navigation)]
+
+	// Add your widget's parameters to routefieldwidget block. These paramters will be passed
+	// to script and can be used inside the block.
+	// Example:
+	// routefieldwidget(myparam1 = 2, myparam2 = true)
+	//
+	// this can be called from any other block, for example
+	//
+	[routefieldwidget(
+		variables,
+		propertyschema,
+		label,
+		name,
+		value,
+		class)
+	
+		[widget(variables, currentblockname, currentcontroller, class: "__hidden")
+			
+			[hiddenfield(name: "requireroute")]
+
+			[memo(
+				name: name,
+				label: label,
+				value: value,
+				validationerror: validationerror,
+				tiptext: tiptext,
+				required: propertyschema.required,
+				maxlength: propertyschema.max)
+			]
+
+			[selectiondropdown(
+				collectionname: "location",
+				label: txt("pagetitle_myplaces"),
+				filteraction: "myplacesdropdown",
+				filtercontroller: "myplaces")]
+		]
+	]
+]

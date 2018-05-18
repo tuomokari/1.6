@@ -1,0 +1,137 @@
+﻿[controller(tro)
+
+	[using(dataform)]
+	[using(form)]
+	[using(table)]
+	[using(navigation)]
+	[using(layout)]
+	[using(schema)]
+	[using(text)]
+	[using(menubar)]
+	[using(timeline)]
+
+	[resourceprojects()
+		[html
+			[head(title: [$pagetitle_resourceprojects])
+				[defaultaction.defaultviewhead]
+			]
+			
+			[body()
+				[application(fixed: false)
+					[resourceprojectsbody()]
+				]
+			]
+		]
+	]
+	
+	[private]
+	[resourceprojectsbody()
+
+		[state = history.getstate("resourceprojects_state")]
+		[timelinestate = history.getstate("__timeline_state")]
+
+		[panel(
+			padding: false,
+			class: "timelineouterwrapper"
+			)
+			[region(
+				padding: false
+			)
+				<div class="timelinearea" data-refresh="false" data-brush="[timelinestate.brushsize]" data-start="[timelinestate.brushstart]" data-scrollposition="[timelinestate.scrollposition]">
+					[projecttimeline(
+						managerid: state.userfilter,
+						profitcenter: state.profitcenter
+					)]
+				</div>
+			]
+		]
+		[panel (
+			class: "timelinecontrolspanel"
+			)
+			<div class="timelinecontrols-left">
+				[timelinecontrols]
+				<div class="overviewtimelinearea"></div>
+			</div>
+			<div class="timelineresources">
+				<div>
+					<div class="timeline_button" id="timeline_filtertoggle"><i class="fa fa-filter fa-fw"></i></div>
+					<div class="timeline_button" id="timeline_usertoggle"><i class="fa fa-user fa-fw"></i></div>
+					<div class="timeline_button" id="timeline_assettoggle"><i class="fa fa-truck fa-fw"></i></div>
+				</div>
+				<div id="timeline_filter" style="display: none">
+					[panel($resourceprojects_filter)
+						[form(action: callingaction)
+							[selectionfield(
+								collectionname: "user",
+								name: "userfilter",
+								value: state.userfilter,
+								label: $schema_user_supervisor,
+								documentsperpage: 10)]
+
+							[selectionfield(
+								collectionname: "profitcenter",
+								name: "profitcenter",
+								value: state.profitcenter,
+								label: $schema_user_profitcenter,
+								documentsperpage: 10)]
+
+							[submit($filter)]
+						]
+					]
+				</div>
+				<div style="display: none" id="timeline_users">
+					[panel(
+						txt("timeline_adduser"),
+						padding: false,
+						margin: false
+						)
+						[region (
+							padding: false,
+							margin: false
+						)
+							[listview.listview(
+								schema: schemafor("user"),
+								listviewcontroller: "resourcinglistview",
+								listviewaction: "personslist",
+								extraparams: extraparams,
+								allownew: false,
+								allowremove: false,
+								renderpanel: false,
+								padding: false,
+								onlynamefields: true,
+								documentsperpage: 15,
+								allowback: false)
+							]
+						]
+					]
+				</div>
+				<div style="display: none" id="timeline_assets">
+					[panel(
+						txt("timeline_addasset"),
+						padding: false,
+						margin: false
+						)
+						[region (
+							padding: false,
+							margin: false
+						)
+							[listview.listview(
+								schema: schemafor("asset"),
+								listviewcontroller: "resourcinglistview",
+								listviewaction: "assetslist",
+								extraparams: extraparams,
+								allownew: false,
+								allowremove: false,
+								renderpanel: false,
+								padding: false,
+								onlynamefields: true,
+								documentsperpage: 15,
+								allowback: false)
+							]
+						]
+					]
+				</div>
+			</div>
+		]
+	]
+]

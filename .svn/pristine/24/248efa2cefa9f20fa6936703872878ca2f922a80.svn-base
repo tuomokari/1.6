@@ -1,0 +1,20 @@
+﻿[controller(list)
+	[list(type = "*", class = null)
+		[if(type == "*")
+			<ul [attr(class)]>
+				[content]
+			</ul>
+		]
+		[if(type == "1")
+			<ol [attr(class)]>
+				[content]
+			</ol>
+		]
+	]
+
+	[listitem (class = "")
+		<li [attr(class)]>
+			[content]
+		</li>
+	]
+]

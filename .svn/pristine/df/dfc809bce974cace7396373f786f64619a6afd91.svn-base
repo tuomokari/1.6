@@ -1,0 +1,20 @@
+﻿[controller(core)
+
+	[override]
+	[private]
+	[siteheadcontentbefore
+		[version = tro.version]
+		<link rel="icon" href="/images/tro/icon-128.png" />
+	]
+
+	[override]
+	[private]
+	[siteheadcontentafter
+		[troadditions.siteheadcontent]
+	]
+
+	[override]
+	[private]
+	[sitebodyattributes()
+	]
+]

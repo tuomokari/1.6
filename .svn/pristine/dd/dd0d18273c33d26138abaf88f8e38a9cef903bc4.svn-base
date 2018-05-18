@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Comment CommentText="Polls requests 10 sec interval">
+    <Position X="0.771" Y="0.895" Height="0.355" Width="1.968" />
+  </Comment>
+  <Comment CommentText="Generates the actual Export documents">
+    <Position X="3.233" Y="0.895" Height="0.292" Width="3.12" />
+  </Comment>
+  <Comment CommentText="Helper config class">
+    <Position X="7.082" Y="0.905" Height="0.308" Width="1.274" />
+  </Comment>
+  <Comment CommentText="Collection of entries to hold data">
+    <Position X="2.74" Y="3.76" Height="0.355" Width="2.631" />
+  </Comment>
+  <Comment CommentText="Invidual entrytypes">
+    <Position X="3.25" Y="5.25" Height="0.355" Width="1.416" />
+  </Comment>
+  <Comment CommentText="Excel Export">
+    <Position X="8.948" Y="0.906" Height="0.308" Width="1.274" />
+  </Comment>
+  <Comment CommentText="Helper class for Export">
+    <Position X="1.823" Y="2.531" Height="0.308" Width="2.045" />
+  </Comment>
+  <Class Name="SystemsGarden.mc2.RemoteConnector.Handlers.PayrollIntegrationHandlerServer.PayrollExport" Collapsed="true">
+    <Position X="3.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AuQKgABAAAABJARCQAAFCABCAAAREEAIAEAAAAAELAg=</HashCode>
+      <FileName>PayrollExport.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PivotTable" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="fieldNames" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="SystemsGarden.mc2.RemoteConnector.Handlers.PayrollIntegrationHandlerServer.EntryToPayroll" Collapsed="true">
+    <Position X="3.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAABAACAAAAAgAAAAgAAAAAAACAAQAAEABAAA=</HashCode>
+      <FileName>EntryToPayroll.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SystemsGarden.mc2.RemoteConnector.Handlers.PayrollIntegrationHandlerServer.Day" Collapsed="true">
+    <Position X="3.25" Y="7.5" Width="1.5" />
+    <InheritanceLine Type="SystemsGarden.mc2.RemoteConnector.Handlers.PayrollIntegrationHandlerServer.EntryToPayroll" ManuallyRouted="true" FixedToPoint="true">
+      <Path>
+        <Point X="4" Y="6.312" />
+        <Point X="4" Y="7.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAQCAAAGAAAAACAAAAAAEAAAAQAAAAAAAA=</HashCode>
+      <FileName>Day.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SystemsGarden.mc2.RemoteConnector.Handlers.PayrollIntegrationHandlerServer.Absence" Collapsed="true">
+    <Position X="1.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>Absence.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SystemsGarden.mc2.RemoteConnector.Handlers.PayrollIntegrationHandlerServer.Timesheet" Collapsed="true">
+    <Position X="5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAQAAAACAAAAAAAAAAAAEAAAAQAAAAAAAA=</HashCode>
+      <FileName>Timesheet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SystemsGarden.mc2.RemoteConnector.Handlers.PayrollIntegrationHandlerServer.EntriesToPayroll&lt;T&gt;" Collapsed="true">
+    <Position X="2.5" Y="4.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAABAAAAAAAgDgAACAAAAAABAABAACABAgIAgA=</HashCode>
+      <FileName>EntriesToPayroll.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="exportTask" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="ParsedConfig" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="SystemsGarden.mc2.RemoteConnector.Handlers.PayrollIntegrationHandlerServer.FieldDetails" Collapsed="true">
+    <Position X="7" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAARAAAAAAQAAAAAQAAAAQAAAgAAAAAAAEAQAAAAAA=</HashCode>
+      <FileName>FieldDetails.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SystemsGarden.mc2.RemoteConnector.Handlers.PayrollIntegrationHandlerServer.PayrollConstants" Collapsed="true">
+    <Position X="5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABABAAAAEAAQAAIAAAAAABCAAAQAAhAECBACQAAAAAA=</HashCode>
+      <FileName>PayrollConstants.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SystemsGarden.mc2.RemoteConnector.Handlers.PayrollIntegrationHandlerServer.PayrollIntegrationHandlerServer" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAoAAIAARBAAAAAAAAgAAAABAAAAUAAACAEAAA=</HashCode>
+      <FileName>PayrollIntegrationHandlerServer.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="payrollExport" />
+      <Field Name="exportTask" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="SystemsGarden.mc2.RemoteConnector.Handlers.PayrollIntegrationHandlerServer.ExportPivotTable" Collapsed="true">
+    <Position X="9" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAAAEAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>ExportPivotTable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SystemsGarden.mc2.RemoteConnector.Handlers.PayrollIntegrationHandlerServer.PayrollExportTask" Collapsed="true">
+    <Position X="1" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAACAAAAAAAAAAAAAgACBAAAgAAAQAQAUABQCA=</HashCode>
+      <FileName>PayrollExportTask.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="DefaultExportType" />
+    </ShowAsAssociation>
+  </Class>
+  <Enum Name="SystemsGarden.mc2.RemoteConnector.Handlers.PayrollIntegrationHandlerServer.ExportType" Collapsed="true">
+    <Position X="4.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAQAAAAAAAAAA=</HashCode>
+      <FileName>PayrollExportTask.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

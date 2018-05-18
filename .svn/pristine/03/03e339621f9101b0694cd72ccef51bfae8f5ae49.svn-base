@@ -1,0 +1,106 @@
+﻿[controller(navigation)
+
+	[actionlink(
+		linktext="",
+		action=[callingaction],
+		controllername=[callingcontroller],
+		extraparams=null,
+		id=null,
+		class=null,
+		tabindex=null)
+		
+		<a [if (request.isdialog) "target=""_top"""] href="[baseurl]?controller=[controllername]&action=[action][if (extraparams) "&" [extraparams]]&historytoken=[request.currenthistorytoken]" [attr(class)] [attr(id)] [attr(tabindex)]>[linktext][content]</a>
+	]
+
+	[link(
+		linktext="",
+		href="#",
+		id=null,
+		class=null,
+		disabled=false)
+		<a [if (request.isdialog) "target=""_top"""] [attr(href)] [attr(id)] [attr(class)] [if (request.isdialog) "target=""_top""" ] [if(disabled) "disabled"]>[linktext][content]</a>
+	]
+
+	[actionbutton(
+		label = "",
+		action = [callingaction],
+		controllername = [callingcontroller],
+		extraparams = null,
+		confirmationmessage = null,
+		id=null,
+		class=null)
+
+		<a href="[baseurl]?controller=[controllername]&action=[action][if (request.isdialog) "&isdialog=true"][if (extraparams) "&" [extraparams]]&historytoken=[request.currenthistorytoken]" [attr(id)] class="__button[if (class) " "[class]]" data-confirmationmessage="[confirmationmessage]" [parameterstoattributes(extraparameters)]>[label][content]</a>
+	]
+
+	[actionurl(
+		action=[callingaction],
+		controllername=[callingcontroller],
+		extraparams=null)
+		[baseurl] "?controller=" [controllername] "&action=" [action][if (request.isdialog) "&isdialog=true"][if (extraparams) "&" [extraparams] "&historytoken=" [request.currenthistorytoken]]
+	]
+
+	[menufor(navigation, class, id)
+		[menu(class: class, id: id)
+			[userlevel = convert.tostring(valueof(currentuser.level, 0))]
+
+			[foreach navitem in navigation
+
+				[if (tree.contains(navitem, "useraccesslevels") && !tree.contains(navitem.useraccesslevels, userlevel)) continue]
+				
+				[passed = true]
+
+				[if (navitem.filteredshown)
+					[passed = false]
+
+					[foreach filter in navitem.showfilter
+						
+						[if (filter.action == currentaction && filter.controller == currentcontroller)
+							[passed = true]
+						]
+					]
+				]
+
+				[if (navitem.filteredhidden)
+
+					[foreach filter in navitem.hidefilter
+						
+						[if (filter.action == currentaction && filter.controller == currentcontroller)
+							[passed = false]
+						]
+					]
+				]
+
+				[if (!passed) continue]
+
+				[class = "__mainmenuitem"]
+
+				[if (navitem.controller == callingcontroller && navitem.action == callingaction)
+					[class = "__menuitemlink __active"]
+				]
+
+				[menuitem(
+						class: class)
+					[actionlink(
+						linktext: txt(navitem.title),
+						action: navitem.action,
+						controllername: navitem.controller,
+						extraparams: navitem.extraparams,
+						tabindex: "-1"
+					)]			
+				]
+			]
+		]
+	]
+
+	[menu(class = null, id = newid)
+		<ul [attr(id)] class="__menuitems __menucontainer[if (class) " "[class]]">[content]</ul>
+	]
+
+	[menuitem(class = null)
+		<li class="__menuitem[if (class) " "[class]]">
+			<h2>[content]</h2>
+		</li>
+	]
+
+]

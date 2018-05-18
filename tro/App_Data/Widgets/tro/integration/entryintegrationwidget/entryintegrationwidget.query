@@ -1,0 +1,4 @@
+entryintegrationwidget
+	integrationevents
+		integrationevent
+			__condition: {objectid: [@id] }

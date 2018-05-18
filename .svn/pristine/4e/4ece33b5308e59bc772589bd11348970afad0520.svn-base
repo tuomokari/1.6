@@ -1,0 +1,507 @@
+﻿/**
+ * homescreenprojects widget
+ */
+$.widget("homescreenprojects.homescreenprojects", $.core.base, {
+    options: {
+    },
+
+    /**
+     * Fired by jQuery when the widget is created.
+     */
+    _create: function () {
+
+    	this._uiState = {};
+    	this._model = {};
+        this._uiState.firstRender = true;
+    },
+	/**
+	 * Fired by MC2 when widget is created. Implementation specific initialization code should
+	 * be run here
+	 */
+    _initWidget: function () {
+    	this._dataSource = widgets[this.options.datasource];
+    	this._setupWidgetEvents();
+    },
+	/**
+	 * Setup widget's events.
+	 */
+    _setupWidgetEvents: function () {
+    	var base = this;
+
+    	$(this._dataSource.element).on("datarefreshed", function () {
+    	    base.render();
+    	});
+
+    	$(this._dataSource.element).on("selecteddatechanged", function () {
+    	    base.render();
+    	});
+
+    	$(this._dataSource.element).on("selecteddatechanged", function () {
+    	    base.render();
+    	});
+
+    	$(this.element).find(".datecontrols .previous").on("click", function (e) {
+    	    if (base._dataSource._model.prevDateKey)
+    	        base._dataSource.setSelectedDateKey(base._dataSource._model.prevDateKey);
+    	    base._dataSource.scrollHorizontalWorkView();
+    	});
+
+    	$(this.element).find(".datecontrols .next").on("click", function (e) {
+    	    if (base._dataSource._model.nextDateKey) {
+    	        base._dataSource.setSelectedDateKey(base._dataSource._model.nextDateKey);
+    	        base._dataSource.scrollHorizontalWorkView();
+    	    }
+    	});
+
+    	$(this.element).find(".datecontrols .today").on("click", function (e) {
+    	    base._dataSource.setSelectedDateKey(base._dataSource.getKeyFromDate(new Date()));
+    	    base._dataSource.scrollHorizontalWorkView();
+    	});
+
+    },
+    /**
+     * Refresh all data in the model from the server.
+     * 
+     * @param options: configures how and what data should be acquired
+	 *
+     * @note: You should not do any dom manipulation here. All DOM manipulation needs
+     *        to go to the render method.
+     */
+    refreshData: function (options) {
+
+    	if (!options) options = {};
+
+    },
+
+    /**
+    * Render data in the model and settings into view.
+    * 
+    * @note: should not make any changes into model or settings
+    * *
+    * @param options: configures how data should be rendered
+    */
+    render: function (options) {
+    	if (!options) options = {};
+
+    	if (this._uiState.firstRender) {
+			// Code run only once when the widget is rendered for the first time.
+    		this.element.removeClass("__hidden");
+    		this._uiState.firstRender = false;
+    	}
+
+    	var selectedDay = this._dataSource._model.days[this._dataSource._model.selectedDateKey];
+
+    	this._renderDay(selectedDay);
+    },
+    _renderDay: function (day) {
+    	$(this.element).find(".entrycontainer").html("");
+        
+    	if (day.date) {
+    	    $(this.element).find(".date .long").text(txt("day_" + day.date.getDay()) + " " + formatDateShort(day.date));
+    	    $(this.element).find(".date .short").text(txt("day_abbreviated_" + day.date.getDay()) + " " + formatDateShort(day.date));
+    	}
+    	else {
+    	    $(this.element).find(".date .long").text("");
+    	    $(this.element).find(".date .short").text("");
+    	}
+
+    	this._renderTimedProjects(day);
+    	this._renderUntimedProjects();
+    },
+    _renderTimedProjects: function(day) {
+    	for (var i = 0; i < day.allocationEntries.length; i++) {
+    		var allocation = day.allocationEntries[i];
+
+    		if (!allocation.project || allocation.status == "Done")
+    			continue;
+
+    		var allocationCard = this._createAllocationCard(allocation, "timedproject");
+
+    		allocationCard.setProjectName(allocation.project.__displayname);
+
+    		allocationCard.setCustomer((allocation.projectcustomer) ? allocation.projectcustomer.__displayname : "");
+
+    		allocationCard.setNotes(allocation.note, allocation.projectnote);
+    		allocationCard.setTime(allocation.starttimestamp, allocation.endtimestamp);
+
+    		if (features.timedprojectstatuscontrols) {
+    			if (allocation.status == "In progress") {
+    				allocationCard.setStartButton(false);
+    				allocationCard.setEndButton(true);
+    				allocationCard.setEntriesButton(true);
+    			}
+    			else {
+    				allocationCard.setStartButton(true);
+    				allocationCard.setEndButton(false);
+    				allocationCard.setEntriesButton(false);
+    			}
+    		} else {
+    			allocationCard.setStartButton(false);
+    			allocationCard.setEndButton(false);
+    			allocationCard.setEntriesButton(false);
+    		}
+
+    		$(this.element).find(".entrycontainer").append(allocationCard.element);
+    	}
+	},
+    _renderUntimedProjects: function () {
+		
+    	for (var i = 0; i < this._dataSource._model.allocationEntries.length; i++) {
+    		var allocation = this._dataSource._model.allocationEntries[i];
+
+			// Untimed allocations with a project
+    		if (((allocation.starttimestamp || 
+				allocation.endtimestamp) && allocation.date) || 
+				!allocation.project || 
+				allocation.status == "Done")
+    			continue;
+
+    		var allocationCard = this._createAllocationCard(allocation, "untimedproject");
+
+    		allocationCard.setProjectName(allocation.project.__displayname);
+    		allocationCard.setCustomer((allocation.projectcustomer) ? allocation.projectcustomer.__displayname : "");
+    		allocationCard.setNotes(allocation.note, allocation.projectnote);
+    		allocationCard.setTime(allocation.starttimestamp, allocation.endtimestamp);
+            allocationCard.setStatus(allocation.status);
+
+    		if (features.untimedprojectstatuscontrols) {
+    			if (allocation.status == "In progress") {
+    				allocationCard.setStartButton(false);
+    				allocationCard.setEndButton(true);
+    				allocationCard.setEntriesButton(true);
+    			}
+    			else {
+    				allocationCard.setStartButton(true);
+    				allocationCard.setEndButton(false);
+    				allocationCard.setEntriesButton(false);
+    			}
+    		}
+    		else
+    		{
+    			allocationCard.setStartButton(false);
+    			allocationCard.setEndButton(false);
+    			allocationCard.setEntriesButton(false);
+    		}
+
+    		$(this.element).find(".entrycontainer").append(allocationCard.element);
+    	}
+    },
+    _createAllocationCard: function (allocation, type) {
+    	var base = this;
+    	var allocationCardElement = $(".homescreenprojects_templates .projectinfo").clone().removeClass("__widgettemplate");
+
+    	allocationCardElement.addClass(type);
+
+    	var allocationCard = {
+    		element: allocationCardElement,
+    		allocation: allocation,
+    		setProjectName: function (projectname, identifier) {
+    		    if (identifier)
+    		        projectname += " (" + identifier + ")";
+    		    $(this.element).find(".projectname").text(projectname);
+
+    		},
+    		setCustomer: function (customer) {
+    			if (customer) {
+    				$(this.element).find(".customer").show();
+    				$(this.element).find(".customervalue").text(customer);
+				} else {
+    				$(this.element).find(".customer").hide();
+    				$(this.element).find(".customervalue").text("");
+    			}
+    		},
+    		setNotes: function (note, projectNote) {
+    			if (note) {
+    			    $(this.element).find(".allocationnote").text(" " + note).prepend("<i class='material-icons'>announcement</i>").show();
+    			} else {
+    				$(this.element).find(".allocationnote").remove();
+    			}
+    			if (projectNote) {
+    				$(this.element).find(".projectnote").text(projectNote).show();
+    			} else {
+    				$(this.element).find(".projectnote").remove();
+    			}
+
+    			if (note || projectNote)
+    				$(this.element).find(".notes").show();
+    			else
+    				$(this.element).find(".notes").remove();
+    		},
+    		setTime: function(start, end) {
+    		    if (start) {
+    		        $(this.element).find(".starttime").text(txt("starttime", "homescreenprojects") + " " + ((start) ? base._getTimePart(start) : "") + " ");
+    		    }
+    		    else {
+    		        $(this.element).find(".starttime").remove();
+    		    }
+    		    if (end) {
+    		        $(this.element).find(".endtime").text(txt("endtime", "homescreenprojects") + " " + ((end) ? base._getTimePart(end) : "") + " ");
+    		    }
+    		    else {
+    		        $(this.element).find(".endtime").remove();
+    		    }
+    		},
+    		setStatus: function(status) {
+                if (typeof status !== "undefined")
+    		        this.element[0].setAttribute("data-status", status);
+    		},
+    		setStartButton: function (shown) {
+    		    if (shown)
+    		        $(this.element).find(".startproject").css("display", "flex");
+    		    else
+    		        $(this.element).find(".startproject").hide();
+    		},
+    		setEntriesButton: function (shown) {
+    		    if (shown)
+    		        $(this.element).find(".addentrybutton").css("display", "flex");
+    		    else
+    		        $(this.element).find(".addentrybutton").hide();
+    		},
+    		setEndButton: function (shown) {
+    		    if (shown)
+    		        $(this.element).find(".endproject").css("display", "flex");
+    		    else
+    		        $(this.element).find(".endproject").hide();
+    		}
+    	};
+
+        /*#region: UI Controls*/
+        // Show controls for mobile
+    	allocationCardElement.on("touchstart", function (e) {
+    	    e.stopPropagation();
+    	    $(this).addClass("touch");
+    	});
+
+    	allocationCardElement.on("tap", function (e) {
+    	    e.stopPropagation();
+    	    e.preventDefault();
+
+    	    // skip if not smartphone and if no details to show
+    	    if (mobile()) {
+    	        collapseOtherCards(allocationCardElement);
+    	        allocationCardElement.toggleClass("show");
+    	    }
+    	});
+
+    	allocationCardElement.on("swiperight", function (e) { //todo: this needs to be updated
+    	    if (!isNullOrUndefined(event.button))
+    	        return false;
+    	    e.stopPropagation();
+    	    e.preventDefault();
+    	    $(this).removeClass("show");
+    	});
+
+        // prevent context menu
+    	allocationCardElement.on("contextmenu", function () {
+    	    return false;
+    	});
+
+    	//allocationCardElement.find(".projectcontrols.show").on("swiperight", function (e) {
+    	//    e.stopPropagation();
+    	//    $(this).removeClass("show");
+    	//});
+
+    	allocationCardElement.on("touchend", function () { // cancel temporary events
+    	    $(this).off(".temporary");
+    	});
+
+    	allocationCardElement.on("swipeleft", function (e) {
+    	    this.lastTouchX = 0;
+    	    if (!isNullOrUndefined(event.button))
+    	        return false;
+    	    e.stopPropagation();
+    	    if (!$(this).hasClass("show")) { //skip if expanded
+    	        collapseAllCards(allocationCardElement);
+    	        allocationCardElement.on("touchmove.temporary", function (e) { // check delta and cancel if direction changed
+    	            var delta = this.lastTouchX - event.touches[0].clientX;
+    	            this.lastTouchX = event.touches[0].clientX;
+    	            if (delta < 0)
+    	                $(this).removeClass("show");
+    	            else if (delta > 0)
+    	                showControls(allocationCardElement);
+    	        });
+    	    }
+    	});
+        /*#endregion*/
+
+
+
+    	// Note that no full refresh is done and allocation state is updated locally
+    	allocationCardElement.find(".startproject").on("click", function () {
+    		var url = getAjaxUrl("homescreenprojects", "startworkonproject");
+    		url = addParameterToUrl(url, "allocationid", allocation._id);
+
+    		$.ajax({
+    			url: url,
+    			success: function (data, status, xhr) {
+    				base._dataSource.startProject(allocation._id);
+    			}
+    		});
+    	});
+
+		// Note that no full refresh is done and allocation state is updated locally
+    	allocationCardElement.find(".endproject").on("click", function (e) {
+    	    e.stopPropagation();
+    		var confirmText = txt("endprojectprompt", "homescreenprojects");
+    		confirmText = confirmText.replace("{0}", $(allocationCardElement).find(".projectname").text());
+
+    		if (confirm(confirmText)) {
+    			var url = getAjaxUrl("homescreenprojects", "endworkonproject");
+    			url = addParameterToUrl(url, "allocationid", allocation._id);
+
+    			$.ajax({
+    				url: url,
+    				success: function (data, status, xhr) {
+    					if (data == "unapprovedentriesfound") {
+    						alert(txt("unapprovedentriesfound","homescreenprojects"));
+    					} else {
+    						base._dataSource.endProject(allocation._id);
+    					}
+    				}
+    			});
+    		}
+    	});
+
+    	allocationCardElement.find(".addentrybutton").click(function (e) {
+    		e.stopPropagation();
+    		e.preventDefault();
+
+    		var entryDialogContents = $(base.element).find(".addbuttons").clone().removeClass("__widgettemplate");
+
+    		var start = null;
+    		var end = null;
+
+    		if (features.timetracking) {
+    			// Start after last timed entry for today or if there are no timed entries then send no start and end
+    			// and use default (start now)
+    			var selectedDay = base._dataSource._model.days[base._dataSource._model.selectedDateKey];
+
+    			var lastEntry = base._getLastPrimaryEntry();
+
+    			// Only set default date if last entry's end date is still today. Go with default otherwise.
+    			if (lastEntry) {
+    				var start = lastEntry.endtimestamp;
+    				var end = new Date(start.getTime() + (60 * 60 * 1000)); // Default to 1 hour after start
+
+    				// If end is tomorrow (or later) use default start and end.
+    				if (lastEntry.starttimestamp.toDateString() !== lastEntry.endtimestamp.toDateString()) {
+    					start = null;
+    					end = null;
+    				}
+    			}
+    		}
+    	    // If there is no favored start or end date user selected day and current time and end time one hour after that
+    		if (!start || !end) {
+    		    var now = new Date();
+    		    start = base._dataSource.getDateFromKey(base._dataSource._model.selectedDateKey)
+    		    start.setHours(now.getHours());
+    		    start.setMinutes(now.getMinutes());
+
+    		    var end = new Date(start.getTime() + (60 * 60 * 1000)); // Default to 1 hour after start
+    		}
+
+    		entryDialogContents.find("a").each(function () {
+    			var url = $(this).attr("href");
+    			url = addParameterToUrl(url, "selecteddatekey", base._dataSource._model.selectedDateKey);
+
+    			url = addParameterToUrl(url, "workscheduleprojectid", allocation.project._id);
+
+    			if (start && end) {
+    				url = addParameterToUrl(url, "start", UTCISOString(start));
+    				url = addParameterToUrl(url, "end", UTCISOString(end));
+    			}
+
+    			$(this).attr("href", url);
+    		});
+
+    		$(window).dialog({
+    			object: entryDialogContents.get()[0],
+    			minWidth: "200px",
+    			height: "auto",
+    			width: "auto",
+    			maxWidth: "350px",
+    			closeButton: false,
+    			customScrolling: false,
+    			enableDefaultClick: true
+    		});
+    	});
+
+    	allocationCardElement.find(".projectdetails").click(function (e) {
+    		e.stopPropagation();
+    		e.preventDefault();
+    		allocationCard.showProjectDetails();
+    	});
+
+    	allocationCardElement.find(".projectallocations").click(function (e) {
+    		e.stopPropagation();
+    		e.preventDefault();
+    		allocationCard.showProjectAllocations();
+    	});
+
+    	allocationCard.showProjectDetails = function () {
+    		var dialogUrl = getAjaxUrl("homescreenprojects", "projectdetails");
+
+    		dialogUrl = addParameterToUrl(dialogUrl, "projectid", this.allocation.project._id);
+
+    		$(window).dialog({
+    			height: "800px",
+				maxHeight: "90%",
+    			mc2url: dialogUrl,
+    			enablePrint: true,
+    			enableDefaultClick: true,
+    			customScrolling: false
+    		});
+    	}
+
+    	allocationCard.showProjectAllocations = function () {
+    		var dialogUrl = getAjaxUrl("homescreenprojects", "projectallocations");
+
+    		dialogUrl = addParameterToUrl(dialogUrl, "selectedday", base._dataSource._model.selectedDateKey);
+    		dialogUrl = addParameterToUrl(dialogUrl, "projectid", this.allocation.project._id);
+    		dialogUrl = addParameterToUrl(dialogUrl, "projectname", this.allocation.project.__displayname);
+
+    		$(window).dialog({
+    			mc2url: dialogUrl,
+    			maxHeight: "90%",
+    			width: "90%",
+                enablePrint: true,
+                enableDefaultClick: true,
+                customScrolling: false
+    		});
+    	}
+
+    	return allocationCard;
+
+        // Helper functions
+    	function showControls(el) {
+    	    $(el).addClass("show");
+    	    collapseOtherCards(el);
+    	}
+
+    	function collapseOtherCards(el) {
+    	    el.parents(".entrycontainer").find(".projectinfo.show").not(el).removeClass("show");
+    	}
+
+    	function collapseAllCards(el) {
+    	    $(el).find(".projectinfo.show").removeClass("show");
+    	}
+    },
+	// Todo: move to data widget and remove any duplicates
+    _getLastPrimaryEntry: function() {
+    	var selectedDay = this._dataSource._model.days[this._dataSource._model.selectedDateKey];
+
+    	for (var i = selectedDay.timedEntries.length - 1; i >= 0; i--) {
+    		var entry = selectedDay.timedEntries[i];
+    		if (!entry.parent)
+    			return entry;
+    	}
+
+    	return null;
+    },
+	_getTimePart: function (date) {
+		var padding = "00"
+		// hh:mm
+		return date.getHours() + ":" + padding.substr(0, padding.length - ("" + date.getMinutes()).length) + date.getMinutes();
+	},
+
+});

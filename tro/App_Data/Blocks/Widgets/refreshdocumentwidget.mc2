@@ -1,0 +1,30 @@
+﻿[controller(refreshdocumentwidget)
+	[refreshdocumentwidget(parameter1, parameter2)
+		[widget(variables, currentblockname, currentcontroller, class: "__hidden __refreshdocumentwidget")
+
+				[dropdown(
+					label: $admin_collection,
+					name: "collectiondropdown")
+					[foreach collection in schema
+						[if (nameof(collection) == "controller") continue]
+						[option(label: nameof(collection))]							
+					]
+				]
+
+				[numberfield(
+					name: "skip",
+					label: $admin_skip)]
+							
+				[button(
+					name: "refreshbutton", 
+					label: $refreshdocuments_refresh)]
+
+				[memo(
+					name: "results",
+					label: $refreshdocuments_results,
+					readonly: true
+				)]
+
+		]
+	]
+]

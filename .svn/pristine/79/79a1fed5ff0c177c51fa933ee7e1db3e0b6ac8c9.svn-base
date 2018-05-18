@@ -1,0 +1,30 @@
+﻿[controller(local)
+
+	[datetime(value)
+		<span class="__localize_datetime">[value]</span>
+	]
+
+	[date(value)
+		<span class="__localize_date">[value]</span>
+	]
+
+	[time(value)
+		<span class="__localize_time">[value]</span>
+	]
+
+	[int(value)
+		<span class="__localize_int">[value]</span>	
+	]
+
+	[bool(value)
+		[if (value == true)
+			<span class="__localize_bool">$true</span>
+		][else
+			<span class="__localize_bool">$false</span>
+		]
+	]
+
+	[decimal(value, decimals)
+		<span class="__localize_decimal" data-decimals="[decimals]">[value]</span>
+	]
+]

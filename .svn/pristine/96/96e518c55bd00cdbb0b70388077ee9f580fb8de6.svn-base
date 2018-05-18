@@ -1,0 +1,38 @@
+﻿[controller(tro)
+
+	[using(dataform)]
+	[using(form)]
+	[using(table)]
+	[using(navigation)]
+	[using(layout)]
+	[using(schema)]
+	[using(text)]
+	[using(menubar)]
+	[using(documentstructure)]
+
+	[resourcing()
+		[html
+			[head(title: [$pagetitle_home])
+				[defaultaction.defaultviewhead]
+			]
+			
+			[body
+				[application
+					[resourcingbody]
+				]
+			]
+		]
+	]	
+			
+	[private]
+	[resourcingbody()
+		[resourcingwidget.resourcingwidget(
+			viewbag.userprofitcenter,
+			viewbag.allocationstarthour,
+			viewbag.allocationstartminute,
+			viewbag.allocationendhour,
+			viewbag.allocationendminute,
+			viewbag.daycompletethreshold,
+			viewbag.overtimethreshold)]
+	]
+]

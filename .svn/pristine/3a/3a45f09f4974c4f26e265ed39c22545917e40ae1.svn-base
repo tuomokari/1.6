@@ -1,0 +1,405 @@
+﻿[controller(tro)
+
+	[using(dataform)]
+	[using(form)]
+	[using(table)]
+	[using(navigation)]
+	[using(layout)]
+	[using(schema)]
+	[using(text)]
+	[using(menubar)]
+
+	[approveworkmanager(formdata, totals)
+		[html
+			[head(title: [$pagetitle_approveworkmanager])
+				[defaultaction.defaultviewhead]
+			]
+			
+			[body
+				[application
+					[approveworkmanagerbody(formdata, totals)]
+				]
+			]
+		]
+	]
+	
+	[private]
+	[approveworkmanagerbody(totals)
+
+		[state = history.getstate("approveworkmanager_state")]
+
+		[filterstates(state)]
+
+		[form(action: callingaction)
+
+				[accordion
+					[panel(
+						heading: $approveworkmanager_filters,
+						margin: false,
+						titlepanel: true)
+
+						[features = config.application.features]
+
+						[if (features.managerfilter_user)
+
+							[selectionfield(
+								collectionname: "user",
+								name: "userfilter",
+								value: state.userfilter,
+								label: $schema_user,
+								id: "approveworkmanager_userfilter",
+								historyenabled: false)]
+						]
+
+						[if (features.managerfilter_project)
+
+							[selectionfield(
+								collectionname: "project",
+								name: "projectfilter",
+								value: state.projectfilter,
+								label: $schema_project,
+								id: "approveworkmanager_projectfilter",
+								historyenabled: false)]
+						]
+
+						[if (features.assets && features.managerfilter_assets)
+
+							[selectionfield(
+								collectionname: "asset",
+								name: "assetfilter",
+								value: state.assetfilter,
+								label: $schema_asset,
+								id: "approveworkmanager_assetfilter",
+								historyenabled: false)]
+						]
+
+						[if (features.managerfilter_projectprofitcenter)
+
+							[selectionfield(
+								collectionname: "profitcenter",
+								name: "profitcenterfilter",
+								value: state.profitcenterfilter,
+								label: $schema_timesheetentry_profitcenter,
+								id: "approveworkmanager_profitcenterfilter",
+								historyenabled: false)]
+						]
+
+						[if (features.managerfilter_resourceprofitcenter)
+							[selectionfield(
+								collectionname: "profitcenter",
+								name: "resourceprofitcenterfilter",
+								value: state.resourceprofitcenterfilter,
+								label: $approveworkmanager_userprofitcenter,
+								id: "approveworkmanager_resourceprofitcenterfilter",
+								historyenabled: false)]
+						]
+
+						[if (features.managerfilter_resourcebusinessarea)
+							[selectionfield(
+								collectionname: "businessarea",
+								name: "resourcebusinessarea",
+								value: state.resourcebusinessarea,
+								label: $approveworkmanager_userbusinessarea,
+								id: "approveworkmanager_resourcebusinessarea",
+								historyenabled: false)]
+						]
+
+						[if (features.managerfilter_resourcefunctionalarea)
+							[selectionfield(
+								collectionname: "functionalarea",
+								name: "resourcefunctionalarea",
+								value: state.resourcefunctionalarea,
+								label: $approveworkmanager_userfunctionalarea,
+								id: "approveworkmanager_resourcefunctionalarea",
+								historyenabled: false)]
+						]
+
+						[if (features.managerfilter_projectmanager)
+
+							// Handle default value for project manager
+							[if (state.managerprojectsfiltername)
+								[selectionfield(
+									collectionname: "user",
+									name: "managerprojectsfilter",
+									value: state.managerprojectsfilter,
+									// To enable default value
+									displayvalue: state.managerprojectsfiltername,
+									label: $schema_project_projectmanager,
+									id: "approveworkmanager_managerprojectsfilter",
+									historyenabled: false)]
+							][else
+								[selectionfield(
+									collectionname: "user",
+									name: "managerprojectsfilter",
+									value: state.managerprojectsfilter,
+									label: $schema_project_projectmanager,
+									id: "approveworkmanager_managerprojectsfilter",
+									historyenabled: false)]
+							]
+						]
+
+						[if (features.managerfilter_payrollperiod)
+							[selectionfield(
+								collectionname: "payrollperiod",
+								name: "payrollperiodfilter",
+								value: state.payrollperiodfilter,
+								label: $schema_payrollperiod,
+								id: "approveworkmanager_payrollperiodfilter",
+								historyenabled: false)]s
+						]
+
+						[if (features.favouriteusers)
+							[selectionfield(
+								collectionname: "favouriteusers",
+								name: "favouriteusersfilter",
+								value: state.favouriteusersfilter,
+								label: $schema_favouriteusers,
+								id: "approveworkmanager_favouriteusersfilter",
+								historyenabled: false)]
+						]
+
+						[checkbox(
+							name: "showonlyentriesnotaccepted",
+							label: $approveworkmanager_show_only_entries_not_accepted,
+							class: "showonlyentriesnotaccepted",
+							checked: state.showonlyentriesnotaccepted,
+							id: "approvemanager_showonlyentriesnotaccepted")]
+
+						[if (features.managerfilter_daterange)
+							[checkbox(
+								name: "showdaterange",
+								label: $approveworkmanager_showdaterange,
+								class: "showdaterange",
+								checked: state.showdaterange,
+								id: "approvemanager_showdaterange")]
+						
+							[datetimefield(
+								"daterangestart",
+								$approveworkmanager_start,
+								state.daterangestart,
+								id: "approveworkmanager_start",
+								allowclear: false,
+								startyear: 2015)]
+						
+							[datetimefield(
+								"daterangeend",
+								$approveworkmanager_end,
+								state.daterangeend,
+								isenddate: true,
+								id: "approveworkmanager_end",
+								allowclear: false,
+								startyear: 2015)]
+						]
+
+						[submit($filter)]
+					]
+				]
+
+					[extraparams = ""]
+
+					[if (state.userfilter)
+						extraparams += "&userfilter=" + state.userfilter
+					]
+
+					[if (state.projectfilter)
+						extraparams += "&projectfilter=" + state.projectfilter
+					]
+
+					[if (state.assetfilter)
+						extraparams += "&assetfilter=" + state.assetfilter
+					]
+
+					[if (state.profitcenterfilter)
+						extraparams += "&profitcenterfilter=" + state.profitcenterfilter
+					]
+
+					[if (state.resourceprofitcenterfilter)
+						extraparams += "&resourceprofitcenterfilter=" + state.resourceprofitcenterfilter
+					]
+
+					[if (state.resourcebusinessarea)
+						extraparams += "&resourcebusinessarea=" + state.resourcebusinessarea
+					]
+
+					[if (state.resourcefunctionalarea)
+						extraparams += "&resourcefunctionalarea=" + state.resourcefunctionalarea
+					]
+
+					[if (state.managerprojectsfilter)
+						extraparams += "&managerprojectsfilter=" + state.managerprojectsfilter
+					]
+					
+					[if (state.payrollperiodfilter)
+						extraparams += "&payrollperiodfilter=" + state.payrollperiodfilter
+					]					
+
+					[if (state.favouriteusersfilter)
+						extraparams += "&favouriteusersfilter=" + state.favouriteusersfilter
+					]					
+
+					[if (state.showonlyentriesnotaccepted)
+						extraparams += "&showonlyentriesnotaccepted=true"
+					]
+
+					[if (state.showdaterange)
+						[extraparams += "&rangestart=" + state.daterangestart + "&rangeend=" + state.daterangeend]
+					]
+
+					[if (config.application.features.show_approveworkmanager_totalhours)
+						[panel()
+							[$approveworkmanager_totalhours] " "  [text.formattimespan(totals.duration)]
+						]
+					]
+
+					[tabs
+						[tab(
+							label: $approvework_tab_timesheetentry,
+							icon: "schedule",
+							class: "approveworktab")						
+							[listview.listview(
+								class: "approvework_timesheetentry",
+								schema: schemafor("timesheetentry"),
+								listviewcontroller: "approveworklistview",
+								listviewaction: "approveworkmanagerentry",
+								extraparams: extraparams,
+								renderpanel: false,
+								allownew: false,
+								allowback: false,
+								allowremove: false,
+								itemselection: true,
+								tools: false,
+								includetotals: true)
+							]
+						]
+						
+						[if (config.application.features.articles == true)
+							[tab(
+								label: $approvework_tab_article,
+								icon: "layers",
+								class: "approveworktab")
+								[listview.listview(
+									schema: schemafor("articleentry"),
+									class: "approvework_articleentry",
+									listviewcontroller: "approveworklistview",
+									listviewaction: "approveworkmanagerentry",
+									extraparams: extraparams,
+									renderpanel: false,
+									allownew: false,
+									allowback: false,
+									allowremove: false,
+									itemselection: true,
+									tools: false,
+									includetotals: true)
+								]
+							]
+						]
+						[tab(
+							label: $approvework_tab_dayentry,
+							icon: "euro_symbol",
+							class: "approveworktab")
+							[listview.listview(
+								schema: schemafor("dayentry"),
+								class: "approvework_expenseentry",
+								listviewcontroller: "approveworklistview",
+								listviewaction: "approveworkmanagerentry",
+								extraparams: extraparams,
+								renderpanel: false,
+								allownew: false,
+								allowback: false,
+								allowremove: false,
+								itemselection: true,
+								tools: false,
+								includetotals: true)
+							]
+						]
+						[tab(
+							label: $approvework_tab_absenceentry,
+							icon: "do_not_disturb",
+							class: "approveworktab")
+							[listview.listview(
+								schema: schemafor("absenceentry"),
+								class: "approvework_absenceentry",
+								listviewcontroller: "approveworklistview",
+								listviewaction: "approveworkmanagerentry",
+								extraparams: extraparams,
+								renderpanel: false,
+								allownew: false,
+								allowback: false,
+								allowremove: false,
+								itemselection: true,
+								tools: false,
+								includetotals: true)
+							]
+						]
+						[if (config.application.features.assets)
+							[tab(
+								label: $approvework_tab_assetentry,
+								icon: "local_shipping",
+								class: "approveworktab")
+								[listview.listview(
+									schema: schemafor("assetentry"),
+									class: "approvework_assetentry",
+									listviewcontroller: "approveworklistview",
+									listviewaction: "approveworkmanagerentry",
+									extraparams: extraparams,
+									renderpanel: false,
+									allownew: false,
+									allowback: false,
+									allowremove: false,
+									itemselection: true,
+									tools: false,
+									includetotals: true)
+								]
+							]
+						]
+
+						[tab(
+								label: $approvework_tab_totals,
+								icon: "show_chart",
+								class: "approveworktab")
+								[totalwork.totalwork("filterstates")]
+							]
+
+				[if (currentuser.level != 6)					
+					[region(
+							margin: false,
+							padding: true,
+							class: "approveworkbutton"
+						)
+							<input type="button" class="__button submit_approvemanager_form" value="[$approvework_approveselectedwork]" data-message="[$approveworkmanager_doyouwishtoapprove]" />
+					]
+				]
+			]
+		]
+
+		[managerapproveworkfilterhelper.managerapproveworkfilterhelper]
+
+		[approveworkhelper.approveworkhelper("manager", "approvework_timesheetentry", true)]
+		[approveworkhelper.approveworkhelper("manager", "approvework_timesheetentry", true)]
+		[approveworkhelper.approveworkhelper("manager", "approvework_absenceentry")]
+		[approveworkhelper.approveworkhelper("manager", "approvework_expenseentry")]
+		[approveworkhelper.approveworkhelper("manager", "approvework_articleentry")]
+		[approveworkhelper.approveworkhelper("manager", "approvework_assetentry")]
+	]
+
+	[private]
+	[filterstates(state)
+
+		<div class="filterstates"
+		
+			data-userfilter="[state.userfilter]"
+			data-projectfilter="[state.projectfilter]"
+			data-assetfilter="[state.assetfilter]"
+			data-profitcenterfilter="[state.profitcenterfilter]"
+			data-resourceprofitcenterfilter="[state.resourceprofitcenterfilter]"
+			data-resourcebusinessarea="[state.resourcebusinessarea]"
+			data-resourcefunctionalarea="[state.resourcefunctionalarea]"
+			data-managerprojectsfilter="[state.managerprojectsfilter]"
+			data-payrollperiodfilter="[state.payrollperiodfilter]"
+			data-favouriteusersfilter="[state.favouriteusersfilter]"
+			data-showonlyentriesnotaccepted="[state.showonlyentriesnotaccepted]"
+			data-showdaterange="[state.showdaterange]"
+			data-daterangestart="[state.daterangestart]"
+			data-daterangeend="[state.daterangeend]"></div>			
+	]
+]

@@ -1,0 +1,41 @@
+﻿[controller(timeline)
+
+	[projecttimeline(
+		managerid = null,
+		profitcenter = null
+	)
+		<div class="timelinewrapper projecttimeline" id="[newid]" data-action="timelineprojectdata" data-managerid="[managerid]" data-profitcenter="[profitcenter]">
+		<div class="timelineview"></div>
+		</div>
+	]
+
+	[allocationtimeline(
+		projectid = null,
+		userid = null,
+		profitcenter = null
+	)
+		<div class="timelinewrapper allocationtimeline" id="[newid]" data-action="timelineallocationdata" data-userid="[userid]" data-projectid="[projectid]">
+		<div class="timelineview"></div>
+		</div>
+	]
+
+	[timelinecontrols
+		[layout.region(
+			margin: false,
+			padding: false,
+			class: "timesheetdaycontrols sizeselect __inline"
+		)
+			<div class="__buttongroup">
+				<button class="timelinecontrol_day __off"><span class="full">[txt("timeline_day")]</span><span class="abbreviated">[txt("timeline_day_abbreviated")]</span></button>
+				<button class="timelinecontrol_week __off"><span class="full">[txt("timeline_week")]</span><span class="abbreviated">[txt("timeline_week_abbreviated")]</span></button>
+				<button class="timelinecontrol_month __off"><span class="full">[txt("timeline_month")]</span><span class="abbreviated">[txt("timeline_month_abbreviated")]</span></button>
+			</div>
+			<div class="__buttongroup">
+				<button class="timelinecontrol_previous __float-notdt"><i class="fa fa-angle-double-left"></i></button>
+				<div class="timelineinfopanel timesheetrangewrapper"><span class="timesheetrange">&nbsp;</span></div>
+				<button class="timelinecontrol_next __float-notdt"><i class="fa fa-angle-double-right"></i></button>
+			</div>
+			<button class="timelinecontrol_today"><i class="fa fa-clock-o"></i></button>
+		]
+	]
+]

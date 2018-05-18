@@ -1,0 +1,33 @@
+﻿[controller(tro)
+
+	[using(dataform)]
+	[using(form)]
+	[using(table)]
+	[using(navigation)]
+	[using(layout)]
+	[using(schema)]
+	[using(text)]
+	[using(menubar)]
+	[using(documentstructure)]
+
+	[refreshtimesheetprofitcenter()
+		[html
+			[head(title: [$pagetitle_home])
+				[defaultaction.defaultviewhead]
+			]
+			
+			[body
+				[application("__home")
+					[refreshtimesheetprofitcenterbody]
+				]
+			]
+		]
+	]	
+			
+	[private]
+	[refreshtimesheetprofitcenterbody()
+		<h1>Refresh completed.</h1>
+
+		[tree.show(viewbag.affecteditems)]
+	]
+]

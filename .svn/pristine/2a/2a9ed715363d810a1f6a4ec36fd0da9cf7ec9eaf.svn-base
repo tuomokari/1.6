@@ -1,0 +1,137 @@
+﻿[controller(core)
+	[using(menubar)]
+
+	[html
+		[class=""]
+		[if (request.isdialog) class +="__isdialog "]
+
+		[if (config.security.debug) class += "__debug"]
+
+		<!DOCTYPE html>
+		<html [attr(class)]>
+			[content]
+		</html>
+	]
+
+	[head (title="")
+		<head>
+			[siteheadcontentbefore]
+			[coreheadcontent]
+			[siteheadcontentafter]
+			
+			[content]
+
+		</head>
+	]
+
+	[body
+		[class=""]
+		[if (request.isdialog) class ="__isdialog"]
+		<body data-controller="[defaultcontroller]" data-action="[callingaction]" data-language="[$languagecode]"
+			  data-historytoken="[request.currenthistorytoken]" data-userlevel="[currentuser.level]"
+			  data-user="[currentuser._id]" [sitebodyattributes] [parameterstoattributes(extraparameters)] [attr(class)] >
+
+			[content]
+
+			[sitebodycontentbefore]
+			[corebodycontent]
+			[sitebodycontentafter]
+
+		</body>
+	]
+	
+	[application(menubarclass=null, fixed=true)
+		[mobilemenu]
+		[applicationview(fixed)
+			[menubar(menubarclass)]
+			[content]
+		]
+	]
+
+	[parameterstoattributes(parameters)
+		[foreach parameter in parameters
+			[" data-" + nameof(parameter) + "=""" + convert.tostring(parameter) + """"] 
+		]
+	]
+
+
+	[private]
+	[coreheadcontent
+		[version = runtime.version]
+
+		[runtime.stylebundle]
+
+		[if (config.runtime.cordova)
+			[cordova.headcontent]
+		]
+		
+		<title>[title]</title>
+		<link rel="stylesheet" type="text/css" media="screen" href="/styles/application.css?version=[version]" />
+		<link rel="stylesheet" type="text/css" media="print" href="/styles/core/print.css?version=[version]" />
+
+	    <meta name="HandheldFriendly" content="True" />
+        <meta name="MobileOptimized" content="320" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0">
+	]
+
+	[private]
+	[corebodycontent
+		
+		[runtime.scriptbundle]
+
+		[if (runtime.isdateoverridden)
+			<script type ="text/javascript"> 
+				function newDate() {
+					return getDateFromIsoString("[runtime.overriddendate]");
+				}
+			</script>
+		][else
+			<script type ="text/javascript"> 
+				function newDate() {
+						return new Date();
+				}
+			</script>
+		]	
+	]
+
+	[private]
+	[applicationview(fixed=true)
+		[applicationviewcontent(fixed)
+			[content]
+		]		
+	]
+
+	[private]
+	[applicationviewcontent(fixed=true)
+		<div id="__applicationview">
+			[if (fixed)
+				<div id="__applicationview_inner">
+					<div class="__applicationview-fixed-wrapper">
+						[content]
+					</div>
+				</div>
+			][else
+				<div id="__applicationview_inner">
+					[content]
+				</div>
+			]
+		</div>
+	]
+
+
+	[private]
+	[siteheadcontentbefore]
+
+	[private]
+	[siteheadcontentafter]
+
+	[private]
+	[sitebodycontentbefore]
+
+	[private]
+	[sitebodycontentafter]
+
+	[private]
+	[sitebodyattributes]
+]

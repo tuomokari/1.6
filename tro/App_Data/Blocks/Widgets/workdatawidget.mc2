@@ -1,0 +1,10 @@
+﻿[controller(workdatawidget)
+	[workdatawidget(id = null)
+		
+		[userclacontract = currentuser.clacontract._id]
+		[lastnewid = session.lastdefaultformnew._id]
+		[lastnewcollectionname = session.lastdefaultformnew.__collectionname]
+
+		[widget(variables, currentblockname, currentcontroller, class: "__hidden __workdatawidget", id: id, initialrefresh: false)]
+	]
+]

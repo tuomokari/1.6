@@ -1,0 +1,11 @@
+﻿resourcingwidget
+	en-US
+		calendar: Calendar
+		dailyresourcing: Daily
+		capacityutilization: Capacity utilization
+		scheduler: Timeline
+	fi
+		calendar: Kalenteri
+		dailyresourcing: Päiväkohtainen
+		capacityutilization: Käyttöaste
+		scheduler: Aikajana

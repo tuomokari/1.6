@@ -1,0 +1,60 @@
+﻿[controller(tro)
+
+	[using(dataform)]
+	[using(form)]
+	[using(table)]
+	[using(navigation)]
+	[using(layout)]
+	[using(schema)]
+	[using(text)]
+	[using(menubar)]
+	[using(timeline)]
+
+	[resourceteam
+		[html
+			[head(title: [$pagetitle_resourceteam])
+				[defaultaction.defaultviewhead]
+			]
+			
+			[body
+				[application
+					[resourceteambody]
+				]
+			]
+		]
+	]
+	
+	[private]
+	[resourceteambody()
+				[panel(
+					heading: [$schema_project],
+					padding: false)
+					[region
+						[teamtimeline("timelineteamdata")]
+					]
+				]
+				[region(
+					padding: false,
+					allowback: false)
+					[listview.listview(
+						schema: schemafor("person"),
+						listviewcontroller: "resourcinglistview",
+						listviewaction: "personslist",
+						extraparams: extraparams,
+						allownew: false,
+						renderpanel: true,
+						padding: false)
+					]
+				]
+
+		//[listview.listview(
+		//	schema: schemafor("asset"),
+		//	listviewcontroller: "resourcinglistview",
+		//	listviewaction: "assetslist",
+		//	extraparams: extraparams,
+		//	allownew: false,
+		//  allowback: false)
+		//]
+	]
+	
+]

@@ -1,0 +1,658 @@
+﻿[controller(defaultaction)
+
+	[using(dataform)]
+	[using(form)]
+	[using(table)]
+	[using(navigation)]
+	[using(layout)]
+	[using(schemautils)]
+	[using(text)]
+	[using(menubar)]
+
+	[collections
+		[html
+			[head
+				[defaultviewhead]
+			]
+
+			[body(actiontype: request.actiontype)
+				[defaultviewheader]
+				[application
+					[collectionsbody]
+				]
+				[defaultviewfooter]
+			]
+		]
+	]
+
+	[private]
+	[collectionsbody
+		[panel(
+            heading:$collections,
+            titlepanel: true)
+			
+			[foreach collection in schema
+				
+				[if (nameof(collection) == "controller") continue]
+				[if (collection.collection.hidden) continue]
+
+				[actionbutton(
+					label: txt("schema_" + nameof(collection)),
+					action: nameof(collection),
+					controllername: defaultcontroller,
+					extraparams: "actiontype=listview")]
+			]
+		]	
+	]
+
+	
+	[listview(document)
+		[html
+			[head
+				[corehead]
+				[defaultviewhead]
+			]
+
+			[body(actiontype: request.actiontype)
+				[defaultviewheader]
+				[application
+					[listviewbody(document)]
+				]
+				[defaultviewfooter]
+			]
+		]
+	]
+
+	[private]
+	[listviewbody(document)
+
+		[collectionschema = schemafor(document)]
+		[addaccess = valueof(collectionschema.collection.accessadd)]
+		[removeaccess = valueof(collectionschema.collection.accessremove)]
+		[listview.listview(
+			schema: collectionschema,
+			allownew: addaccess,
+			allowremove: removeaccess,
+			tools: tree.getvalueordefault(collectionschema, "tools", true)
+		)]
+	]
+
+	[newform(document)	
+		[html
+			[head
+				[corehead]
+				[defaultviewhead]
+			]
+
+			[body(actiontype: request.actiontype)
+				[defaultviewheader]
+				
+				[application
+					[if (viewbag.basedocument)
+						[documentschema = schemafor(viewbag.basedocumentcollection)]
+
+						[panel(
+                                                    heading: txt("schema_" + nameof(documentschema)),
+                                                    titlepanel: true)
+							[basedocument = viewbag.basedocument]
+							[table						
+								[foreach propertyschema in documentschema
+									[if (propertyschema.type != "relation" || propertyschema.relationtype == "one" && !propertyschema.hideonviewform)
+
+										[displayrowfor(tree.get(basedocument, nameof(propertyschema)), propertyschema)]
+									]
+								]
+							]
+
+							[newformbody(document)]
+						]
+					]
+					[else
+						[newformbody(document)]				
+					]
+				]
+
+				[defaultviewfooter]
+			]
+		]
+	]
+
+	[private]
+	[newformbody(document)
+		[collectionschema = schemafor(document)]
+
+		[extraparams = "actiontype=" + request.actiontype]
+
+		[if (request.redirecttoview) extraparams += "&redirecttoview=true"]
+		
+		[if (request.relation) extraparams += "&relation=" + request.relation + "&relationid=" + request.relationid
+			[if (request.localcollection) extraparams += "&localcollection=" + request.localcollection]
+		]
+		[formfor(collectionschema, 
+			title: $addnew + " " + txt("schema_" + nameof(collectionschema)),
+			extraparams: extraparams)
+
+			[if (request.copyoperation == "true")
+				[hiddenfield(
+					name: "__copyoperation",
+					value: viewbag.baseid)]
+			]
+
+			[if (document is string)
+				[foreach propertyschema in collectionschema	
+					[inputfor(propertyschema)]
+				]
+			][else
+				[foreach propertyschema in collectionschema
+					[inputfor(propertyschema, tree.get(document, nameof(propertyschema)))]
+				]			
+			]
+
+			[submit($ok)] 
+				// Todo: Enable addanother by removing comments. Note: should have some kind of an indication that an item was added.
+				// [addanotherid = newid]
+				// <input type="checkbox" name="__addanother" value="false" id="[addanotherid]"></input><label for="[addanotherid]">[$addanother]</label>
+
+			[class = "__modest"]
+			[if (request.isdialog) class +=" __closedialog"]
+
+			[actionbutton(
+				label: $cancel,
+				controllername: "navigation",
+				action: "current",
+				class: class)]
+		]
+	]
+
+	[viewform(document)	
+		[html
+			[head
+				[corehead]
+				[defaultviewhead]
+			]
+
+			[body(actiontype: request.actiontype)
+				[defaultviewheader]
+				[application
+					[viewformbody(document)]
+				]
+				[defaultviewfooter]
+			]
+		]
+	]
+	
+	[private]
+	[viewformbody(document)
+		[documentschema = schemafor(document)]
+		
+		[schemaname = nameof(documentschema)]
+		[headingurl = actionurl(controller: defaultcontroller, action:schemaname) + "&actiontype=listview"]
+
+		[if (documentschema.collection.preventlinktolist) headingurl = null]
+
+		[panel(
+			heading: txt("schema_" + schemaname),
+			headingurl: headingurl,
+                        titlepanel: true)
+			[region(margin: false, padding: false)
+
+				[elementview_primaryelement(documentschema, document)]
+
+				[if (getmodifyaccessforitem(document, documentschema))
+					[actionbutton(
+						"", [callingaction], [defaultcontroller],
+						"actiontype=modify&id=" + document._id,
+						actiontype: "modify",
+						class: "__modifybutton")
+						[$edit]
+					]
+				]
+
+				[if (valueof(documentschema.collection.accessadd) && documentschema.collection.disablecopy != true )
+					[actionbutton(
+						"", 
+						[callingaction], 
+						[defaultcontroller],
+						"actiontype=add&copyoperation=true&id=" + document._id,
+						actiontype: "add",
+						class: "__copybutton")
+						[$copy]								
+					]
+				]
+	
+				[if (getremoveaccessforitem(document, documentschema))	
+					[actionbutton(
+						"", 
+						[callingaction], 
+						[defaultcontroller],
+						"actiontype=remove&id=" + document._id,
+						confirmationmessage: $confirm_remove,
+						actiontype: "remove",
+						class: "__warning __removebutton")
+						[$remove]								
+					]
+				]
+
+				[class = "__modest __backbutton"]
+				[if (request.isdialog) class +=" __closedialog"]
+
+				[actionbutton(
+					label: $back,
+					controllername: "navigation",
+					action: "previous",
+					class: class)]
+			]
+		]
+
+
+
+		// Document's relations can be shown in tabs or inline
+		[if(documentschema.collection.inlinerelations)
+			[localrelations(documentschema, document, false)]
+			[externalrelations(documentschema, document, false)]		
+		][else
+			[tabs(
+			class: "__defaultformtabs",
+			initial: 0,
+			alwayshorizontal: true)
+				[viewbag.firsttab = true]
+				[localrelations(documentschema, document, true)]
+				[externalrelations(documentschema, document, true)]
+			]		
+		]
+
+	]
+	
+	[private]
+	[elementview_primaryelement(collectionschema, document)
+		[table				
+			[foreach propertyschema in collectionschema
+				[if (propertyschema.type != "relation" || propertyschema.relationtype == "one" &&
+				propertyschema.displayhint != "inline")
+
+					[if (propertyschema.hideonviewform) <span class="__hidden">]
+
+					[displayrowfor(
+						value: tree.get(document, nameof(propertyschema)),
+						isviewform: true)
+					]
+
+					[if (propertyschema.hideonviewform) </span>]
+				]
+			]
+		]
+	]
+
+	[modifyform(document)	
+		[html
+			[head
+				[corehead]
+				[defaultviewhead]
+			]
+
+			[body(actiontype: request.actiontype)
+				[if(request.dialog != "1")
+					[defaultviewheader]
+				]
+				
+				[application
+					[if (request.relation)
+						[collectionschema = schemafor(request.relation)]
+					
+						[panel(
+                                                heading: txt("schema_" + nameof(collectionschema)),
+                                                titlepanel: true)
+							[basedocument = viewbag.relateddocument]
+							[table
+						
+								[foreach propertyschema in collectionschema
+									[if (propertyschema.type != "relation" || propertyschema.relationtype == "one")
+										[displayrowfor(tree.get(basedocument, nameof(propertyschema)), propertyschema, true)]
+									]
+								]
+							]
+
+							[modifyformbody(document)]
+						]
+					]
+					[else
+						[modifyformbody(document)]
+					]
+				]
+
+				[defaultviewfooter]
+			]
+		]
+	]
+
+
+	[private]
+	[modifyformbody(document)
+
+		[collectionschema = schemafor(document)]
+	
+		[extraparams = "actiontype=modify"]
+
+		[if (request.relation) extraparams += "&relation=" + request.relation + "&relationid=" + request.relationid]
+
+		[formfor(
+			collectionschema: collectionschema,
+			element: document,
+			extraparams: extraparams)
+
+			[foreach propertyschema in collectionschema
+				[inputfor(			
+					propertyschema, tree.get(document, nameof(propertyschema))
+				)]
+			]
+			
+			[if (!document.__readonly)
+				[submit($ok)]
+			]
+			
+			[class = "__modest"]
+			[if (request.isdialog) class +=" __closedialog"]
+
+			[actionbutton(
+				label: $cancel,
+				controllername: "navigation",
+				action: "previous",
+				class: class)]
+		]
+	]
+
+	[insertlocalform(document, relationname, localcollectionname)
+		[html
+			[head
+				[corehead]
+				[defaultviewhead]
+			]
+
+			[body(actiontype: request.actiontype)
+				[defaultviewheader]
+				[documentschema = schemafor(callingaction)]
+				
+				[application				
+					[panel(heading: txt("schema_" + nameof(documentschema)))
+						[relateddocument = viewbag.relateddocument]
+
+						[table
+							[foreach propertyschema in documentschema
+								[if (propertyschema.type != "relation" || propertyschema.relationtype == "one")
+
+									[displayrowfor(tree.get(relateddocument, nameof(propertyschema)), propertyschema, true, txt("schema_" + localcollectionname + "_" + nameof(propertyschema)))]
+								]
+							]
+						]
+
+						[insertlocalformbody(document, relationname, localcollectionname)]
+					]
+				]
+				
+				[defaultviewfooter]
+			]
+		]
+	]
+
+	[private]
+	[insertlocalformbody(document, relationname, localcollectionname)
+
+		[localcollectionschema = schemafor(localcollectionname)]
+		[relationschema = tree.get(localcollectionschema, relationname)]
+		[remotecollectionname = relationschema.relation]
+
+
+		[panel($select + " " + txt("schema_" + remotecollectionname))
+			[form(action: callingaction + "&actiontype=insertlocalmany")
+
+				[hiddenfield(name: "__localcollection", value: localcollectionname)]
+				[hiddenfield(name: "__remotecollection", value: remotecollectionname)]
+				[hiddenfield(name: "__relation", value: relationname)]
+				[hiddenfield(name: "__targetid", value: document._id)]
+				
+				[selectionfield(
+				collectionname: remotecollectionname, 
+				name: "__relationid", 
+				label: txt("schema_" + remotecollectionname),
+				historyenabled: false)]
+
+				[submit($ok)]
+
+			[class = "__modest"]
+			[if (request.isdialog) class +=" __closedialog"]
+
+				[actionbutton(
+					label: $cancel,
+					controllername: "navigation",
+					action: "previous",
+					class: class)]
+			]
+		]
+	]
+
+	[insertremoteform(document, relationname, localcollection)
+		[html
+			[head
+				[corehead]
+				[defaultviewhead]
+			]
+
+			[body(actiontype: request.actiontype)
+				[defaultviewheader]
+				[collectionschema = viewbag.remotecollectionschema]
+				
+				[application				
+					[collectionschemaname = viewbag.remotecollectionschemaname]
+					[panel(heading: txt("schema_" + collectionschemaname))
+						[relateddocument = viewbag.relateddocument]
+						[table
+							[foreach propertyschema in collectionschema
+								[if (propertyschema.type != "relation" || propertyschema.relationtype == "one" && !propertyschema.hideonviewform)
+
+									[displayrowfor(tree.get(relateddocument, nameof(propertyschema)), propertyschema, true, txt("schema_" + collectionschemaname + "_" + nameof(propertyschema)))]
+								]
+							]
+						]
+
+						[insertremoteformbody(document, relationname, localcollection)]
+					]
+				]
+
+				[defaultviewfooter]
+			]
+		]
+	]
+
+	[private]
+	[insertremoteformbody(document, relationname, localcollection)
+		[panel($select + " " + txt("schema_" + localcollection))
+			[form(action: callingaction + "&actiontype=insertremote")
+
+				[hiddenfield(name: "__collection", value: localcollection)]
+				[hiddenfield(name: "__relation", value: relationname)]
+				[hiddenfield(name: "__targetid", value: document._id)]
+				
+				[selectionfield(
+					collectionname: localcollection, 
+					name: "__relationid",
+					label: txt("schema_" + localcollection),
+					historyenabled: false)]
+
+				[submit($ok)]
+
+				[class = "__modest"]
+				[if (request.isdialog) class +=" __closedialog"]
+
+				[actionbutton(
+					label: $cancel,
+					controllername: "navigation",
+					action: "previous",
+					class: class)]
+			]
+		]
+	]
+
+	[private]
+	[localrelations(collectionschema, document, istab)
+		[schemaname = nameof(collectionschema)]
+		[readonly = document.__readonly]
+
+		[foreach propertyschema in collectionschema
+			[if (propertyschema.type == "relation" && propertyschema.relationtype == "many")
+
+				[relationcollection = propertyschema.relation]
+				[relationname = nameof(propertyschema)]
+
+				[taborpanel(
+					istab: istab,
+					label: txt("schema_" + schemaname + "_relation_" + relationname))						
+						
+					// For local relations only the local document matters for modify access
+					[targetmodifyaccess = getmodifyaccessforitem(document, null)]
+
+					[allownew = targetmodifyaccess]
+					[allowremove = targetmodifyaccess]
+					[allowinsert = targetmodifyaccess]
+
+					[if (propertyschema.hidenew || readonly)
+						[allownew = false]
+					]
+
+					[if (propertyschema.hideremove || readonly)
+						[allowremove = false]
+					]
+
+					[if (propertyschema.hideinsert || readonly)
+						[allowinsert = false]			
+					]
+					[listview.listview(
+						class: "__defaultactionlistview",
+						schema: schemafor(relationcollection),
+						relation: relationname,
+						relationid: document._id,
+						islocalrelation: true,
+						ismanyrelation: true,
+						localcollection: schemaname,
+						showheading: false,
+						renderpanel: false,
+						allownew: allownew,
+						allowremove: allowremove,
+						allowinsert: allowinsert,
+						allowback: false,
+						tools: !relation.hidetools,
+						// Tabs are not updated initially but inline relations should be shown right away.
+						noinitialupdate: istab && !viewbag.firsttab)]
+				]
+			]
+		]	
+	]
+
+	[private]
+	[externalrelations(collectionschema, document, istab)
+		[schemaname = nameof(collectionschema)]
+
+		[readonly = document.__readonly]
+
+		[foreach relation in collectionschema.collection.relation
+
+			[if ((relation.relationsource == schemaname && !collectionschema.collection.showinternalrelations) || 
+				relation.hidden) continue]
+
+			[rootschema = tree.parent(collectionschema)]
+			[relationsourceschema = tree.get(rootschema, relation.relationsource)]
+
+			[if (relationsourceschema.collection.hidden) continue]
+
+			[relationschema = tree.get(relationsourceschema, relation.relationname)]
+			
+			[targetmodifyaccess = valueof(relationsourceschema.collection.accessmodify)]
+			
+			// Show remove controls even if some itmes cannot be removed
+			[targetremoveaccess = valueof(relationsourceschema.collection.accessremove) || 
+				valueof(relationsourceschema.collection.accessremove.owner) ||
+				valueof(relationsourceschema.collection.accessremove.creator)]
+
+			[targetaddaccess = valueof(relationsourceschema.collection.accessadd)]
+
+			[allownew = targetaddaccess]
+			[allowremove = targetremoveaccess]
+			[allowinsert = targetmodifyaccess]
+
+			[if (relationschema.hidenew || readonly)
+				[allownew = false]
+			]
+
+			[if (relationschema.hideinsert || readonly)
+				[allowinsert = false]			
+			]
+
+			[if (relationschema.hideremove || readonly)
+				[allowremove = false]
+			]
+
+			[key = "schema_" + relation.relationsource + "_" + relation.relationname + "_external"]
+			[translation = txt(key)]
+			[if(translation == "$" + key)
+				[translation = txt("schema_" + relation.relationsource)]
+			]
+
+			[taborpanel(
+				istab: istab,
+				label: translation)						
+
+				[listview.listview(
+					class: "__defaultactionlistview",
+					schema: schemafor(relation.relationsource),
+					relation: relation.relationname,
+					relationid: document._id,
+					showheading: false,
+					renderpanel: false,
+					islocalrelation: false,
+					ismanyrelation: (relation.relationtype == "many"),
+					localcollection: relation.relationsource,
+					allownew: allownew,
+					allowremove: allowremove,
+					allowinsert: allowinsert,
+					allowback: false,
+					tools: !relationschema.hidetools,
+					// Tabs are not updated initially but inline relations should be shown right away.
+					noinitialupdate: istab && !viewbag.firsttab)]
+			]
+		]
+	]
+
+	// Helper to include contents in either tab or panel
+	[private]
+	[taborpanel(istab, label)
+		[if (istab)
+		
+			[tab(
+				label: label,
+				hidetitle: true,
+				full: false)
+				[panel
+					[content]
+				]
+
+				[viewbag.firsttab = false]
+			]
+
+		][else
+			[panel(label)
+				[content]
+			]
+		]
+	]
+
+	[private]
+	[defaultviewhead
+	]
+
+	[private]
+	[defaultviewheader
+	]
+
+	[private]
+	[defaultviewfooter	
+	]
+]

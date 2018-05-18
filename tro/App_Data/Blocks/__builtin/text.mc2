@@ -1,0 +1,60 @@
+﻿[controller(text)
+
+	[lorem(paragraphs = 1)
+
+		[index = 1]
+
+		[while(true)
+			<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.</p>
+			[index += 1]
+			[if (index > paragraphs) break]
+			<p>Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.</p>
+			[index  += 1]
+			[if (index > paragraphs) break]
+			<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin pharetra nonummy pede. Mauris et orci.</p>
+			[index  += 1]
+			[if (index > paragraphs) break]
+			<p>Aenean nec lorem. In porttitor. Donec laoreet nonummy augue.</p>
+			[index  += 1]
+			[if (index > paragraphs) break]
+			<p>Suspendisse dui purus, scelerisque at, vulputate vitae, pretium mattis, nunc. Mauris eget neque at sem venenatis eleifend. Ut nonummy.</p>
+			[index  += 1]
+			[if (index > paragraphs) break]
+		]
+	]
+
+	[heading(text, level = 1)
+
+		[if(level == 1)
+			<h1>[text]</h1>
+		]
+
+		[if(level == 2)
+			<h2>[text]</h2>
+		]
+
+		[if(level == 3)
+			<h3>[text]</h3>
+		]
+
+		[if(level == 4)
+			<h4>[text]</h4>
+		]
+
+		[if(level == 5)
+			<h5>[text]</h5>
+		]
+
+		[if(level == 6)
+			<h6>[text]</h6>
+		]
+	]
+
+	[image(src, alt="", id=null, class=null)
+		<img [attr(src)] [attr(id)] [attr(class)] [attr(alt)] />
+	]
+
+	[inlinenotification(type=null, class=null, id=null)
+		<div [attr(id)] class="__inlinenotification [if (class) " "[class]]">[content]</div>
+	]
+]

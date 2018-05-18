@@ -1,0 +1,97 @@
+﻿application
+	features
+		reports: false
+		articles: true
+		dailyentries: true
+		timetracking: false
+		traveltime: false
+		assets: false
+		allowdifferentdurationforbilling: true
+		myplaces: true
+		allocationstatuses: true
+		managerfilter_person: true
+		managerfilter_project: true
+		managerfilter_assets: false
+		managerfilter_projectprofitcenter: false
+		managerfilter_resourceprofitcenter: true
+		managerfilter_resourcebusinessarea: true
+		managerfilter_resourcefunctionalarea: true
+		managerfilter_projectmanager: true
+		managerfilter_defaultprojectmanageriscurrentuser: true
+		show_approveworkmanager_totalhours: false
+		resourcing: false
+		enablesocialproject: true
+		showallocationcustomername: true
+		workerscanuseunallocatedprojects: false
+		homescreenhorizontalworkview: false
+		prtgmonitor: true
+		showintegrationevents: true
+		usedirectprojectcategory: true
+		usebackgroundpayrollexport: true
+		paytypeforworkentries: true
+		timedprojectstatuscontrols: true
+		untimedprojectstatuscontrols: true
+		allowfutureabsences: true
+		onlycompleteapprovedallocations: true
+		homescreencopypaste: true
+		projectleads: true
+
+security
+	debug: false
+	loginguid: 6746F4D3-1E6E-4B1B-A1A9-35EE7E33C13B
+
+runtime
+	nostart: false
+
+monitoring
+	enabled: true
+
+	sources
+		tro
+			pollinginterval: 6000
+			maxdatapoints: 100
+			counters
+				homescreenopened
+					type: totaldelta
+
+				approveworkviewopened
+					type: totaldelta
+
+				approveworkmanagerviewopened
+					type: totaldelta
+
+				hrviewopened
+					type: totaldelta
+
+				settingsviewopened
+					type: totaldelta
+
+				managementviewopened
+					type: totaldelta
+
+				myplacesviewopened
+					type: totaldelta
+
+				timesheetentriesadded
+					type: totaldelta
+
+				absenceentriesadded
+					type: totaldelta
+
+				expenseentriesadded
+					type: totaldelta
+
+				articleentriesadded
+					type: totaldelta
+
+				assetentriesadded
+					type: totaldelta
+
+				workerapprovalrequests
+					type: totaldelta
+
+				managerapprovalrequests
+					type: totaldelta
+
+				managerfilterwork
+					type: totaldelta

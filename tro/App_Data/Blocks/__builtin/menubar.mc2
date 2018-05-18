@@ -1,0 +1,50 @@
+﻿[controller(menubar)
+	
+	[using(navigation)]
+	[menubar(
+		class = null
+	)	
+
+	<div id="__menubar" class="__menubar[if (class) " "[class]]">
+		<div class="__userinfo">
+			[userlevel = convert.tostring(valueof(currentuser.level, 0))]
+			[if (userlevel != "0")
+
+				<span class="__userdetails"><b>[currentuser.firstname]&nbsp;[currentuser.lastname]</b>&nbsp;</span>
+
+				[actionlink(
+					linktext: $logout,
+					action: "logout",
+					controllername: "login"
+				)
+				"&nbsp;"<i class="fa fa-sign-out"></i>]
+				
+			]
+		</div>
+		<div id="__menubar_logo"></div>
+		<div id="__menubar_menuitems">
+			[desktopmenu]
+		</div>
+	</div>
+	
+		[if (callingaction != "home" && callingcontroller != "login")
+			<div id="__menubar_previous">
+				<div class="__icon-back __top __floatbutton __float __floatattop" id="__backbutton"><i class="material-icons">arrow_back</i></div>
+			</div>
+		]
+	]
+
+	[private]
+	[desktopmenu
+		[menufor(navigation: tree.get(navigation, callingcontroller), id: "__desktopmenu")]
+	]
+
+	[mobilemenu
+		[menufor(navigation: tree.get(navigation, callingcontroller), id: "__mobilemenu")]
+		<div id="__menubar_mobilemenu">
+			<div id="__menubutton" class="__floatbutton __float">
+				<i class="fa fa-navicon"></i><i class="fa  fa-close"></i>
+			</div>
+		</div>
+	]
+]

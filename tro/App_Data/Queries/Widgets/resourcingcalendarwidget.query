@@ -1,0 +1,8 @@
+resourcingcalendarwidget
+	allocationsbyuserprofitcenter
+		allocationentry
+			__condition: { starttimestamp: { $lt: [@end] }, $or: [{endtimestamp: { $gt: [@start] }}, {"endtimestamp": { $exists: false }} ], userprofitcenter: [@profitcenter] }
+
+	projectsbyprofitcenter
+		project
+			__condition: { projectstart: { $lt: [@end] }, $or: [{projectend: { $gt: [@start] }}, {"projectend": { $exists: false }}], profitcenter: [@profitcenter], noresourcing: {$ne: true} }

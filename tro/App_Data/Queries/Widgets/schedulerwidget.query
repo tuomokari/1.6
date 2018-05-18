@@ -1,0 +1,10 @@
+schedulerwidget
+	allocationsbyuserprofitcenter
+		project
+			__condition: { projectstart: { $lt: [@end] }, $or: [{projectend: { $gt: [@start] }}, {"projectend": { $exists: false }}], profitcenter: [@profitcenter], noresourcing: {$ne: true} }
+
+		user
+			__condition: { profitcenter: [@profitcenter], disabled: {$ne: true}}
+
+		allocationentry
+			__condition: { $or: [{endtimestamp: { $gt: [@start] }}, {"endtimestamp": { $exists: false }} ], userprofitcenter: [@profitcenter] }

@@ -1,0 +1,11 @@
+totalwork
+	paytypes
+		timesheetentrydetailpaytype
+			__condition: { disabled: { $ne: true }}
+
+		dayentrytype
+			__condition: { disabled: { $ne: true } }
+
+		socialproject
+			__condition: { identifier: "__socialproject" }
+			__collectionname: project

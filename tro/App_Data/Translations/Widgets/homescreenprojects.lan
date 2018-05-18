@@ -1,0 +1,28 @@
+﻿homescreenprojects
+	en-US
+		customer: Customer
+		startproject: Start
+		endproject: End
+		endprojectprompt: Do you wish to end "{0}"?
+		allocations: Allocations
+		workers: Workers
+		assets: Assets
+		starttime: Start time
+		endtime: End time
+		unapprovedentriesfound: Unapproved work found. Please accept all work for this project before ending it.
+		projectlead_report: Projectlead report
+		mobile_documents: Mobile documents
+
+	fi
+		customer: Asiakas
+		startproject: Aloita
+		endproject: Päätä
+		endprojectprompt: Haluatko päättää työn "{0}"?
+		allocations: Varaukset
+		workers: Työntekijät
+		assets: Laitteet
+		starttime: Aloitus
+		endtime: Lopetus
+		unapprovedentriesfound: Työltä löytyi hyväksymättömiä kirjauksia. Hyväksy kirjaukset ennen työn päättämistä.
+		projectlead_report: Työmääräimen tuntiraportti
+		mobile_documents: Korjaustarveilmoitus(Pilotti)

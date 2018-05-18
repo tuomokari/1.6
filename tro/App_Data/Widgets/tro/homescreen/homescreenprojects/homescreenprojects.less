@@ -1,0 +1,229 @@
+﻿.__homescreenprojects {
+    
+    .controls-wrapper {
+        .display-flex;
+        .smartphone({
+            .display-flex;
+            -ms-flex-direction: column-reverse;
+            flex-direction: column-reverse;
+        });
+        padding-bottom: 10px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .datecontrols {
+        -ms-flex: 1;
+        flex-grow: 1;
+        .display-flex;    
+        .center-align;
+        justify-content: flex-end;
+        .smartphone({
+            display: none;
+            .center-content;
+        });
+
+    }
+
+	.date {
+		font-size: 22px;
+		font-weight: 200;
+        display: inline-block;
+		width: 175px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-align: center;
+        .desktop({
+            width: 175px;
+
+            .short {
+                display: none;
+            }
+        });
+        .smartphone({
+            .long {
+                display: none;
+            }
+        });
+	}
+
+    .projectinfo {
+        align-items: flex-start;
+        min-height: 50px;
+        height: 50px;
+        
+        // untimed project modifiers
+        &.untimedproject {
+
+            // default card styles
+            &[data-status='In progress'] {
+                .card(@cardcolor: #11A3D0);
+            }
+            &[data-status='Not started'] {
+                .card(@cardcolor: #8AABA0);
+            }
+            &:not([data-status]) {
+                .card(@cardcolor: #808080);
+            }
+            div, p, span, a, .__button.__modest, h1, h2, h3 { // todo: this selector is a bit messy
+                color: #fff;
+            }
+
+            box-sizing: content-box;
+        }
+        // timed project modifiers
+        &.timedproject {
+            .card(@cardcolor: #efefef);
+            box-sizing: content-box;
+        }
+        -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+        .flexcontainer(@justify: left);
+        .hidewhencollapsed {
+            display: none;
+        }
+
+        &:not(:hover), &.touch, &.touch:hover {
+            &:not(.show) {
+                .projectcontrols {
+                    transform: translateX(100%);
+                    opacity: 0;
+                    position: absolute;
+                    right: 0;
+                }
+            }
+        }
+        &.touch {
+            .projectcontrols {
+                .animate();
+            }
+        }
+        padding-right: 5px; // to adjust position of draghandle
+        overflow: hidden !important; // important to override overflow: auto from flex settings. todo: is it necessary in flex setting?
+
+        .projectentryhours {
+            font-weight: 700;
+            color: #999;
+        }
+        .projectinformation {
+            .display-flex;
+            .flex(1, 0, 0px);
+            overflow: hidden;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            align-items: stretch;
+            .center-content;
+            align-self: center;
+        }
+        .projectcontrols {
+            overflow: visible;
+            background-repeat: repeat-y;
+            background-position-x: right;
+            .display-flex;
+            position: relative;
+            justify-content: flex-end;
+
+            .projectcontrols-buttons {
+                display: none;
+                align-self: flex-end;
+                .display-flex;
+                .__flex-container {
+                    overflow: visible;
+                }
+                .__button {
+                    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.35);
+                }
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+        }
+
+        h3, p {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+        h3 {
+            margin: 0;
+            font-size: 18px;
+            display: block;
+            font-weight: 400;
+        }
+        p {
+            margin: 0;
+            font-size: 14px;
+
+            &.projectdetails {
+                background: darken(@color-panel-background-opaque, 10%);
+                padding: 0 5px 1px 5px;
+                border-radius: 3px;
+                font-size: 14px;
+                display: inline-block;
+            }
+        }
+
+        .additionaldetails {
+            display: inline-block;
+            border-left: 3px solid @color-button;
+            padding-left: 5px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 5px 0;
+            &:empty {
+                display: none;
+            }
+        }
+    }
+
+    // card styles
+
+    /*.workschedulewidget_scheduledprojects, .workschedulewidget_unscheduledprojects {
+        .workschedulewidget_workcard .__card {
+            .card(@cardcolor: #4f4f4f, @chrome: "none");
+
+            h3, p {
+                color: #fff;
+            }
+        }
+    }*/
+
+    .__newallocation {
+        position: fixed;
+        width: 64px;
+        height: 64px;
+        background: rgba(0, 195, 255, 0.65);
+        border-radius: 50%;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+        .display-flex;
+        .center-align;
+        .center-content;
+        font-size: 64px;
+        padding-bottom: 15px;
+        box-sizing: border-box;
+        font-weight: 700;
+        bottom: 25px;
+        right: 25px;
+        color: #fff;
+        text-shadow: 0 1px 5px #0098C7;
+        cursor: pointer;
+        .animate();
+        &:hover {
+            .__bounceopaque();
+            background: rgb(0, 195, 255);
+        }
+    }
+    .__projectsearch {
+        display: none;
+    }
+    
+
+
+}
+
+.allocation-user, .allocation-asset {
+    .display-flex;
+    .center-align;
+    i {
+        color: @color-button;
+    }
+}

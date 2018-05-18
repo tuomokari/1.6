@@ -1,0 +1,121 @@
+﻿/**
+ * userformwidget widget
+ */
+$.widget("userformwidget.userformwidget", $.core.base, {
+    options: {
+    },
+
+    /**
+     * Fired by jQuery when the widget is created.
+     */
+    _create: function () {
+
+    	this._uiState = {};
+    	this._model = {};
+    	this._uiState.firstRender = true;
+
+    },
+	/**
+	 * Fired by MC2 when widget is created. Implementation specific initialization code should
+	 * be run here
+	 */
+    _initWidget: function () {
+        this._setupWidgetEvents();
+        $(".__externalrelation_project").remove();
+        $(".__externalrelation_timesheetentry").remove();
+        $(".__externalrelation_dayentry").remove();
+        $(".__externalrelation_allocationentry").remove();
+        $(".__externalrelation_articleentry").remove();
+        $(".__externalrelation_absenceentry").remove();
+        $(".__externalrelation_favouriteusers").remove();
+
+        // create some balls
+        if (this.options.viewtype == "display") {
+            var panelTools = document.createElement("div");
+            panelTools.className = "__paneltools";
+
+            var selectedUser = getParameterByName("id");
+            var selectedUserName = document.querySelector("[data-propertyschemaname='firstname']").textContent.trim() + " " + document.querySelector("[data-propertyschemaname='lastname']").textContent.trim();
+
+            var url = "/main.aspx?controller=tro&action=approveworkmanager&filtered=true&selecteduser=" + selectedUser + "&selectedusername=" + selectedUserName;
+
+            var entryTypes = ["schedule", "layers", "euro_symbol", "do_not_disturb"];
+            if (features.assets)
+                entryTypes.push("local_shipping");
+
+            entryTypes.forEach(function (entryType) {
+                var button = createPanelToolButton(txt(entryType, "userformwidget"), entryType, url + "&entrytype=" + entryType);
+                panelTools.appendChild(button);
+            });
+
+            var userPanel = document.querySelector("#__applicationview .__panel");
+            userPanel.insertBefore(panelTools, userPanel.firstChild);
+
+            function createPanelToolButton(labelText, icon, url) {
+                var buttonContainer = document.createElement("div");
+                buttonContainer.className = "__floatbutton2";
+
+                var label = document.createElement("div");
+                label.className = "label";
+                label.textContent = labelText;
+
+                var button = document.createElement("a");
+                button.className = "floatbuttonelement";
+                button.href = url;
+
+                var iconElement = document.createElement("i");
+                iconElement.className = "material-icons";
+                iconElement.textContent = icon;
+
+                button.appendChild(iconElement);
+                buttonContainer.appendChild(label);
+                buttonContainer.appendChild(button);
+
+                return buttonContainer;
+            }
+        }
+    },
+	/**
+	 * Setup widget's events.
+	 */
+    _setupWidgetEvents: function () {
+    	var base = this;
+    },
+    /**
+     * Refresh all data in the model from the server.
+     * 
+     * @param options: configures how and what data should be acquired
+	 *
+     * @note: You should not do any dom manipulation here. All DOM manipulation needs
+     *        to go to the render method.
+     */
+    refreshData: function (options) {
+
+    	if (!options) options = {};
+
+        // Create an array of promises to wait before calling base and potentially rendering.
+        var promises = [];
+
+		var base = this;
+
+		$.when.apply($, promises).done(function () {
+        });
+    },
+
+    /**
+    * Render data in the model and settings into view.
+    * 
+    * @note: should not make any changes into model or settings
+    * *
+    * @param options: configures how data should be rendered
+    */
+    render: function (options) {
+    	if (!options) options = {};
+
+    	if (this._uiState.firstRender) {
+			// Code run only once when the widget is rendered for the first time.
+    		this.element.removeClass("__hidden");
+    		this._uiState.firstRender = false;
+    	}
+    }
+});

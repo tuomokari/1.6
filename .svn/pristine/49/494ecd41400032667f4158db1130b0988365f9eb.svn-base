@@ -1,0 +1,352 @@
+﻿[controller(workentries)
+
+	[using(dataform)]
+	[using(form)]
+	[using(table)]
+	[using(navigation)]
+
+	[workentries(datasource)
+
+		[widget(variables, currentblockname, currentcontroller, class: "__hidden workentries")
+			[dataview]
+			[genericactions]
+
+			[templates
+				[workentryrowtemplate]
+				[articleentryrowtemplate]
+				[expenseentryrowtemplate]
+				[workentryactionbuttonstemplate]
+				[assetentryrowtemplate]
+				[adddetailstemplate]
+				[editdetailstemplate]
+				[idlerowtemplate]
+			]
+		]
+	]
+
+	[private]
+	[dataview
+		<div class="dataview showmeter">
+			<div class="controls-wrapper">
+				<div class="totalswrapper">
+					<div class="totals">
+						<div class="totalselection totaltimesheetentries" data-amount=""><i class="material-icons">schedule</i></div>
+						<div class="totalselection totalexpenses" data-amount=""><i class="material-icons">euro_symbol</i></div>
+						<div class="totalselection totalarticles" data-amount=""><i class="material-icons">layers</i></div>
+					</div>
+				</div>
+				<div class="datecontrols">
+					<a class="__button previous __modest"><i class="material-icons">navigate_before</i></a><div class="date"><span class="long"></span><span class="short"></span></div><a class="__button today __modest"><i class="material-icons">restore</i></a><a class="__button next __modest"><i class="material-icons">navigate_next</i></a>
+				</div>
+			</div>
+			<div class="titlewrapper">
+				<div class="totalhours" data-duration=""></div>
+				<h2 class="maintitle"></h2>
+			</div>
+			<div class="entrycontainer"></div>			
+		</div>	
+	]
+
+	[private]
+	[genericactions
+		<div class="genericactions">
+			<a class="__button addentrybutton"><i class="material-icons">add</i></a>
+			<a class="__button __ok approvebutton"><i class="material-icons">done</i></a>
+			[if (config.application.features.homescreencopypaste)
+				<a class="copybutton __button">[$copy]</a>
+				<a class="pastebutton __button">[$paste]</a>
+			]
+		</div>
+	]
+
+	[private]
+	[workentryrowtemplate
+		[template("timeentryrow workentryrow")
+			<div class="amountcontainer">
+				<div class="amount">
+					<div class="duration"></div>
+					<div class="start"></div>
+					<div class="end"></div>
+					<div class="enddate"><i class="material-icons">priority_high</i><span></span></div>
+				</div>
+			</div>
+			<div class="entries">
+				<div class="row main">
+					<div class="col">
+						<h2 class="title"></h2>
+					</div>
+					<div class="col actions">
+						<a class="__button addbutton" href="#"><i class="material-icons">add</i></a>
+						<a class="__button editbutton" href="#"><i class="material-icons">edit</i></a>
+						<a class="__button removebutton __warning" href="#"><i class="material-icons">delete_forever</i></a>
+					</div>
+				</div>
+				<div class="row details">
+					[if (config.application.features.dailyentries) 
+						<p class="paytype"></p>
+					]
+
+					<div class="workentryrowdetails">
+					</div>
+					<a class="__button __compact adddetailbutton" href="#">[$adddetail]</a>
+				</div>
+			</div>
+			<div class="locked">
+				<i class="material-icons">lock</i>
+			</div>
+		]
+	]
+
+	[private]
+	[expenseentryrowtemplate
+		[template("expenseentryrow workentryrow")
+			<div class="amountcontainer">
+				<div class="amount">5</div>
+			</div>
+			<div class="entries">
+				<div class="row main">
+					<div class="col">
+						<h2 class="title"></h2>
+					</div>
+					<div class="col actions">
+						<a class="__button addbutton" href="#"><i class="material-icons">add</i></a>
+						<a class="__button editbutton" href="#"><i class="material-icons">edit</i></a>
+						<a class="__button removebutton __warning" href="#"><i class="material-icons">delete_forever</i></a>
+					</div>
+				</div>
+				<div class="row details">
+					<p class="project"></p>
+				</div>
+			</div>
+			<div class="locked">
+				<i class="material-icons">lock</i>
+			</div>
+		]
+	]
+
+	[private]
+	[articleentryrowtemplate
+		[template("articleentryrow workentryrow")
+			<div class="amountcontainer">
+				<div class="amount"></div>
+			</div>
+			<div class="entries">
+				<div class="row main">
+					<div class="col">
+						<h2 class="title"></h2>
+					</div>
+					<div class="col actions">
+						<a class="__button addbutton" href="#"><i class="material-icons">add</i></a>
+						<a class="__button editbutton" href="#"><i class="material-icons">edit</i></a>
+						<a class="__button removebutton __warning" href="#"><i class="material-icons">delete_forever</i></a>
+					</div>
+				</div>
+				<div class="row details">
+					<p class="project"></p>
+				</div>
+			</div>
+			<div class="locked">
+				<i class="material-icons">lock</i>
+			</div>
+		]
+	]
+
+	[private]
+	[assetentryrowtemplate
+		[template("assetentryrow workentryrow")
+			<div class="amountcontainer">
+				<div class="amount">
+					<div class="start"></div>
+					<div class="end"></div>
+				</div>
+			</div>
+			<div class="entries">
+				<div class="row main">
+					<div class="col">
+						<h2 class="title"></h2>
+					</div>
+					<div class="col actions">
+						<a class="__button addbutton" href="#"><i class="material-icons">add</i></a>
+						<a class="__button editbutton" href="#"><i class="material-icons">edit</i></a>
+						<a class="__button removebutton __warning" href="#"><i class="material-icons">delete_forever</i></a>
+					</div>
+				</div>
+				<div class="row details">
+				</div>
+			</div>
+			<div class="locked">
+				<i class="material-icons">lock</i>
+			</div>
+		]
+	]
+
+	[private]
+	[idlerowtemplate
+		[template("idleentryrow")
+			<div class = "idle" data-duration=""></div>
+		]
+	]
+
+	[private]
+	[workentryactionbuttonstemplate
+		[template(class: "workentryactionbuttons __buttoncolumn")
+			[if (config.application.features.workerscanuseunallocatedprojects || !security.isusermemberof(currentuser, "basicworkers"))
+				[extraparams = "actiontype=add&fromhomescreen=true"]
+
+				<button class="homescreenactionbuttonswidget_button __button allocations __stretch __modest">[txt("allocations")]&nbsp;<i class="material-icons">arrow_forward</i></button>
+
+				[actionbutton(
+					label: txt("addtimesheetentry", "tro"),
+					class: "homescreenactionbuttonswidget_button worktime __stretch",
+					action: "timesheetentry",
+					controllername: "tro",
+					extraparams: extraparams)]
+				
+				[actionbutton(
+					label: txt("adddayentry", "tro"),
+					class: "homescreenactionbuttonswidget_button expense __stretch",
+					action: "dayentry",
+					controllername: "tro",
+					extraparams: "actiontype=add&fromhomescreen=true")]
+
+				[if (config.application.features.articles == true)
+					[actionbutton(
+						label: txt("addarticleentry", "tro"),
+						class: "homescreenactionbuttonswidget_button article __stretch",
+						action: "articleentry",
+						controllername: "tro",
+						extraparams: "actiontype=add&fromhomescreen=true")
+					]
+				]
+			]
+
+			[if (config.application.features.assets && (currentuser.level != 4))
+				[actionbutton(
+					label: $addassetentry,
+					class: "ts_button asset __stretch",
+					action: "assetentry",
+					controllername: "tro",
+					extraparams: "actiontype=add&fromhomescreen=true")]
+			]
+			[if (currentuser.internalworker)
+				[actionbutton(
+					label: txt("addabsenceentry", "tro"),
+					class: "ts_button absence __stretch",
+					action: "absenceentry",	
+					controllername: "tro",
+					extraparams: "actiontype=add&fromhomescreen=true")]
+			]
+
+			[if (currentuser.internalworker && config.application.features.enablesocialproject)
+				[actionbutton(
+					label: $addsocialprojecttimesheetentry,
+					class: "ts_button socialproject __stretch",
+					action: "timesheetentry",	
+					controllername: "tro",
+					extraparams: "actiontype=add&socialproject=true")]
+
+				[actionbutton(
+					label: $addsocialprojectdayentry,
+					class: "ts_button socialproject __stretch",
+					action: "dayentry",	
+					controllername: "tro",
+					extraparams: "actiontype=add&socialproject=true")]
+			]
+
+			[button(
+				label: $cancel,
+				class: "ts_button __stretch __modest __dialog-cancel")]
+		]
+	]
+
+	[private]
+	[adddetailstemplate
+		[template(class: "adddetails")
+			<h2 class="__dialogheading">[txt("addnewdetail")]</h2>
+			[dropdown(
+				name: "timesheetentrydetailpaytype",
+				label: $paytype,
+				required: true
+			)]		
+			
+			<input id="timesheetentrydetailpaytype_hiddenfield" type="hidden" data-collection="timesheetentrydetailpaytype" data-value="[value]"[if (readonly) " disabled='true'"] [if (schema.timesheetentry.timesheetentrydetailpaytype.favourites) " data-favourites='true'"] [if (schema.timesheetentry.timesheetentrydetailpaytype.maxfavourites) " data-maxfavourites='schema.timesheetentry.timesheetentrydetailpaytype.maxfavourites'"] />
+
+
+			[timespanfield(
+				name: "duration",
+				label: $duration,
+				value: value,
+				required: true,
+				timeaccuracy: tree.getvalueordefault(schema.timesheetentry.duration, "timeaccuracy", 1))]
+
+				[numberfield(
+					name: "price",
+					label: $price,
+					value: value,
+					required: true)]
+
+				<div class="__dialogcontrols">
+					[button(
+						label: $ok,
+						class: "__dialog-ok __ok"
+					)]
+
+					[button(
+						label: $cancel,
+						class: "__dialog-cancel __warning"
+					)]
+				</div>
+		]
+	]
+
+	[private]
+	[editdetailstemplate
+		[template(class: "editdetails")
+			<h2 class="__dialogheading">[txt("editdetail")]</h2>
+			[dropdown(
+				name: "timesheetentrydetailpaytype",
+				label: $paytype,
+				required: true
+			)]		
+			
+			[timespanfield(
+				name: "duration",
+				label: $duration,
+				value: value,
+				required: true,
+				timeaccuracy: tree.getvalueordefault(schema.timesheetentry.duration, "timeaccuracy", 1))]
+
+				[numberfield(
+					name: "price",
+					label: $price,
+					value: value,
+					required: true)]
+
+				<div class="__dialogcontrols">
+					[button(
+						label: $ok,
+						class: "__dialog-ok __ok"
+					)]
+
+					[button(
+						label: $cancel,
+						class: "__dialog-cancel __warning"
+					)]
+				</div>
+		]
+	]
+
+	[private]
+	[templates
+		<div class="workentries_templates __hidden">
+			[content]
+		</div>	
+	]
+
+	[private]
+	[template(class)
+		<div class="[class] __widgettemplate">
+			[content]
+		</div>
+	]
+]

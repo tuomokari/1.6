@@ -1,0 +1,660 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Text.RegularExpressions;
+using SystemsGarden.mc2.Core.Runtime;
+using SystemsGarden.mc2.Common;
+using MongoDB.Driver.Builders;
+using MongoDB.Driver;
+using MongoDB.Bson;
+using CsvHelper;
+using System.IO;
+using System.Threading;
+using System.Dynamic;
+using OfficeOpenXml;
+
+namespace SystemsGarden.mc2.MC2Site.App_Code.Controllers.__builtin
+{
+    public class listview : MC2Controller
+    {
+        const int MinTermLength = 1;
+
+        #region Members
+        private string globalDefaultOrder;
+
+        #endregion Members
+
+        public override void Init()
+        {
+            const string DefaultGlobalDefaultOrder = "created";
+            globalDefaultOrder = (string)Runtime.Config["runtime"]["globaldefaultorder"].GetValueOrDefault(DefaultGlobalDefaultOrder);
+        }
+
+
+        #region Actions
+
+        [GrantAccessToGroup("defaultformaccess")]
+        public ActionResult showlistview(
+            string terms,
+            string collection,
+            string orderby,
+            bool ascending,
+            int documentsperpage,
+            int page,
+            string relation,
+            string relationid,
+            bool islocalrelation,
+            string localcollection,
+            bool itemselection = false,
+            string viewcontroller = "listview",
+            string viewaction = "listviewresults",
+            bool includetotals = false,
+            bool saveAsCsv = false,
+            string csvFieldsStr = "")
+        {
+
+            return showfilteredlistview(
+                terms,
+                collection,
+                orderby,
+                ascending,
+                documentsperpage,
+                page,
+                relation,
+                relationid,
+                islocalrelation,
+                localcollection,
+                null,
+                itemselection,
+                viewcontroller,
+                viewaction,
+                includetotals,
+                saveAsCsv,
+                csvFieldsStr);
+        }
+
+        [GrantAccessToGroup("defaultformaccess")]
+        public ActionResult showfilteredlistview(
+            string terms,
+            string collection,
+            string orderby,
+            bool ascending,
+            int documentsperpage,
+            int page,
+            string relation,
+            string relationid,
+            bool islocalrelation,
+            string localcollection,
+            IMongoQuery filter,
+            bool itemselection = false,
+            string viewcontroller = "listview",
+            string viewaction = "listviewresults",
+            bool includeTotals = false,
+            bool saveAsCsv = false,
+            string csvFieldsStr = "")
+        {
+            var splitters = new char[] { ' ' };
+            string[] splitTerms = terms.Split(splitters, StringSplitOptions.RemoveEmptyEntries);
+
+            var dbQueries = new List<IMongoQuery>();
+            DataTree schema = Runtime.Schema.First[collection];
+
+            if (string.IsNullOrEmpty(orderby) || orderby == "__default")
+            {
+                orderby = (string)schema["collection"]["orderby"].GetValueOrDefault("");
+
+                // If we have custom order from schema, get custom ascending value as well.
+                if (!string.IsNullOrEmpty(orderby))
+                    ascending = (bool)schema["collection"]["ascending"].GetValueOrDefault(false);
+                else
+                    orderby = globalDefaultOrder;
+            }
+
+            if (filter == null)
+                filter = GetDefaultFilter(Runtime, collection);
+
+            DBQuery listViewQuery;
+
+            if (islocalrelation)
+            {
+                DataTree localRelations = GetLocalRelationItems(localcollection, relation, relationid);
+
+                listViewQuery = QueryListViewLocalRelation(
+                    splitTerms, schema, collection, orderby,
+                    ascending, documentsperpage, page, relation, relationid,
+                    localcollection, localRelations, filter);
+
+            }
+            else
+            {
+                listViewQuery = QueryListView(splitTerms, schema, collection, orderby,
+                    ascending, documentsperpage, page,
+                    relation, relationid, filter);
+            }
+
+
+            if (listViewQuery != null)
+            {
+                listViewQuery[collection][DBQuery.DownloadThumbnails] = true;
+
+                if (includeTotals)
+                    listViewQuery[collection]["__includetotals"] = true;
+
+                // It's possible to extend the default query with the specified custom query.
+                if (schema["collection"].Contains("query"))
+                {
+                    DataTree additionalQuery = Runtime.Queries[Runtime.Schema.First.Name][schema["collection"]["query"]];
+
+                    if (!additionalQuery.Exists)
+                        throw new RuntimeException("Additional query specified for collection doesn't exist: " + schema["collection"]["query"]);
+                    listViewQuery.Merge(additionalQuery);
+                }
+
+                DBResponse result = listViewQuery.FindAsync().Result;
+
+                int maxPage = -1;
+                int totalRecords = -1;
+
+                DataTree qi = result.QueryInfo;
+                bool hasMoreResults = (bool)qi[collection][DBQuery.HasMoreResults];
+
+                if (includeTotals)
+                {
+                    totalRecords = (int)qi[collection]["totalrecords"];
+
+                    // Max page to refer to is number of pages -1
+                    maxPage = (int)Math.Ceiling((decimal)totalRecords / (decimal)documentsperpage) - 1;
+                }
+
+                if (saveAsCsv && csvFieldsStr != "")
+                {
+                    return ExportExcel(collection, csvFieldsStr, result);
+                }
+
+                // schema parent is used to pass the original view's controller's name to listview.
+                return NamedView(
+                    viewcontroller,
+                    viewaction,
+                    (MC2Value)result.FirstCollection,
+                    schema.Parent.Name,
+                    totalRecords,
+                    page,
+                    maxPage,
+                    itemselection,
+                    relation,
+                    relationid,
+                    hasMoreResults);
+            }
+            else
+            {
+                return NamedView(
+                    "listview",
+                    "listviewresults",
+                    MC2EmptyValue.EmptyValue,
+                    schema.Parent.Name,
+                    0,
+                    0,
+                    itemselection,
+                    relationid,
+                    false);
+            }
+        }
+
+        private ActionResult ExportExcel(string collection, string csvFieldsStr, DBResponse result)
+        {
+            // CSV fields are provided as comma sepearated string.
+            var csvFields = csvFieldsStr.Split(',');
+
+            string fileName = "listview_" + Guid.NewGuid() + ".xlsx";
+            // Use GUID as file name
+            var fullFileName = Path.Combine(HttpContext.Current.Server.MapPath("~"), "public", "csv", fileName);
+
+
+            var xlFile = new FileInfo(fullFileName);
+
+            using (var package = new ExcelPackage())
+            {
+                ExcelWorksheet worksheet = package.Workbook.Worksheets.Add(
+                    Runtime.GetTranslation("excel_export_workbook_name", "tro"));
+
+                for(int i = 0; i < csvFields.Length; i++)
+                {
+                    worksheet.Cells[1, i + 1].Value = GetCsvFieldName(collection, csvFields[i]);
+                }
+
+                if (result.FirstCollection != null)
+                {
+                    DataTree documents = (DataTree)result.FirstCollection;
+                    var docsArray = ((DataTree)documents).ToArray();
+
+                    if (docsArray != null && docsArray.Length > 0)
+                    {
+                        for (int i = 0; i<  docsArray.Length; i++)
+                        {
+                            DataTree dataTreeDoc = docsArray[i];
+
+                            for (int j = 0; j < csvFields.Length; j++)
+                            {
+                                string csvField = csvFields[j];
+                                DataTree schema = Runtime.Schema.First[collection][csvField];
+                                // i + 2: start from 1 and bypass header line
+                                worksheet.Cells[i + 2, j + 1].Value = GetExcelValue(schema, dataTreeDoc, csvField);
+                                string format = GetExcelFormat(schema, dataTreeDoc, csvField);
+                                if (format != "")
+                                    worksheet.Cells[i + 2, j + 1].Style.Numberformat.Format = format;
+                            }
+                        }
+
+                    }
+                }
+
+                package.SaveAs(xlFile);
+            }
+
+            var ajaxResult = new DataTree();
+            ajaxResult["fileName"] = xlFile.Name;
+            ajaxResult["success"] = true;
+
+            return new AjaxResult(ajaxResult);
+        }
+
+        private ActionResult ExportCsv(string collection, string csvFieldsStr, DBResponse result)
+        {
+            // CSV fields are provided as comma sepearated string.
+            var csvFields = csvFieldsStr.Split(',');
+
+            string fileName = "listview_" + Guid.NewGuid() + ".csv";
+            // Use GUID as file name
+            var fullFileName = Path.Combine(HttpContext.Current.Server.MapPath("~"), "public", "csv", fileName);
+
+            var sw = new StreamWriter(fullFileName);
+            sw.AutoFlush = true;
+            var csv = new CsvWriter(sw);
+
+            // Instead of returning the list data, convert it to CSV, save into a public location and return a link to the data.
+            if (result.FirstCollection != null)
+            {
+                DataTree documents = (DataTree)result.FirstCollection;
+                var docsArray = ((DataTree)documents).ToArray();
+
+                if (docsArray != null && docsArray.Length > 0)
+                {
+                    var csvLines = new List<dynamic>();
+                    foreach (var dataTreeDoc in docsArray)
+                    {
+                        dynamic record = new ExpandoObject();
+                        foreach (var csvField in csvFields)
+                        {
+                            DataTree schema = Runtime.Schema.First[collection][csvField];
+                            ((IDictionary<String, Object>)record)[GetCsvFieldName(collection, csvField)] = GetCsvValue(schema, dataTreeDoc, csvField);
+                        }
+
+                        csvLines.Add(record);
+                    }
+
+                    csv.WriteRecords(csvLines);
+                }
+            }
+
+            var ajaxResult = new DataTree();
+            ajaxResult["fileName"] = fileName;
+            ajaxResult["success"] = true;
+
+            return new AjaxResult(ajaxResult);
+        }
+
+        private string GetCsvFieldName(string collection, string csvField)
+        {
+            return Runtime.GetTranslation("schema_" + collection + "_" + csvField, "tro");
+        }
+
+
+        private string GetCsvValue(DataTree schema, DataTree dataTreeDoc, string csvField)
+        {
+            string csvValue = (string)dataTreeDoc[csvField];
+            try
+            {
+                if (dataTreeDoc.Contains("__" + csvField + "__displayname"))
+                {
+                    csvValue = dataTreeDoc["__" + csvField + "__displayname"];
+                }
+                else if ((string)schema["type"] == "datetime")
+                {
+                    csvValue = this.formatDate((DateTime)dataTreeDoc[csvField]);
+                }
+                else if ((string)schema["type"] == "int" && schema["inttype"] == "timespan")
+                {
+                    csvValue = formatTimespan((int)dataTreeDoc[csvField]);
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError("Failed to export csv value", e, csvField, dataTreeDoc.ContentView());
+            }
+
+            return csvValue;
+        }
+
+        private dynamic GetExcelValue(DataTree schema, DataTree dataTreeDoc, string field)
+        {
+            dynamic excelValue = "";
+
+            try
+            {
+                if (dataTreeDoc.Contains("__" + field + "__displayname"))
+                {
+                    excelValue = dataTreeDoc["__" + field + "__displayname"];
+                }
+                else if ((string)schema["type"] == "datetime")
+                {
+                    excelValue = this.formatDate((DateTime)dataTreeDoc[field]);
+                }
+                else if ((string)schema["type"] == "int" && schema["inttype"] == "timespan")
+                {
+                    int timespan = (int)dataTreeDoc[field];
+                    int hours = timespan / (1000 * 60 * 60);
+                    excelValue = hours;
+                }
+                else if ((string)schema["type"] == "int")
+                {
+                    excelValue = (int)dataTreeDoc[field];
+                }
+                else
+                {
+                    excelValue = (string)dataTreeDoc[field];
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError("Failed to export csv value", e, field, dataTreeDoc.ContentView());
+            }
+
+            return excelValue;
+        }
+
+        private string GetExcelFormat(DataTree schema, DataTree dataTreeDoc, string field)
+        {
+            string excelFormat = "";
+
+            try
+            {
+                if ((string)schema["type"] == "datetime")
+                {
+                    excelFormat = "d/M/yyyy"; 
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError("Failed to export csv value", e, field, dataTreeDoc.ContentView());
+            }
+
+            return excelFormat;
+        }
+
+        private string formatTimespan(int timespan = 0)
+        {
+            string minutesStr = Runtime.GetTranslation("unit_minutes", "core");
+            string hoursStr = Runtime.GetTranslation("unit_hours", "core");
+
+            int hours = timespan / (1000 * 60 * 60);
+            timespan -= hours * 1000 * 60 * 60;
+            int minutes = timespan / (1000 * 60);
+
+            string ret = string.Empty;
+
+            if (hours > 0)
+                ret = string.Format("{0} {1}", hours, hoursStr);
+
+            if (minutes > 0)
+            {
+                if (!string.IsNullOrEmpty(ret))
+                    ret += " ";
+
+                ret += string.Format("{0} {1}", minutes, minutesStr);
+            }
+
+            return ret;
+        }
+
+        private string formatDate(DateTime dateTime)
+        {
+            return dateTime.ToString("d");
+        }
+
+
+        private DBQuery QueryListView(
+            string[] splitTerms,
+            DataTree schema,
+            string collection,
+            string orderby,
+            bool ascending,
+            int documentperpage,
+            int page,
+            string searchIdField,
+            string searchId,
+            IMongoQuery filter)
+        {
+            var resultsQuery = new DBQuery();
+
+            var searchFields = Schema.GetSearchFields(schema);
+
+            var andQueries = new List<IMongoQuery>();
+
+            // The query explained:
+            //
+            // If threre are search terms
+            //      - Get element that matches both search term and relation (if present)
+            //      - Repeat for each search term
+            //
+            // If there are no search terms
+            //      - Get element that matches relation. If no relation is present get all items.
+            //
+            // Apply query sorting paging etc...
+
+            if (searchFields.Count > 0 && splitTerms.Length > 0)
+            {
+                foreach (string term in splitTerms)
+                {
+                    if (term.Length < MinTermLength)
+                        continue;
+
+                    var orQueries = new List<IMongoQuery>();
+                    foreach (string searchField in searchFields)
+                    {
+                        var filterQueries = new List<IMongoQuery>();
+
+                        var regEx = new Regex(Regex.Escape(term), System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                        filterQueries.Add(Query.Matches(searchField, new BsonRegularExpression(regEx)));
+
+                        if (!string.IsNullOrEmpty(searchIdField) && !string.IsNullOrEmpty(searchId))
+                        {
+                            filterQueries.Add(
+                                Query.EQ(searchIdField, new ObjectId(searchId)));
+                        }
+
+                        orQueries.Add(Query.And(filterQueries));
+                    }
+
+                    if (orQueries.Count > 0)
+                        andQueries.Add(Query.Or(orQueries));
+                }
+
+                if (filter != null)
+                    andQueries.Add(filter);
+
+                resultsQuery[collection][DBQuery.Condition] = Query.And(andQueries).ToJson();
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(searchIdField) && !string.IsNullOrEmpty(searchId))
+                {
+                    if (filter != null)
+                        andQueries.Add(filter);
+
+                    andQueries.Add(Query.EQ(searchIdField, new ObjectId(searchId)));
+
+                    resultsQuery[collection][DBQuery.Condition] = Query.And(andQueries).ToString();
+                }
+                else
+                {
+                    if (filter != null)
+                        resultsQuery[collection][DBQuery.Condition] = filter.ToString();
+                    else
+                        resultsQuery[collection][DBQuery.Condition] = DBQuery.All;
+                }
+            }
+
+            if (!resultsQuery[collection][DBQuery.Condition].Empty)
+            {
+                resultsQuery[collection][DBQuery.OrderBy] = orderby;
+                resultsQuery[collection][DBQuery.Ascending] = ascending;
+                resultsQuery[collection][DBQuery.DocumentsPerPage] = documentperpage;
+                resultsQuery[collection][DBQuery.Page] = page;
+
+                return resultsQuery;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private const string DefaultFilterType = "listfilter";
+        internal static IMongoQuery GetDefaultFilter(IRuntime runtime, string collection, string filterType = DefaultFilterType)
+        {
+
+            // Use specific filter type if it exists and default to listfilter if not.
+            string filterStr;
+            if (runtime.Schema.First[collection]["collection"][filterType].Exists || filterType == DefaultFilterType)
+                filterStr = runtime.Schema.First[collection]["collection"][filterType];
+            else
+                filterStr = runtime.Schema.First[collection]["collection"][DefaultFilterType];
+
+            if (string.IsNullOrEmpty(filterStr))
+                return null;
+
+            try
+            {
+                BsonDocument doc = MongoDB.Bson.Serialization
+                       .BsonSerializer.Deserialize<BsonDocument>(filterStr);
+                return new QueryDocument(doc);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        private DataTree GetLocalRelationItems(string localCollection, string relation, string id)
+        {
+            var localRelationQuery = new DBQuery();
+
+            localRelationQuery[localCollection][DBQuery.Condition] = Query.EQ(DBQuery.Id, new ObjectId(id)).ToString();
+
+            return localRelationQuery.FindOneAsync().Result[relation];
+        }
+
+        private DBQuery QueryListViewLocalRelation(
+            string[] splitTerms,
+            DataTree schema,
+            string collection,
+            string orderby,
+            bool ascending,
+            int documentperpage,
+            int page,
+            string searchIdField,
+            string searchId,
+            string localCollection,
+            DataTree localRelations,
+            IMongoQuery filter)
+        {
+            IMongoQuery localRelationQueries;
+
+            List<IMongoQuery> localRelationQueriesList = new List<IMongoQuery>();
+
+            foreach (DataTree localRelation in localRelations)
+            {
+                localRelationQueriesList.Add(Query.EQ(DBQuery.Id, new ObjectId(localRelation["_id"])));
+            }
+
+            // Don't make any queries if there are no relations.
+            if (localRelationQueriesList.Count == 0)
+                return null;
+
+            localRelationQueries = Query.Or(localRelationQueriesList);
+
+            var resultsQuery = new DBQuery();
+
+            var searchFields = Schema.GetSearchFields(schema);
+
+            var andQueries = new List<IMongoQuery>();
+
+            // The query explained:
+            //
+            // If threre are search terms
+            //      - Get element that matches both search term and relation (if present)
+            //      - Repeat for each search term
+            //
+            // If there are no search terms
+            //      - Get element that matches relation. If no relation is present get all items.
+            //
+            // Apply query sorting paging etc...
+
+            if (searchFields.Count > 0 && splitTerms.Length > 0)
+            {
+                foreach (string term in splitTerms)
+                {
+                    if (term.Length < MinTermLength)
+                        continue;
+
+                    var orQueries = new List<IMongoQuery>();
+                    foreach (string searchField in searchFields)
+                    {
+                        var filterQueries = new List<IMongoQuery>();
+
+                        var regEx = new Regex(Regex.Escape(term), System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+                        filterQueries.Add(Query.Matches(searchField, new BsonRegularExpression(regEx)));
+
+                        filterQueries.Add(localRelationQueries);
+
+                        orQueries.Add(Query.And(filterQueries));
+                    }
+
+                    if (orQueries.Count > 0)
+                        andQueries.Add(Query.Or(orQueries));
+                }
+
+                if (filter != null)
+                    andQueries.Add(filter);
+
+                resultsQuery[collection][DBQuery.Condition] = Query.And(andQueries).ToString();
+            }
+            else
+            {
+                andQueries.Add(localRelationQueries);
+
+                if (filter != null)
+                    andQueries.Add(filter);
+
+                resultsQuery[collection][DBQuery.Condition] = Query.And(andQueries).ToString();
+            }
+
+            if (!resultsQuery[collection][DBQuery.Condition].Empty)
+            {
+                resultsQuery[collection][DBQuery.OrderBy] = orderby;
+                resultsQuery[collection][DBQuery.Ascending] = ascending;
+                resultsQuery[collection][DBQuery.DocumentsPerPage] = documentperpage;
+                resultsQuery[collection][DBQuery.Page] = page;
+
+                return resultsQuery;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        #endregion
+    }
+}

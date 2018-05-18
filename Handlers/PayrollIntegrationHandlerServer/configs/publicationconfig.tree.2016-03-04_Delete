@@ -1,0 +1,77 @@
+application
+	features
+		reports: false
+		articles: true
+		assets: true
+		traveltime: true
+		resourcing: true
+		enablesocialproject: false
+		timetracking: true
+		dailyentries: true
+		allowdifferentdurationforbilling: false
+		usedirectprojectcategory: false
+		showactiveallocations: false
+		showfutureallocations: false
+		usebackgroundpayrollexport: false
+		showentrieslastapproved: true
+		articleshavetimestamp: false
+security
+	debug: true
+	loginguid: 6746F4D3-1E6E-4B1B-A1A9-35EE7E33C13B
+	defaultuser:ilkka.hartikainen@systemsgarden.com
+runtime
+	nostart: false
+	defaultlanguage:fi
+
+monitoring
+	enabled: false
+
+	sources
+		tro
+			pollinginterval: 6000
+			maxdatapoints: 100
+			counters
+				homescreenopened
+					type: totaldelta
+
+				approveworkviewopened
+					type: totaldelta
+
+				approveworkmanagerviewopened
+					type: totaldelta
+
+				hrviewopened
+					type: totaldelta
+
+				settingsviewopened
+					type: totaldelta
+
+				managementviewopened
+					type: totaldelta
+
+				myplacesviewopened
+					type: totaldelta
+
+				timesheetentriesadded
+					type: totaldelta
+
+				absenceentriesadded
+					type: totaldelta
+
+				expenseentriesadded
+					type: totaldelta
+
+				articleentriesadded
+					type: totaldelta
+
+				assetentriesadded
+					type: totaldelta
+
+				workerapprovalrequests
+					type: totaldelta
+
+				managerapprovalrequests
+					type: totaldelta
+
+				managerfilterwork
+					type: totaldelta

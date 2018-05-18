@@ -1,0 +1,6 @@
+﻿[controller(assetentrywidget)
+	[assetentrywidget(viewtype)
+		[widget(variables, currentblockname, currentcontroller, class: "__hidden __assetentrywidget")
+		]
+	]
+]

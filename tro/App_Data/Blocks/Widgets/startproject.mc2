@@ -1,0 +1,38 @@
+﻿[controller(startproject)
+	[using(dataform)]
+	[using(form)]
+	[using(layout)]
+	[using(schema)]
+	[using(text)]
+
+	[startproject(datasource)
+		[widget(variables, currentblockname, currentcontroller, class: "__hidden __startproject")
+			[card(class: "__projectsearch __motif")
+				[button(
+					class: "startprojectbutton", 
+					label: $startproject)]
+			]
+
+			<div class="startprojectdialogcontents __hidden">
+				[region
+					<h2 class="__dialogheading">[$startproject]</h2>
+						[form()
+							[searchfilterfield(
+								name: "project",
+								controllername: "searchhelpers",
+								action: "getprojectresults",
+								class: "__single __no-label")]
+								[button(
+									label: $start,
+									class: "__ok startproject __dialog-ok")]
+
+								[button(
+									label: $cancel,
+									class: "__dialog-cancel __warning"
+								)]
+							]
+				]
+			</div>
+		]
+	]
+]

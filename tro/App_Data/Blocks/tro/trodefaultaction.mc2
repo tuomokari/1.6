@@ -1,0 +1,25 @@
+﻿[controller(defaultaction)
+	
+	[using(dataform)]
+	[using(form)]
+	[using(table)]
+	[using(navigation)]
+	[using(layout)]
+	[using(schema)]
+	[using(text)]
+	[using(menubar)]
+	
+	[override]
+	[private]
+	[defaultviewheader
+		// TODO: Check may need to be added whether the following tag exists
+		[troadditions.defaultviewheader]
+	]
+
+	[override]
+	[private]
+	[defaultviewfooter
+		// TODO: Check may need to be added whether the following tag exists
+		[troadditions.defaultviewfooter]
+	]
+]

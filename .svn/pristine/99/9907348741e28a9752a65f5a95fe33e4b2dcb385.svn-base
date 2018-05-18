@@ -1,0 +1,38 @@
+﻿[controller(tro)
+
+	[using(dataform)]
+	[using(form)]
+	[using(table)]
+	[using(navigation)]
+	[using(layout)]
+	[using(schema)]
+	[using(text)]
+	[using(menubar)]
+	[using(documentstructure)]
+
+	[myplaces()
+		[html
+			[head(title: [$pagetitle_myplaces])
+				[defaultaction.defaultviewhead]
+			]
+			
+			[body
+				[application()
+					[myplacesbody]
+				]
+			]
+		]
+	]				
+
+	[private]
+	[myplacesbody()
+
+		[listview.listview(
+			schema: schemafor("location"),
+			allownew: true,
+			tools: true,
+			listviewcontroller: "myplaces",
+			listviewaction: "myplaceslistview"
+		)]		
+	]
+]

@@ -1,0 +1,6 @@
+﻿[controller(managerapproveworkfilterhelper)
+	[managerapproveworkfilterhelper(parameter1, parameter2)
+			[widget(variables, currentblockname, currentcontroller, class: "__hidden __managerapproveworkfilterhelper")
+		]
+	]
+]

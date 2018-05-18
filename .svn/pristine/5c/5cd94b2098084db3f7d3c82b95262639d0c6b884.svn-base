@@ -1,0 +1,9 @@
+﻿homescreenwidget
+	en-US
+		title: My homescreenwidget widget
+		sectiontitle-allocations: Work list
+		sectiontitle-entries: Entries
+	fi
+		title: Oma homescreenwidget widgetti
+		sectiontitle-allocations: Työlista
+		sectiontitle-entries: Kirjaukset

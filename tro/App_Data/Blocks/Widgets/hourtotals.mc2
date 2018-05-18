@@ -1,0 +1,40 @@
+﻿[controller(hourtotals)
+	// Add your widget's parameters to hourtotals block. These paramters will be passed
+	// to script and can be used inside the block.
+	// Example:
+	// hourtotals(myparam1 = 2, myparam2 = true)
+	//
+	// this can be called from any other block, for example
+	// [hourtotals.hourtotals(10, false)]
+	//
+	[using(layout)]
+
+	[hourtotals(
+		mode = "",
+        startdate =  null,
+        enddate = null)
+
+		[widget(variables, currentblockname, currentcontroller)
+			[panel
+				<table>
+				<tr class="__displayformrow">
+				<th>
+				<span class = "hourtotals_totaltimesheethours">[txt("totaltimesheethours")]</span>
+				</th>
+				<td>
+				<span class="hourtotals_totaltimesheethours_result"></span>
+				</td>
+				</tr>
+				<tr class="__displayformrow">
+				<th>
+				<span class = "hourtotals_totalabsencehours">[txt("totalabsencehours")]</span>
+				</th>
+				<td>
+				<span class="hourtotals_totalabsencehours_result"></span>
+				</td>
+				</tr>
+				</table>
+			]
+		]
+	]
+]

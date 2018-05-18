@@ -1,0 +1,24 @@
+﻿userformwidget
+	en-US
+		title: My userformwidget widget
+
+		// entrytypes for approval view linking
+		schedule: Timesheet entries
+		layers: Article entries
+		euro_symbol: Expense entries
+		do_not_disturb: Absence entries
+		local_shipping: Asset entries
+		exporting: Exporting
+		export_excel: Vie Excel-tiedostoon
+
+	fi
+		title: Oma userformwidget widgetti
+
+		// entrytypes for approval view linking
+		schedule: Työkirjaukset
+		layers: Nimikekirjaukset
+		euro_symbol: Kulukirjaukset
+		do_not_disturb: Poissaolokirjaukset
+		local_shipping: Laitekirjaukset
+		exporting: Exporting
+		export_excel: Export Excel

@@ -1,0 +1,12 @@
+﻿        private enum TroToVismaColumns
+        {
+            PersonnelNumber = 0, // henkilönumero	= useridentifier
+            Paytype = 1, // palkkalaji				= paytypeid tai paymentgroup
+            Hours = 2, // tunnit					= hours
+            Days = 3, // paivat						= 
+            Amount = 4, // maara					= amount
+            Euro = 5, // eurot						= price
+            StartDate = 6, // alku_pvm				= startdate
+            ProfitCenter = 7,						= profitcenter
+            LunchBreak = 8 // Additional column for internal use
+        }

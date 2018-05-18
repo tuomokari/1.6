@@ -1,0 +1,576 @@
+﻿.__box-field() {
+    color: @color-text-field;
+    border: none;
+    height: @form-input-targetheight;
+    border-radius: 2px;
+    min-height: @baseheight;
+    min-width: @form-input-minwidth;
+    max-width: @form-input-maxwidth;
+    box-sizing: border-box;
+    background: @color-field-background;
+    margin: 0;
+    overflow: auto;
+    padding: 0 @basemeasure;
+    .flex-values(1);
+    border: 1px solid @color-border-field;
+
+    //box-shadow: @field-shadow;
+    
+    &:focus {
+        .field-focus();
+    }
+
+    &.__invalid {
+        .__invalid;
+    }
+
+}
+
+input[type='text'], input[type='password'], select, textarea {
+    .__box-field();
+}
+
+textarea {
+    min-height: @form-input-targetheight * 2;
+}
+
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+option, optgroup {
+    font-size: 14px;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+.__datetimecontrolwrapper {
+    display: -webkit-inline-box;
+    display: -moz-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+}
+
+.__timedivider {
+    width: @basemeasure;
+    height: @form-input-targetheight;
+    .__unselectable();
+    box-sizing: border-box;
+    margin-right: 0;
+    padding-top: 4px;
+    padding-left: 3px;
+    padding-right: 5px;
+    display: inline-block;
+    border-top: 1px solid @color-border-field;
+    border-bottom: 1px solid @color-border-field;
+    background: @color-field-background;
+    z-index: 1;
+}
+.__datetimefieldcontrol, .__timeselectorwrapper {
+
+    &.__datetimefieldcontrol select {
+        z-index: 1;
+        &:active, &:focus {
+            z-index: 0;
+        }
+        &.__day, &.__hour {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-right: none;
+            padding-right: 0;
+        }
+
+        &.__month, &.__minute {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border-left: none;
+            padding-left: 0;
+        }
+    }
+
+    .__year {
+        margin-left: @basemeasure;
+    }
+}
+.__datetimefieldcontrol, .__timeselectorwrapper {
+    select {
+        .flex-values(none);
+        min-width: 0;
+    }
+}
+
+.__timeselectorwrapper {
+    .display-flex;
+
+    label {
+        min-width: 0;
+        width: auto;
+    }
+}
+
+.__inline {
+    input, select, textarea {
+        min-width: 75px;
+    }
+
+    display: inline-block;
+}
+
+.field-focus {
+    outline: 0;
+    box-shadow: 0 0 10px fade(@color-field-focus, 65%);
+    border-bottom-color: @color-field-focus;
+}
+
+.__checkbox input[type='checkbox'] {
+    display: none;
+}
+
+label {
+    width: @form-label-width;
+    min-width: @form-label-width;
+    display: inline-block;
+    padding-top: @basemeasure;
+    color: @color-text-label;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    .__unselectable();
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    white-space: nowrap;
+    vertical-align: text-bottom;
+}
+
+.__control.__checkbox {
+    input[type='checkbox']:not(.__switch) {
+        min-width: 0;
+
+        +label {
+            margin-left: 0;
+            padding-top: 2px;
+            overflow: hidden;
+            cursor: pointer;
+            min-width: 0;
+            width: auto;
+        
+            &:before {
+                .material-icons;
+                content: "";
+                display: block;
+                background: @color-field;
+                padding: 1px;
+                box-sizing: border-box;
+                width: 20px;
+                height: 20px;
+                float: left;
+                border: 1px solid #ccc;
+                margin-right: 5px;
+            }
+        }
+        &:checked+label:before {
+            content: "check";
+        }
+   }
+}
+
+.switch() {
+    display: none;
+    &+label {
+        line-height: 20px;
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+        position: relative;
+
+        &::before {
+            content: "";
+            width: 32px;
+            height: 10px;
+            border-radius: 10px;
+            text-shadow: 0 0 1px rgba(0,0,0,0.5);
+            background: fade(@color-switch-background, 35%);
+            margin: 6px @basemeasure 0 3px;
+            display: inline-block;
+            box-shadow: 0 0 1px rgba(0, 0, 0, 0.25);
+        }
+        &::after {
+            content: "";
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            .animate();
+            background: #666;
+            position: absolute;
+            left: 0;
+            top: 13px;
+        }
+    }
+    &:checked+label::before {
+        background: @color-switch-background;
+    }
+    &:checked+label::after {
+        transform: translateX(20px);
+        background: @color-ok;
+    }
+}
+
+// todo: temporary alt switch style for non control switches
+input[type='checkbox'].__switch {
+    .switch();
+}
+
+.__radiogroup .__radios label {
+    display: inline;
+    top: -10px;
+    position: relative;
+    cursor: pointer;
+}
+
+.__radiogroup .__radios input {
+    cursor: pointer;
+}
+
+.__radiogroup > label {
+    display: inline-block;
+}
+
+.__radios {
+    display: inline-block;
+}
+
+.__button {
+    .button-color();
+
+    &.__warning {
+        .button-color(@color-warning);
+    }
+
+    &.__ok {
+        .button-color(@color-ok);
+    }
+
+    &.__disabled {
+        .button-color(@color-disabled);
+        pointer-events: none;
+    }
+   
+    text-decoration: none; // for link buttons
+    border-radius: @border-radius-round;
+    margin: @basemeasure / 2 @basemeasure / 2 @basemeasure / 2 0;
+    border: none;
+    .__unselectable();
+    line-height: 20px; // todo: normalize this
+    font-weight: @button-font-weight;
+    display: inline-block;
+    box-sizing: border-box;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding: 5px 10px;
+
+    max-width: 100%;
+    min-width: 32px;
+    min-height: 32px;
+
+    cursor: pointer;
+    .flex-values(0 1 auto);
+    box-shadow: 0 -1px 0px rgba(0, 0, 0, 0.1) inset;
+
+    .display-flex;
+    .center-align;
+    .center-content;
+
+    &.__stretch {
+        width: 100%;
+    }
+
+    &.__disabled {
+        cursor: default;
+        pointer-events: none;
+        opacity: 0.5;
+    }
+
+    -webkit-appearance: none; // overrides iPhone style
+    overflow: hidden;
+    outline: none;
+    float: left;
+    
+    // enlarge FA and MD icons
+    i.fa, i.material-icons {
+        font-size: 20px;
+        width: 20px;
+        height: 20px; // size set to prevent size "flashing" as bigger because of the ligature before font is properly loaded
+        margin: 0 -5px; // this is to ensure buttons stay square. todo: unify with button padding. This is also a hack, and should be evaluated in case another method would be preferable.
+    }
+}
+
+.__buttoncolumn {
+    .__button {
+        border-radius: @border-radius;
+        margin-top: 2px;
+        margin-bottom: 2px;
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+}
+
+.button-color(@btncolor: @color-button) {
+    background: @btncolor;
+    @border-button: 1px solid darken(@btncolor, 10%);
+    color: @color-text-button;
+    background-image: linear-gradient(to bottom, rgba(0,0,0,0.1) 0, rgba(0,0,0,0) 100%);
+    &:hover, &:active {
+        background: lighten(@btncolor, @lightenstep);
+    }
+    // modifiers
+    &.__outline {
+        border: 1px solid @color-button;
+        color: @color-button;
+
+        &:hover, &:active, &:focus {
+        color: @color-text-button;
+        background: fade(@color-button, 65%) !important; // todo: get rid of important rule!
+        border: 1px solid @color-button;
+        }
+    }
+
+    &.__modest {
+        color: @color-button;
+        background: none;
+        border: 1px solid transparent;
+        box-shadow: none;
+
+        &:hover {
+            color: @color-text-button;
+            background: fade(@color-button, 65%) !important; // todo: get rid of important rule!
+        }
+
+        &:focus:not(:active) {
+            border: 1px solid fade(@color-button, 65%) !important; // todo: get rid of important rule!
+        }
+    }
+
+    &.__compact {
+        border-radius: @border-radius;
+        min-height: 24px;
+        height: 24px;
+    }
+
+    &.__motif {
+        color: @color-text-positive;
+        background: rgba(255, 255, 255, 0.5);
+        border: 1px dotted #ccc;
+        box-shadow: none;
+        padding: 0 5px;
+        min-height: 0;
+        border-radius: @border-radius;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.75) !important; // todo: get rid of important rule!
+        }
+    }
+
+    &.__small {
+        min-width: inherit;
+        min-height: inherit;
+        height: 20px;
+        width: 20px;
+        border-radius: @border-radius;
+        padding: 0;
+        i.material-icons {
+            font-size: 16px;
+            .display-flex;
+            .center-align;
+            .center-content;
+        }
+    }
+}
+
+.__setdatefields {
+    .display-flex;
+    .center-align;
+    i {
+        margin-left: 5px;
+        margin-right: 5px;
+        cursor: pointer;
+    }
+}
+
+.__control[data-readonly='true'] .__setdatefields {
+	display: none;
+}
+
+.__fieldcontrol {
+    margin-top: @basemeasure;
+}
+
+.__control {
+    .display-flex;
+    clear: both; // fix odd behavior of first line indenting
+    margin-top: @basemeasure;
+    overflow: visible;
+    text-overflow: ellipsis;
+
+    &:first-child {
+        margin-top: 0;
+    }
+
+    &.__datetimefieldcontrol {
+        white-space: nowrap;
+    }
+
+    &.__fieldinvalid {
+        input, select, textarea {
+            .__invalid;
+        }
+    }
+
+    &.__checkbox {
+        label {
+            cursor: pointer;
+        }
+
+        input {
+            .flex-values(0 1 auto);
+            cursor: pointer;
+        }
+
+		&[data-readonly='true'] {
+			opacity: 0.5;
+		}
+    }
+
+    &.__button {
+        display: block;
+        padding-left: @basemeasure;
+
+        &:first-child {
+            padding-left: 0;
+        }
+    }
+    
+    &.__inline {
+        display: inline;
+        label {
+            width: auto;
+            min-width: auto;
+            margin-right: @basemeasure;
+        }
+}
+}
+
+.__buttonfield {
+    .__control {
+        .display-flex;
+    }
+
+    input[type='text'] {
+        border-radius: @border-radius-round;
+        box-shadow: none;
+        border: 1px solid #ccc;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    input[type='button'] {
+        margin-top: 0;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        height: @form-input-targetheight;
+        padding: 0 @basemeasure;
+    }
+}
+
+// fix for displaying button in webkit. todo: input button is not a container and as such the element should be treated differently.
+input[type='button'].__button {
+    display: block;
+    text-align: center;
+}
+
+/*#region helpers*/
+.__form_tiptext {
+    /*margin-left: @form-label-width + @border-radius;*/
+    padding: 0;
+    display: inline-block;
+    margin-top: 0;
+    font-size: 14px; // todo: potentially revise
+    color: rgba(26, 26, 26, 0.65);
+
+    &:before {
+        font-family: FontAwesome;
+        content: "\f06a\00a0";
+        display: inline-block;
+        color: @color-note;
+        font-size: 16px;
+        padding-top: 2px;
+    }
+}
+
+.__form_validatemessage { // todo: revise
+    margin-left: @form-label-width;
+    color: @color-error;
+}
+
+.__form_unit {
+    display: inline-block;
+    margin-left: @basemeasure;
+}
+
+[disabled='true'], [data-disabled='true'] { // data-disabled for checkboxes
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: default;
+}
+/*#endregion*/
+
+/*#region responsiveness*/
+@media only screen and (max-width: @screen-smartphone) {
+    /*label {
+        padding-top: 0;
+    }*/
+
+    form > .__control input[type='checkbox'].__checkbox + label:before {
+        margin-left: 0;
+    }
+
+    .__form_tiptext, .__form_validationmessage, .__form_validatemessage { // todo: are these both used?
+        margin-left: 0 !important;
+    }
+
+    .__fieldcontrol select, select.__dropdown, select.__relationdropdown, textarea, input[type='text'], input[type='password'] {
+        max-width: none;
+        width: 100%;
+    }
+
+    .__timeselectorwrapper {
+        .__timeseparator {
+            display: none;
+        }
+    }
+
+    .__datetimefieldcontrol {
+        .__setdatefieldnow, .__cleardatefield {
+            display: none;
+        }
+
+        select {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: @basemeasure;
+        }
+    }
+
+    .__control {
+        display: block;
+    }
+}
+/*#endregion*/

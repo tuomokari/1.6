@@ -1,0 +1,81 @@
+﻿.sectionwrapper {
+  .display-flex;
+  position: relative;
+  width: 100%;
+  margin-top: 1px;
+
+    .section {
+      .flex-values(1 0 auto);
+      .center-content;
+      
+      &:first-child {
+          label {
+              border-top-left-radius: @border-radius;
+          }
+      }
+      &:last-child {
+          label {
+              border-top-right-radius: @border-radius;
+          }
+      }
+      
+      input[type='radio'] {
+      display: none;
+        +label {
+          cursor: pointer;
+          text-transform: uppercase;
+          .display-flex;
+          .center-content;
+          font-weight: 400;
+          color: @color-text-positive;
+          width: auto;
+          font-size: 24px;
+          opacity: 0.65;
+          .center-align;
+          min-height: 40px; // todo: too arbitrary
+          padding: 0;
+          min-width: 0;
+          position: relative;
+            border-bottom: 5px solid transparent;
+          div {
+            position: absolute;
+            .display-flex;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 1;
+            .center-content;
+            .center-align;
+          }
+        }
+        ~.sectioncontent {
+          opacity: 0;
+          height: 0;
+          overflow: hidden;
+          position: absolute;
+          left: 0;
+          width: 100%;
+          .animate();
+          z-index: -1;
+          pointer-events: none;
+        }
+        &:checked {
+          +label {
+            cursor: default;
+            opacity: 1;
+            background: @color-panel-background;
+            color: @color-button;
+            border-bottom: 5px solid @color-button;
+          }
+          ~.sectioncontent {
+            opacity: 1;
+            z-index: 1;
+            pointer-events: all;
+            height: auto;
+            overflow: visible;
+        }
+      }
+    }
+  }
+}

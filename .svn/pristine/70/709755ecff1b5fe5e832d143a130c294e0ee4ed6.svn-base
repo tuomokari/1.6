@@ -1,0 +1,365 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using OfficeOpenXml;
+using SystemsGarden.mc2.Common;
+using MongoDB.Bson;
+using System.Reflection;
+
+namespace SystemsGarden.mc2.RemoteConnector.Handlers.PayrollIntegrationHandlerServer
+{
+    /// <summary>
+    /// Collection class for payrollEntries
+    /// </summary>
+    /// <typeparam name="T">class based on EntryToPayroll</typeparam>
+    class EntriesToPayroll<T> : List<T> where T : EntryToPayroll
+    {
+        #region fields and properties
+        private const int DateExcelColumn = 1;
+        private const int NameExcelColumn = 2;
+        private const int UserIdExcelColumn = 3;
+        private const int HoursExcelColumn = 4;
+        private const int PayTypeNameExcelColumn = 5;
+        private const int PayTypeExcelColumn = 6;
+        private const int ProfitcenterExcelColumn = 7;
+        private const int SupervisorExcelColumn = 8;
+        private const int UniqueIdExcelColumn = 9;
+
+        //This is the same as HoursExcelColumn but only used in Day entries, not in Timesheet or Absence entries
+        private const int AmountExcelColumn = 4;
+
+        private const string ExcelDateFormat = "dd/MM/yyyy";
+        private PayrollExportTask exportTask;
+
+        /// <summary>
+        /// Helper list to create CSV and Audit files, assigned here or in constructor
+        /// </summary>
+
+        #endregion
+
+
+        #region constructors
+        public EntriesToPayroll()
+        { }
+
+        /// <summary>
+        /// Creates instance of EntriesToPayroll
+        /// </summary>
+        /// <param name="list">Helper list to create CSV and Audit files</param>
+        /// <param name="exportTask">The export task object with info about current export</param>
+        public EntriesToPayroll(List<FieldDetails> list, PayrollExportTask exportTask)
+        {
+            ParsedConfig = list;
+            this.exportTask = exportTask;
+        }
+        #endregion
+
+
+        #region public methods
+        /// <summary>
+        /// Generate Excel file with absence and timesheet and also day entries that count for.
+        /// </summary>
+        /// <typeparam name="EntryType">Absence, Day or Timehseet</typeparam>
+        /// <param name="worksheet">Worksheet to add hours or amounts</param>
+        /// <param name="startingRow">Row position where to start write data</param>
+        /// <param name="writeHeaderRow">Prevents writing header info again</param>
+        /// <returns>Row position where to start next data to be written, usefull to add timesheet entries and abcense entries otherwise starts at 2</returns>
+        public int AppendToExcelWorksheet<EntryType>(ExcelWorksheet worksheet, int startingRow, bool writeHeaderRow = true) where EntryType : EntryToPayroll
+        {
+            if (writeHeaderRow)
+            {
+                worksheet.Cells[1, DateExcelColumn].Value = "Date";
+                worksheet.Cells[1, NameExcelColumn].Value = "Name";
+                worksheet.Cells[1, UserIdExcelColumn].Value = "PersonId";
+                if (typeof(EntryType) == typeof(Day))
+                {
+                    worksheet.Cells[1, AmountExcelColumn].Value = "Amount";
+                }
+                else
+                {
+                    worksheet.Cells[1, HoursExcelColumn].Value = "Hours";
+                }
+                worksheet.Cells[1, PayTypeNameExcelColumn].Value = "Paytype";
+                worksheet.Cells[1, PayTypeExcelColumn].Value = "Paytype identifier";
+                worksheet.Cells[1, UniqueIdExcelColumn].Value = "Unique identifier";
+                worksheet.Cells[1, ProfitcenterExcelColumn].Value = "Profitcenter";
+                worksheet.Cells[1, SupervisorExcelColumn].Value = "Supervisor";
+
+                worksheet.Column(DateExcelColumn).Style.Numberformat.Format = ExcelDateFormat;
+            }
+
+            return AppendTimesheetAndAbcenceAndDayDataToWorksheet<T>(worksheet, startingRow);
+        }
+
+
+        /// <summary>
+        /// Populate header based on config.tree and valid value(absence, day, timesheet)
+        /// </summary>
+        /// <param name="allInOne">allinone csv it may be convenient to write the longest header</param>
+        /// <returns>Header for CSV file</returns>
+        public string CreateHeaderForCsv(bool allInOne = false)
+        {
+            string csvHeader = "";
+            if (allInOne)
+            {
+                int absenceCount = 0;
+                int dayCount = 0;
+                int timesheetCount = 0;
+                //Order by index
+                foreach (var item in ParsedConfig.OrderBy((p) => p.Index))
+                {
+                    //If found from index
+                    for (int i = 0; i < item.ValidTypes.Length; i++)
+                    {
+                        switch (item.ValidTypes[i])
+                        {
+                            case "absence":
+                                absenceCount++;
+                                break;
+                            case "day":
+                                dayCount++;
+                                break;
+                            case "timesheet":
+                                timesheetCount++;
+                                break;
+                        }
+                    }
+                }
+                if (timesheetCount >= absenceCount && timesheetCount >= dayCount)
+                {
+                    csvHeader = GetValidIndexTypes("timesheet");
+                    return csvHeader;
+                }
+                else if (absenceCount >= dayCount)
+                {
+                    csvHeader = GetValidIndexTypes("absence");
+                    return csvHeader;
+                }
+                else
+                {
+                    csvHeader = GetValidIndexTypes("day");
+                    return csvHeader;
+                }
+            }
+            if (typeof(T) == typeof(Timesheet))
+                csvHeader = GetValidIndexTypes("timesheet");
+            else if (typeof(T) == typeof(Absence))
+                csvHeader = GetValidIndexTypes("absence");
+            else if (typeof(T) == typeof(Day))
+                csvHeader = GetValidIndexTypes("day");
+            return csvHeader;
+        }
+        #endregion
+
+        #region private methods
+        /// <summary>
+        /// Appends entrytype hours or amounts to a worksheet
+        /// </summary>
+        /// <typeparam name="EntryType">Abcence, Day or Timesheet</typeparam>
+        /// <param name="worksheet">Worksheet to append work hours or amounts</param>
+        /// <param name="row">Row position where to start</param>
+        /// <returns>Row position where to start next data to be written</returns>
+        private int AppendTimesheetAndAbcenceAndDayDataToWorksheet<EntryType>(ExcelWorksheet worksheet, int row) where EntryType : EntryToPayroll
+        {
+            var collection = this as EntriesToPayroll<EntryType>;
+
+            // sortti by asentajan nimi, päivämäärä, jip:
+            collection.Sort(delegate (EntryType x, EntryType y) 
+            {
+                string name_x = (string)x.Document.GetValue("__UserSortName", "");
+                string name_y = (string)y.Document.GetValue("__UserSortName", "");
+                DateTime pvm_x = Convert.ToDateTime(x.Document.GetValue("date", DateTime.MinValue));
+                DateTime pvm_y = Convert.ToDateTime(y.Document.GetValue("date", DateTime.MinValue));
+                if((name_x == null && name_y == null) || name_x == name_y)
+                {
+                    return pvm_x.CompareTo(pvm_y);
+                }
+                if (name_x == null) return -1;
+                if (name_y == null) return 1;
+                return name_x.CompareTo(name_y);
+            });
+
+
+            // collection --> excel
+            foreach (EntryType item in collection)
+            {
+                //If no dayentry then its timesheet or abcense
+                if (typeof(EntryType) == typeof(Day) == false)
+                {
+                    if (item.PayType == null || !Convert.ToBoolean(item.PayType.GetValue("countsasregularhours", false)))
+                        continue;
+                }
+
+                if ((exportTask.onlyExportEntriesNotAcceptedByManager &&
+                    exportTask.onlyExportEntriesNotAcceptedByWorker) ||
+                    exportTask.onlyExportEntriesNotAcceptedByWorker)
+                {
+                    if (Convert.ToBoolean(item.Document.GetValue("approvedbyworker", false)))
+                        continue;
+                }
+                else if (exportTask.onlyExportEntriesNotAcceptedByManager &&
+                    (Convert.ToBoolean(item.Document.GetValue("approvedbymanager", false)) ||
+                    !Convert.ToBoolean(item.Document.GetValue("approvedbyworker", false))))
+                {
+                    continue;
+                }
+
+                if (exportTask.onlyExportExportedEntries && !Convert.ToBoolean(item.Document.GetValue("exported_visma", false)))
+                    continue;
+
+                // If no special selectors are selected, only take unexported entries accepted by user and manager.
+                if ((!exportTask.onlyExportEntriesNotAcceptedByManager &&
+                    !exportTask.onlyExportEntriesNotAcceptedByWorker &&
+                    !exportTask.onlyExportExportedEntries) &&
+                    (Convert.ToBoolean(item.Document.GetValue("exported_visma", false)) ||
+                    !Convert.ToBoolean(item.Document.GetValue("approvedbymanager", false)) ||
+                    !Convert.ToBoolean(item.Document.GetValue("approvedbyworker", false))))
+                    continue;
+
+                worksheet.Cells[row, DateExcelColumn].Value = Convert.ToDateTime(item.Document.GetValue("date", DateTime.MinValue)).ToString(ExcelDateFormat);
+                //worksheet.Cells[row, NameExcelColumn].Value = Convert.ToString(item.Document.GetValue("__user__displayname", ""));
+                worksheet.Cells[row, NameExcelColumn].Value = Convert.ToString(item.Document.GetValue("__UserSortName", ""));
+                worksheet.Cells[row, UserIdExcelColumn].Value = item.UserIdentifier;
+                if (typeof(EntryType) == typeof(Day))
+                {
+                    worksheet.Cells[row, AmountExcelColumn].Value = Convert.ToInt32(item.Document.GetValue("amount", 0));
+                }
+                else
+                {
+                    worksheet.Cells[row, HoursExcelColumn].Value = PayrollExport.MillisecondsToHours(Convert.ToInt32(item.Document.GetValue("duration", 0)));
+                }
+                worksheet.Cells[row, PayTypeNameExcelColumn].Value = Convert.ToString(item.PayType.GetValue("name", ""));
+                worksheet.Cells[row, PayTypeExcelColumn].Value = item.PayTypeId;
+                worksheet.Cells[row, ProfitcenterExcelColumn].Value = Convert.ToString(item.Document.GetValue("__profitcenter__displayname", ""));
+                worksheet.Cells[row, SupervisorExcelColumn].Value = Convert.ToString(item.Document.GetValue("__supervisor__displayname", ""));
+                worksheet.Cells[row, UniqueIdExcelColumn].Value = item.ObjectId;
+
+                row++;
+            }
+            return row;
+        }
+
+
+        /// <summary>
+        /// Get valid types based on entry from ParsedConfig
+        /// </summary>
+        /// <param name="entryType">absence, day, or timesheet</param>
+        /// <returns>Header for function CreateHeaderForCSV</returns>
+        private string GetValidIndexTypes(string entryType)
+        {
+            int numberOfIndex = 0;
+            string headerItem = "";
+            //Order by index
+            foreach (var item in ParsedConfig.OrderBy((p) => p.Index))
+            {
+                //If found from index
+                for (int i = 0; i < item.ValidTypes.Length; i++)
+                {
+                    if (item.ValidTypes[i] == entryType)
+                    {
+                        headerItem += item.Name + ";";
+                        numberOfIndex++;
+                    }
+                }
+            }
+            return headerItem;
+        }
+        #endregion
+
+        #region static members
+
+        /// <summary>
+        /// Common DataTree (config.tree) helper property
+        /// </summary>
+        public static List<FieldDetails> ParsedConfig { get; set; }
+
+        /// <summary>
+        /// Returns a csv-line from invidual entry using reflection
+        /// </summary>
+        /// <param name="entryItem">Entry item from to create csv-line</param>
+        /// <param name="indexOfEntryType">Index of Entrytypes from config.tree if validtypescountandtypes:3 then
+        ///<para>absence:0</para>
+        ///<para>day:1</para>
+        ///<para>timesheet:2</para>
+        ///</param> 
+        /// <returns>Csv-line per entry item</returns>
+        public static string CreateCsvLineWithReflection(T entryItem, int indexOfEntryType)
+        {
+            string csvReturn = "";
+            var type = typeof(T);
+            foreach (FieldDetails item in ParsedConfig.Where(p => p.ValidTypes[indexOfEntryType].ToLower() == type.Name.ToLower()))
+            {
+                PropertyInfo property = type.GetProperties().Where(pt => pt.Name.ToLower() == item.Name.ToLower()).FirstOrDefault();
+                if (property == null) continue;
+
+
+                string itemValue = "";
+                if (property.GetValue(entryItem) != null)
+                {
+                    //If it is an array like ProjectNumber[3]
+                    if (property.GetValue(entryItem).GetType() == typeof(string[]))
+                    {
+
+                        string[] arr = (string[])property.GetValue(entryItem);
+                        for (int i = 0; i < arr.Length; i++)
+                        {
+                            if (i == arr.Length - 1)
+                                itemValue += arr[i];
+                            else
+                                itemValue += arr[i] + ";";
+                        }
+                    }
+                    else if (property.GetValue(entryItem).GetType() == typeof(DateTime))
+                    {
+                        //For DateTime use format
+                        if (item.Format == "")
+                            item.Format = "d.M.yyyy";
+                        itemValue = ((DateTime)property.GetValue(entryItem)).ToString(item.Format);
+                    }
+                    else if (property.GetValue(entryItem).GetType() == typeof(double))
+                    {
+                        //If it has a specified own calculation function
+                        if (item.CalculationFunction != null && (double)property.GetValue(entryItem) > 1000) // Quick fix for sometimes to show duration(ms) instead of whole numbers(int or double)
+                        {
+                            itemValue = CodeDomCalculationParser.EvaluateExpressionAndReturnValue(item.CalculationFunction,
+                                (double)property.GetValue(entryItem), item.PrecedingOperator).ToString();
+                        }
+                        //TODO: Need to check if zeroes are allowed
+                        else if ((double)property.GetValue(entryItem) >= 0)
+                        {
+                            if ((double)property.GetValue(entryItem) == 0)
+                            {
+                                if ((bool)PayrollExport.config["allowzerovaluesindouble"].GetValueOrDefault(true) == true)
+                                {
+                                    itemValue = property.GetValue(entryItem).ToString();
+                                }
+                                else
+                                {
+                                    itemValue = "";
+                                }
+
+                            }
+                            else
+                            {
+                                itemValue = property.GetValue(entryItem).ToString();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        itemValue = property.GetValue(entryItem).ToString();
+                    }
+                }
+                csvReturn += itemValue + ";";
+
+            }
+            return csvReturn;
+        }
+
+        #endregion
+
+    }
+}

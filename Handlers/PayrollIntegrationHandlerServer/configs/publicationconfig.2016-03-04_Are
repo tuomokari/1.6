@@ -1,0 +1,86 @@
+
+application
+	features
+		reports: false
+		articles: true
+		assets: false
+		traveltime: false
+		resourcing: false
+		enablesocialproject: true
+		timetracking: false
+		dailyentries: true
+		allowdifferentdurationforbilling: true
+		usedirectprojectcategory: true
+		entrybuttonsforindividualprojects: true
+		showactiveallocations: true
+		showfutureallocations: false
+		showunscheduledallocations: true
+		showtodaysallocations: false
+		showtomorrowsallocations: false
+		workerscanuseunallocatedprojects: false
+		usebackgroundpayrollexport: true
+		show_approveworkmanager_totalhours: false
+		showallocationcustomername: true
+		managerfilter_defaultprojectmanageriscurrentuser: true
+		paytypeforworkentries: falsesecurity
+security
+	debug: true
+	defaultuser: jari.kallonen@systemsgarden.com
+	loginguid: 6746F4D3-1E6E-4B1B-A1A9-35EE7E33C13B
+
+runtime
+	nostart: false
+	defaultlanguage: fi
+
+monitoring
+	enabled: true
+
+	sources
+		tro
+			pollinginterval: 6000
+			maxdatapoints: 100
+			counters
+				homescreenopened
+					type: totaldelta
+
+				approveworkviewopened
+					type: totaldelta
+
+				approveworkmanagerviewopened
+					type: totaldelta
+
+				hrviewopened
+					type: totaldelta
+
+				settingsviewopened
+					type: totaldelta
+
+				managementviewopened
+					type: totaldelta
+
+				myplacesviewopened
+					type: totaldelta
+
+				timesheetentriesadded
+					type: totaldelta
+
+				absenceentriesadded
+					type: totaldelta
+
+				expenseentriesadded
+					type: totaldelta
+
+				articleentriesadded
+					type: totaldelta
+
+				assetentriesadded
+					type: totaldelta
+
+				workerapprovalrequests
+					type: totaldelta
+
+				managerapprovalrequests
+					type: totaldelta
+
+				managerfilterwork
+					type: totaldelta

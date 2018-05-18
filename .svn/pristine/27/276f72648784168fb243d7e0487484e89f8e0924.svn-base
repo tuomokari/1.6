@@ -1,0 +1,128 @@
+﻿[controller(runtime)
+
+	[using(layout)]
+
+	[errordebug(line, file, errorlines, stacktrace, extype, exmessage, exparameters, exstacktrace)
+
+		// Skip body for AJAX requests
+		[if (request.HTTP_X_REQUESTED_WITH == "XMLHttpRequest")
+		
+			[bodycontent(line, file, errorlines, stacktrace, extype, exmessage, exparameters, exstacktrace)]		
+		
+		][else
+			[html
+				[head
+					[defaultviewhead]
+				]
+
+				[body
+					[bodycontent(line, file, errorlines, stacktrace, extype, exmessage, exparameters, exstacktrace)]		
+				]
+			]		
+		]
+	]
+
+	[private]
+	[bodycontent (line, file, errorlines, stacktrace, extype, exmessage, exparameters, exstacktrace)
+		<div id="__applicationview">
+			<div id="__applicationview_inner"
+
+				[panel("Runtime error")
+					[exception(extype, exmessage, exparameters)]
+
+					[errorfile(file)]
+
+					[showerrorlines(line, errorlines)]
+
+					[showstacktrace(stacktrace)]
+
+					[showexstacktrace(exstacktrace)]
+
+					[showruntimeinfo]
+				]
+			</div>
+		</div>
+	]
+	
+	[private]
+	[exception(extype, exmessage, exparameters)
+		[text <h2>
+			[extype] [exmessage]
+		</h2>]
+
+		[foreach parameter in exparameters
+			[text [parameter]]
+		]
+	]
+
+	[private]
+	[errorfile(file)
+		[if (file != null)
+			[text [file]]
+		]
+	]
+
+	[private]
+	[showerrorlines(line, errorlines)
+	 	[if (line != empty)		
+			[panel("Location in file")
+				[text
+					[linestr = convert.tostring(line)]
+			
+					[foreach line in errorlines
+						[linenumber = nameof(line)]
+
+						[if (linenumber == linestr)
+							<p><b>[nameof(line)] : [line]</b></p>
+						][else
+							<p>[nameof(line)] : [line]</p>
+						]
+					]
+				]
+			]
+		]
+	]
+
+	[private]
+	[showstacktrace(stacktrace)
+		[if(stacktrace != null)			
+			[panel("Stack trace")
+				[tree.show(tree.getat(stacktrace,0))]
+			]
+		]
+	]
+
+	[private]
+	[showexstacktrace(exstacktrace)
+		[if(exstacktrace != null)
+			[accordion
+				[panel(".NET Stack Trace")
+					<pre>[exstacktrace]</pre>
+				]
+			]
+		]	
+	]
+
+	[private]
+	[showruntimeinfo
+		[panel("Runtime info")
+			[text
+				[runtime.info]
+			]
+		]
+	]
+
+	[private]
+	[errorrelease(line, file, errorlines, stacktrace, extype, exmessage, exparameters, exstacktrace)
+		[html
+			[head
+				[defaultviewhead]			
+			]
+			[body
+				[panel
+					<h1>[$error_erroroccurred] [extype]</h1>
+				]
+			]
+		]
+	]
+]

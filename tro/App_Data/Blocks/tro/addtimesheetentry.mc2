@@ -1,0 +1,43 @@
+﻿[controller(tro)
+
+	[using(dataform)]
+	[using(form)]
+	[using(table)]
+	[using(navigation)]
+	[using(layout)]
+	[using(schema)]
+	[using(text)]
+	[using(menubar)]
+
+	[addtimesheetentry(elementdata)
+		[html
+			[head(title: [$pagetitle_addtimesheetentry])		
+				[trohead]
+			]
+			
+			[body
+				[troheader]
+				[addtimesheetentrybody(elementdata)]
+				[trofooter]
+			]
+		]
+	]
+	
+	[addtimesheetentrybody(elementdata)
+	
+		[schema = schemafor("timesheetentry")]
+	
+		[formfor(
+			schema: schema,
+			element: elementdata,
+			extraparams: "actiontype=modify")
+			 
+			[foreach schemaitem in schema
+				[inputfor(schemaitem)]		
+			]
+			
+			[submit($ok)]
+			[actionbutton(extraparams: "actiontype=listview") $cancel]
+		]
+	]
+]

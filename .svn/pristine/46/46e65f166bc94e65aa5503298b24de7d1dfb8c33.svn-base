@@ -1,0 +1,24 @@
+﻿installers
+	remoteconnector
+		files
+			core
+				source: references
+				target:
+				// *.dll
+				acceptfilter: (?:(?!\.dll)(?:.|\n))*\.dll
+				recursive: true
+				singletargetfolder: true
+
+			exe
+				source: references
+				target:
+				acceptfilter: RemoteConnector.exe
+				recursive: true
+				singletargetfolder: true
+
+			handlers
+				source: Handlers\bin\[@target]
+				target:
+				// *.dll
+				acceptfilter: (?:(?!\.dll)(?:.|\n))*\.dll				
+				recursive: true

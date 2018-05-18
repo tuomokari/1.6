@@ -1,0 +1,6 @@
+﻿[controller(approveworkhelper)
+	[approveworkhelper(viewtype, listclass, renderdetails)
+			[widget(variables, currentblockname, currentcontroller, class: "__hidden __approveworkhelper")
+		]
+	]
+]

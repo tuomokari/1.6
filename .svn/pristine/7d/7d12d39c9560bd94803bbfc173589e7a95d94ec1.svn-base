@@ -1,0 +1,157 @@
+﻿[controller(homescreenprojects)
+	[using(layout)]
+	[using(dataform)]
+	[using(form)]
+	[using(table)]
+	[using(navigation)]
+	[homescreenprojects(datasource)
+		[widget(variables, currentblockname, currentcontroller, class: "__hidden __homescreenprojects")
+			<div class="controls-wrapper">
+				<div class="datecontrols">
+					<a class="__button previous __modest"><i class="material-icons">navigate_before</i></a><div class="date"><span class="long"></span><span class="short"></span></div><a class="__button today __modest"><i class="material-icons">restore</i></a><a class="__button next __modest"><i class="material-icons">navigate_next</i></a>
+				</div>
+			</div>
+			<div class="entrycontainer"></div>
+			[templates
+				[projectinfotemplate]
+				[actionsdialog]
+			]
+		]
+	]
+
+	[projectdetails(elementdata)
+		[itemschema = schemafor("project")]
+		[table				
+			[schemaname = nameof(tree.parent(itemschema))]
+			[foreach schemaitem in itemschema
+				[if (schemaitem.type != "relation" || schemaitem.relationtype == "one")
+
+					[name = txt("schema_" + nameof(itemschema)+ "_" + nameof(schemaitem), "tro")]
+					[displayrowfor(tree.get(elementdata, nameof(schemaitem)), schemaitem, true, name)]
+				]
+			]
+		]
+
+		[if (config.application.features.projectleads)
+			[actionlink(txt("projectlead_report"), "projectleadreport", "tro", extraparams: "project=" + elementdata._id)]
+		]
+	]
+
+
+	[projectallocations(allocations, projectname)
+		[region
+			<h2 class="__dialogheading-sub">[projectname]</h2>
+			<h2 class="__dialogheading">[$workers]</h2>
+			[foreach allocation in allocations				
+				[if (allocation.user)
+					<div class="allocation-user"><i class="material-icons">account_box</i>[allocation.user.__displayname]</div>
+				]
+			]
+			[if (config.application.features.assets)
+				<h2 class="__dialogheading">[$assets]</h2>
+				[foreach allocation in allocations				
+					[if (allocation.asset)
+						<div class="allocation-asset"><i class="material-icons">local_shipping</i>[allocation.asset.__displayname]</div>
+					]
+				]
+			]
+		]
+	]
+
+	[private]
+	[templates
+		<div class="homescreenprojects_templates __hidden">
+			[content]
+		</div>	
+	]
+
+	[private]
+	[template(class)
+		<div class="[class] __widgettemplate">
+			[content]
+		</div>
+	]
+
+	[private]
+	[projectinfotemplate
+		[template(class: "projectinfo")
+			<div class="projectinformation">
+				<h3 class="projectname"></h3>
+				<p class="customer"><span class="customervalue"></span></p>
+				<div class="additionaldetails"><p class="notes"><span class="starttime"></span><span class="endtime"></span><span class="allocationidentifier"></span><span class="allocationnote"><span class="workschedulewidget_card_allocationnotetext"></span></span></p></div>
+			</div>
+			<div class="projectcontrols">
+				<div class="projectcontrols-buttons">
+					[projectcardstatuscontrols]
+				</div>
+			</div>
+		]
+	]
+
+	[private]
+	[projectcardstatuscontrols
+		<div class="__flex-container">
+				<div class="__flex-left hidewhencollapsed">
+				</div>
+				<div class="__flex-right">
+					
+					[actionbutton(
+						class: "projectdetails __float-right")
+						<i class="material-icons">info_outline</i>
+					]
+					
+					[actionbutton(
+						class: "projectallocations __float-right")
+						<i class="material-icons">group</i>
+					]
+					
+					<a class="__button addentrybutton"><i class="material-icons">add</i></a>
+					<a class="__button startproject __ok">[$startproject]</a>
+					<a class="__button endproject __warning">[$endproject]</a>
+
+				</div>
+			</div>		
+	]
+
+	[private]
+	[actionsdialog
+		[template(class: "addbuttons")
+			[actionbutton(
+				label: txt("addtimesheetentry", "tro"),
+				class: "ts_button worktime __stretch",
+				action: "timesheetentry",
+				controllername: "tro",
+				extraparams: "actiontype=add&fromhomescreen=true")]					
+
+			[actionbutton(
+				label: txt("adddayentry", "tro"),
+				class: "ts_button expense __stretch",
+				action: "dayentry",
+				controllername: "tro",
+				extraparams: "actiontype=add&fromhomescreen=true")]
+
+			[if (config.application.features.articles == true)
+				[actionbutton(
+					label: txt("addarticleentry", "tro"),
+					class: "ts_button article __stretch",
+					action: "articleentry",
+					controllername: "tro",
+					extraparams: "actiontype=add&fromhomescreen=true")
+				]
+			]
+
+			[if (config.application.features.assets && (currentuser.level != 4))
+				[actionbutton(
+					label: txt("addassetentry", "tro"),
+					class: "ts_button asset __stretch",
+					action: "assetentry",
+					controllername: "tro",
+					extraparams: "actiontype=add&fromhomescreen=true")]
+			]
+			[button(
+				label: $cancel,
+				class: "ts_button __stretch __modest __dialog-cancel"
+			)]
+		]
+	]
+]

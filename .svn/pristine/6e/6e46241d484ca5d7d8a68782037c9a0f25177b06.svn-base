@@ -1,0 +1,59 @@
+﻿workentries
+	en-US
+		approveentries: Approve
+		addentry: New
+		adddetail: New detail
+		addnewdetail: New detail
+		editdetail: Edit detail
+		addassetentry: Asset entry
+		removeprompt: Are you sure you wish to remove "{0}"
+		removeprompt_detail: Are you sure you wish to remove detail "{0}" for "{1}"
+		duration: Duration
+		paytype: Paytype
+		required_duration: Please enter duration.
+		required_paytype: Please select paytype
+		required_price: Please enter price.
+		approvedayprompt: Do you wish to approve work for the selected day?
+		noentries: No entries for the selected day.
+		expenses: Expenses
+		articles: Articles
+		hours: Hours
+		notentries: No entries for today
+		price: Price
+		tomorrow: Tomorrow
+		addsocialprojecttimesheetentry: Add administrative work
+		addsocialprojectdayentry: Add administrative expenses
+		allocations: Show work list
+		futureentriesnotallowed: You can not log entries in future
+		paste: Paste
+		pasteconfirmation: Do you with to copy all entries form {0} to {1}?
+		pasteconfirmationfuture: Do you with to copy all entries form {0} to {1}? Please note that only absences will be copied for days that are in the future.
+	fi
+		approveentries: Hyväksy
+		addentry: Uusi
+		adddetail: Uusi tarkennus
+		addnewdetail: Uusi tarkennus
+		editdetail: Muokkaa tarkennusta
+		addassetentry: Laitekirjaus
+		removeprompt: Haluatko poistaa kirjauksen "{0}"?
+		removeprompt_detail: Haluatko poistaa kirjauksen tarkennuksen "{0}" kirjaukselle "{1}"?
+		duration: Kesto
+		paytype: Palkkalaji
+		required_duration: Ole hyvä ja syötä kesto
+		required_paytype: Ole hyvä ja valitse palkkalaji
+		required_price: Ole hyvä ja syötä hinta.
+		approvedayprompt: Haluatko hyväksyä kirjaukset valitulle päivälle?
+		noentries: Tälle päivälle ei ole kirjauksia.
+		expenses: Kulut
+		articles: Nimikkeet
+		hours: Tunnit
+		notentries: Ei kirjauksia
+		price: Hinta
+		tomorrow: Huomenna
+		addsocialprojecttimesheetentry: Lisää hallinnollinen työkirjaus
+		addsocialprojectdayentry: Lisää hallinnollinen kulukirjaus
+		allocations: Näytä työlista
+		futureentriesnotallowed: Et voi lisätä kirjauksia tulevaisuuteen
+		paste: Liitä
+		pasteconfirmation: Haluatko kopioida kaikki kirjaukset päivältä {0} päivälle {1}?
+		pasteconfirmationfuture: Haluatko kopioida kaikki kirjaukset päivältä {0} päivälle {1}? Huomioi, että vain poissaolot kopioidaan tuleville päiville.

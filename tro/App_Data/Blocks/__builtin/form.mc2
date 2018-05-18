@@ -1,0 +1,1156 @@
+﻿[controller(form)		
+
+	[using(layout)]
+	
+	[form (
+	action=[callingaction],
+	controllername=[callingcontroller],
+	id = "",
+	class = null,
+	method = "post")
+		<form [attr(id)] action="[baseurl]?controller=[controllername]&action=[action]&historytoken=[request.currenthistorytoken][if(request.isdialog) "&isdialog=true"]" method="[method]" data-ajax="false" enctype = "multipart/form-data" [parameterstoattributes(extraparameters)] >
+			[content]
+		</form>
+	]
+
+	[field (
+		name,
+		label = null,
+		placeholder = null,
+		value = null,
+		tiptext = null,
+		unit = null,
+		required = false,
+		maxlength = null,
+		minlength = null,
+		numbertype = "none",
+		regexp = null,
+		regexpmessage = txt("generalvalidationerror"),
+		valuetype = null,
+		id = newid,
+		class = null,
+		validationerror = null,
+		icon = null,
+		readonly = false)
+
+		[control(
+			validationerror: validationerror,
+			readonly: readonly
+		)
+			[if (label)
+				<label for="[id]">[label]
+				<span class="__required-asterisk [if(!required) "__hidden" ]" >*</span>
+				</label>
+			]
+
+			<input type="text" [attr(name)] [attr(value)] [attr(id)] [attr(class)] [attr(placeholder)] [attr(maxlength)] [attr(valuetype)] autocomplete="off"[if (readonly) " disabled='true'"] />
+
+			[if (icon)
+				"&nbsp;"<i class="fa __fa-icon [icon]"></i>
+			]
+
+			[if (unit)
+				[unitfor(unit)]
+			]
+
+			[content]
+
+		]
+						
+		[validatemessage(validationerror)]
+
+		[if (tiptext)
+			[tipfor tiptext]
+		]
+	]
+
+	[textfield(
+		name,
+		label = null,
+		placeholder = null,
+		value = null,
+		tiptext = null,
+		required = false,
+		maxlength = null,
+		minlength = null,
+		id = newid,
+		class = null,
+		validationerror = null,
+		icon = null,
+		readonly = false)
+
+		[fieldcontrol
+			[field(
+				name: name,
+				label: label,
+				placeholder: placeholder,
+				value: value,
+				tiptext: tiptext,
+				required: required,
+				maxlength: maxlength,
+				minlength: minlength,
+				id: id,
+				class: class,
+				validationerror: validationerror,
+				icon: icon,
+				readonly: readonly)
+			]
+		]
+	]
+
+	[buttonfield(
+		name,
+		label = null,
+		placeholder = null,
+		buttonlabel = null,
+		buttontype = "ok",
+		value = null,
+		tiptext = null,
+		required = false,
+		maxlength = null,
+		minlength = null,
+		id = newid,
+		class = null,
+		validationerror = null,
+		extraparameters = "",
+		confirmationmessage = null,
+		prevententer = false,
+		readonly = false)
+
+		[fieldcontrol(class: "__buttonfield")
+			[field(
+				name: name,
+				label: label,
+				placeholder: placeholder,
+				value: value,
+				tiptext: tiptext,
+				required: required,
+				maxlength: maxlength,
+				minlength: minlength,
+				id: id,
+				class: class,
+				validationerror: validationerror,
+				readonly: readonly)
+			
+				[buttonid = id + "_button"]
+				<input type="button" id="[buttonid]" class="[class] __buttontype_[buttontype] __button" value="[buttonlabel]" [extraparameters] data-confirmationmessage="[confirmationmessage]"[if (prevententer) " data-prevententer='true'"][if (readonly) " disabled='true'"] />
+			]
+		]
+	]
+
+	[emailfield(
+		name,
+		label = null,
+		placeholder = null,
+		value = null,
+		tiptext = null,
+		required = false,
+		id = newid,
+		class = null,
+		validationerror = null,
+		readonly = false)
+
+		[fieldcontrol
+
+			[field(
+				name: name,
+				label: label,
+				placeholder: placeholder,
+				value: value,
+				tiptext: tiptext,
+				required: required,
+				id: id,
+				class: class,
+				validationerror: validationerror,
+				readonly: readonly)
+			]
+		]
+	]
+
+	[numberfield(
+		name,
+		label = null,
+		placeholder = null,
+		value = null,
+		tiptext = null,
+		required = false,
+		max = null,
+		min = null,
+		decimals = 0,
+		id = newid,
+		class = null,
+		validationerror = null,
+		unit = null,
+		readonly = false)
+
+		[control(class: "__numberfieldcontrol", id: id)
+	
+			[field(
+				name: "__displayvalue_" + name,
+				label: label,
+				placeholder: placeholder,
+				value: value,
+				tiptext: tiptext,
+				required: required,
+				id: "__displayvalue_" + id,
+				class: class,
+				numbertype: "none",
+				regexp: regexpstring,
+				regexpmessage: txt("numbervalidationerror"),
+				validationerror: validationerror,
+				unit: unit,
+				readonly: readonly)
+			]
+
+			<input type="hidden" [attr(name)] [attr(value)] id="__value[id]" data-decimals="[decimals]" autocomplete="off"[if (readonly) " disabled='true'"] />
+		]
+	]
+
+	[urlfield(
+		name,
+		label = null,
+		placeholder = null,
+		value = null,
+		tiptext = null,
+		required = false,
+		id = newid,
+		class = null,
+		validationerror = null,
+		readonly = false)
+
+		[fieldcontrol
+	
+			[regexpstring = ""]
+			
+			[field(
+				name: name,
+				label: label,
+				placeholder: placeholder,
+				value: value,
+				tiptext: tiptext,
+				required: required,
+				id: id,
+				class: class,
+				regexp: regexpstring,
+				regexpmessage: txt("urlvalidationerror"),
+				validationerror: validationerror,
+				readonly: readonly)
+			]
+		]
+	]
+
+	[passwordfield(
+		name,
+		label = null,
+		placeholder = null,
+		tiptext = null,
+		required = false,
+		maxlength = null,
+		minlength = null,
+		id = newid,
+		class = null,
+		validationerror = null,
+		readonly = false)
+
+		[fieldcontrol
+			[control
+				[if (label)
+					<label for="[id]">[label]
+					[if (required)
+						<span class="_required-asterisk">*</span>
+					]
+					</label>
+				]
+
+				<input type="password" [attr(name)] [attr(id)] [attr(class)] [attr(placeholder)] [attr(maxlength)] autocomplete="off"[if (readonly) " disabled='true'"] />
+			]
+		]
+						
+		[validatemessage(validationerror)]
+
+		[if (tiptext)
+			[tipfor tiptext]
+		]
+	]
+
+	[filefieldmulti(
+		name,
+		controller,
+		action,
+		label = null,
+		tiptext = null,
+		accept = "pdf, png, jpg, gif, jpeg, doc, docx, txt, rtf",
+		required = false,
+		id = newid,
+		class = null,
+		validationerror = null,
+		readonly = false)
+
+		<form action="/main.aspx?controller=file&action=upload&historytoken=[request.currenthistorytoken]" method="POST" enctype="multipart/form-data">
+		
+			//todo: implement file type filtering
+			[control
+
+				[if (label)
+					<label for="[id]">[label]
+					<span class="__required-asterisk [if(!required) "__hidden" ]" >*</span>
+					</label>
+				]
+		
+				<input type="file" [attr(name)] id="fileupload" [attr(id)] class="[class] __fileuploadmulti" autocomplete="off" multiple data-url="main.aspx?controller=[controller]&action=[action]"[if (readonly) " disabled='true'"] />			
+
+				<div id="pg_captured_images">
+				</div>
+			]
+						
+			[validatemessage(validationerror)]
+
+			[if (tiptext)
+				[tipfor tiptext]
+			]
+
+			</form>
+	]
+
+	[filefield(
+		name,
+		label = null,
+		tiptext = null,
+		accept = "pdf, png, jpg, gif, jpeg, doc, docx, txt, rtf",
+		required = false,
+		id = newid,
+		class = null,
+		validationerror = null,
+		readonly = false)
+
+		//todo: implement file type filtering
+		[control
+
+			[if (label)
+				<label for="[id]">[label]
+				<span class="__required-asterisk [if(!required) "__hidden" ]" >*</span>
+				</label>
+			]
+
+			<input type="file" [attr(name)] [attr(id)] [attr(class)] autocomplete="off"[if (readonly) " disabled='true'"] />
+		]
+						
+		[validatemessage(validationerror)]
+
+		[if (tiptext)
+			[tipfor tiptext]
+		]
+	]
+
+
+	// Todo: lots of copy-paste code. Refactor.
+
+	[datetimefield(
+		name,
+		label = null,
+		value = null,
+		tiptext = null,
+		datetimetype = "date",
+		timeaccuracy = 1,
+		mindate = null,
+		maxdate = null,
+		required = false,
+		isenddate = false,
+		id = newid,
+		class = null,
+		validationerror = null,
+		allowclear = true,
+		startyear = -1,
+		endyear = -1,
+		readonly = false)
+
+		[control(
+			class: "__datetimefieldcontrol",
+			id: id,
+			timeaccuracy: timeaccuracy,
+			isenddate: isenddate,
+			readonly: readonly)
+		
+			[if (label)	<label for="[id]">[label]
+				<span class="__required-asterisk [if(!required) "__hidden" ]" >*</span>
+			</label>]
+			[if (datetimetype == "date")
+				<div class="__datetimecontrolwrapper __date">
+
+					<select name="__[name]_day" data-datepart="day" class="__day"[if (readonly) " disabled='true'"] >
+						<option hidden="" disabled="" selected=""></option>
+						[i = 1]
+						[while (true)
+							<option value="[i]">[i].</option> // todo: add delimiter from locale
+							[i += 1]
+							[if (i > 31) break]
+						]
+
+					</select><select name="__[name]_month" data-datepart="month" class="__month"[if (readonly) " disabled='true'"] >
+						<option hidden="" disabled="" selected=""></option>
+						<option value="0">[$january_short]</option>
+						<option value="1">[$february_short]</option>
+						<option value="2">[$march_short]</option>
+						<option value="3">[$april_short]</option>
+						<option value="4">[$may_short]</option>
+						<option value="5">[$june_short]</option>
+						<option value="6">[$july_short]</option>
+						<option value="7">[$august_short]</option>
+						<option value="8">[$september_short]</option>
+						<option value="9">[$october_short]</option>
+						<option value="10">[$november_short]</option>
+						<option value="11">[$december_short]</option>
+					</select><select name="__[name]_year" data-datepart="year" class="__year"[if (readonly) " disabled='true'"] >
+					//todo: get currentyear and the years next to it or limit this in schema or elsewhere
+						<option hidden="" disabled="" selected=""></option>
+
+						[years = form.getdatetimecontrolyears(startyear, endyear)]
+						[foreach year in years
+							<option [if(year.selected) "selected=true "]>[year]</option>
+						]
+					</select><div class="__setdatefields"><span class="__datepicker_toggle"><input type="hidden" class="__datepicker"[if (readonly) " disabled='true'"] /><i class="fa fa-calendar"></i></span>[if (allowclear && !required) <span class="__cleardatefield"><i class="fa fa-close"></i></span>]</div>
+				</div>
+				<input type="hidden" [attr(name)] [attr(value)] id="__datevalue[id]" class="__datestring" autocomplete="off"[if (readonly) " disabled='true'"] />
+			][elseif (datetimetype == "datetime")
+				<div class="__datetimecontrolwrapper __datetime">
+					<select name="__[name]_day" data-datepart="day" class="__day"[if (readonly) " disabled='true'"] >
+						<option hidden="" disabled="" selected=""></option>
+						[i = 1]
+						[while (true)
+							<option value="[i]">[i].</option>
+							// todo: set delimiter from locale
+							[i += 1]
+							[if (i > 31) break]
+						]
+
+					</select><select name="__[name]_month" data-datepart="month" class="__month"[if (readonly) " disabled='true'"]>
+						<option hidden="" disabled="" selected=""></option>
+						<option value="0">[$january_short]</option>
+						<option value="1">[$february_short]</option>
+						<option value="2">[$march_short]</option>
+						<option value="3">[$april_short]</option>
+						<option value="4">[$may_short]</option>
+						<option value="5">[$june_short]</option>
+						<option value="6">[$july_short]</option>
+						<option value="7">[$august_short]</option>
+						<option value="8">[$september_short]</option>
+						<option value="9">[$october_short]</option>
+						<option value="10">[$november_short]</option>
+						<option value="11">[$december_short]</option>
+					</select><select name="__[name]_year" data-datepart="year" class="__year"[if (readonly) " disabled='true'"]>
+						<option hidden="" disabled="" selected=""></option>
+
+						[years = form.getdatetimecontrolyears(startyear, endyear)]
+						[foreach year in years
+							<option [if(year.selected) "selected=true "]>[year]</option>
+						]
+
+					</select><div class="__setdatefields"><span class="__datepicker_toggle"><input type="hidden" class="__margin-right __datepicker"[if (readonly) " disabled='true'"] /><i class="fa fa-calendar"></i></span></div>
+					<div class="__timeselectorwrapper"><select name="__[name]_hour" data-datepart="hour" class="__hour"[if (readonly) " disabled='true'"]>
+							<option hidden="" disabled="" selected=""></option>
+							[i = 0]
+							[while (true)
+								[displayvalue = convert.tostring(i)]
+								[if (i < 10)
+									displayvalue = "0" + displayvalue
+								]
+								<option>[displayvalue]</option>
+								[i += 1]
+								[if (i > 23) break]
+							]
+						</select><div class="__timedivider">:</div><select name="__[name]_minute" data-datepart="minute" class="__minute"[if (readonly) " disabled='true'"]>
+							<option hidden="" disabled="" selected=""></option>
+							[i = -1]
+							[while (true)
+								[i += 1]
+
+								// Only show n:th minute when n is the time accuracy value.
+								[if ((i % timeaccuracy) != 0) continue]
+
+								[displayvalue = convert.tostring(i)]
+								[if (i < 10)
+									displayvalue = "0" + displayvalue
+								]
+
+								[if (i > 59) break]
+
+								<option>[displayvalue]</option>
+							]
+						</select><div class="__setdatefields"><span class="__setdatefieldnow"><i class="fa fa-clock-o"></i></span>[if (allowclear && !required) <span class="__cleardatefield"><i class="fa fa-close"></i></span>]</div>
+					</div>
+				</div>
+				<input type="hidden" [attr(name)] [attr(value)] id="__datevalue[id]" autocomplete="off"[if (readonly) " disabled='true'"] />
+			][elseif (datetimetype == "time")
+				<div class="__datetimecontrolwrapper __datetime">
+			
+				<div class="__setdatefields"></div>
+					<div class="__timeselectorwrapper"><select name="__[name]_hour" data-datepart="hour" class="__hour"[if (readonly) " disabled='true'"]>
+							<option hidden="" disabled="" selected=""></option>
+							[i = 0]
+							[while (true)
+								[displayvalue = convert.tostring(i)]
+								[if (i < 10)
+									displayvalue = "0" + displayvalue
+								]
+								<option>[displayvalue]</option>
+								[i += 1]
+								[if (i > 23) break]
+							]
+						</select><div class="__timedivider">:</div><select name="__[name]_minute" data-datepart="minute" class="__minute"[if (readonly) " disabled='true'"]>
+							<option hidden="" disabled="" selected=""></option>
+							[i = -1]
+							[while (true)
+								[i += 1]
+
+								// Only show n:th minute when n is the time accuracy value.
+								[if ((i % timeaccuracy) != 0) continue]
+
+								[displayvalue = convert.tostring(i)]
+								[if (i < 10)
+									displayvalue = "0" + displayvalue
+								]
+
+								[if (i > 59) break]
+
+								<option>[displayvalue]</option>
+							]
+						</select><div class="__setdatefields"><span class="__setdatefieldnow"><i class="fa fa-clock-o"></i></span>[if (allowclear && !required) <span class="__cleardatefield"><i class="fa fa-close"></i></span>]</div>
+					</div>
+				</div>
+				<input type="hidden" [attr(name)] [attr(value)] id="__datevalue[id]" autocomplete="off"[if (readonly) " disabled='true'"] />
+			]
+		]
+						
+		[validatemessage(validationerror)]
+
+		[if (tiptext)
+			[tipfor tiptext]
+		]
+	]
+
+	[timespanfield(
+		name,
+		label = null,
+		value = null,
+		tiptext = null,
+		mindate = null,
+		maxdate = null,
+		required = false,
+		id = newid,
+		class = null,
+		validationerror = null,
+		timeaccuracy = 1,
+		readonly = false)
+			
+		[id = "__timespanfieldcontrol" + id]
+		[control(class: "__timespanfieldcontrol", id: id, timeaccuracy: timeaccuracy)
+
+			[if (label)
+				<label for="[id]">[label]
+				<span class="__required-asterisk [if(!required) "__hidden" ]" >*</span>
+				</label>
+			]
+
+			<div class="__timeselectorwrapper"><select name="__[name]_hour" data-datepart="hour" id="__hour[id]" class="__hour"[if (readonly) " disabled='true'"]>
+				[if (!required)
+					<option hidden="" disabled="" selected=""></option>
+				]
+
+				[i = 0]
+				[while (true)
+
+					[displayvalue = convert.tostring(i)]
+					[if (i < 10)
+						displayvalue = "0" + displayvalue
+					]
+
+					<option[if (i == 0) " selected"]>[displayvalue]</option>
+					[i += 1]
+					[if (i > 23) break]
+				]
+			</select>&nbsp;<label class="__inlinelabel">[$unit_hours]</label>&nbsp;<select name="__[name]_minute" data-datepart="minute" id="__minute[id]" class="__minute"[if (readonly) " disabled='true'"]>
+				[if (!required)
+					<option hidden="" disabled="" selected=""></option>
+				]
+
+				[i = -1]
+				[while (true)
+					[i += 1]
+
+					// Only show n:th minute when n is the time accuracy value.
+					[if ((i % timeaccuracy) != 0) continue]
+
+					[if (i > 59) break]
+
+					[displayvalue = convert.tostring(i)]
+					[if (i < 10)
+						displayvalue = "0" + displayvalue
+					]
+
+					<option[if (i == 0 ) " selected"]>[displayvalue]</option>
+				]
+
+			</select>&nbsp;<label class="__inlinelabel">[$unit_minutes]</label>
+
+			</div>
+
+			<input type="hidden" [attr(name)] [attr(value)] id="__value[id]" autocomplete="off"[if (readonly) " disabled='true'"] />
+		]
+
+		[validatemessage(validationerror)]
+
+		[if (tiptext)
+			[tipfor tiptext]
+		]
+	]
+
+	[memo (
+		name,
+		label = null,
+		placeholder = null,
+		value = null,
+		rows = 5,
+		tiptext = null,
+		required = false,
+		maxlength = null,
+		minlength = null,
+		id = null,
+		class = null,
+		validationerror = null,
+		readonly = false)
+		[fieldcontrol
+			[control
+
+				[if (label)
+					<label for="[id]">[label]
+						<span class="__required-asterisk [if(!required) "__hidden" ]" >*</span>
+					</label>
+				]
+
+				<textarea [attr(id)] [attr(name)] [attr(class)] [attr(placeholder)] [attr(maxlength)] [attr(rows)][if (readonly) " disabled='true'"]>[value]</textarea>
+			]			
+		]
+						
+		[validatemessage(validationerror)]
+
+		[if (tiptext)
+			[tipfor tiptext]
+		]
+	]
+
+	[hiddenfield(
+		name,
+		value = null,
+		id = null,
+		class = null,
+		readonly = false)
+
+			<input type="hidden" [attr(name)] [attr(value)] [attr(id)] [attr(class)][if (readonly) " disabled='true'"] />	
+	]
+
+	[relationfield(
+		schema,
+		label = null, 
+		id = null,
+		value = null,
+		displayvalue = null,
+		class = null,
+		validationerror = null,
+		required = false,
+		readonly = false)
+
+		[currentcollection = tree.parent(schema)]
+		[rootschema = tree.parent(currentcollection)]
+		[resultid = newid]
+		[targetid = newid]
+
+		// Todo: figure out why the " " value appears
+		[if (value && (!displayvalue || displayvalue == "" || displayvalue == " "))
+			[treeParent = tree.parent(value)]
+
+			[if (treeParent)
+				[displayvalue = tree.get(treeParent, "__searchfilterinput-" + nameof(value))]
+			]
+		]
+
+		// Search filter needs the identifier of item whose relation is being edited
+		[valueid = ""]
+		[if (value)
+			[valueid = value._id]
+		]
+
+		[searchfilter.searchfilterforrelation(
+			name: nameof(schema),
+			label: label(label),
+			targetid: targetid,
+			resultid: resultid,
+			rootschema: nameof(rootschema),
+			collectionname: nameof(currentcollection),
+			valuename: nameof(schema),
+			value: displayvalue,
+			immediate: true,
+			required: required,
+			containingitemid: valueid,
+			delay: tree.getvalueordefault(schema, "searchfilterdelay", 300),
+			readonly: readonly)]
+
+		[validatemessage(validationerror)]
+
+		// Forms shown again due to validation errors have no ._id
+		[id = value._id]		
+		[if (id == null) id = value]			
+
+		[hiddenfield(nameof(schema), id, targetid, readonly)]
+
+		<div id="[resultid]"></div>
+	]
+
+	[relationdropdown(
+		schema,
+		label = null, 
+		id = null,
+		value = null,
+		displayvalue = null,
+		class = null,
+		validationerror = null,
+		required = false,
+		filtercontroller = null,
+		filteraction = null,
+		readonly = false,
+		noinitialupdate = false,
+		inline = false)
+
+		[currentcollection = tree.parent(schema)]
+		[rootschema = tree.parent(currentcollection)]
+
+		// Todo: figure out why the " " value appears
+		[if (value && (!displayvalue || displayvalue == "" || displayvalue == " "))
+			[treeParent = tree.parent(value)]
+
+			[if (treeParent)
+				[displayvalue = tree.get(treeParent, "__searchfilterinput-" + nameof(value))]
+			]
+		]
+
+		[dropdown (
+			name: nameof(schema),
+			label: label(label),
+			required: required,
+			class: "__relationdropdown",
+			validationerror: validationerror,
+			filtercontroller: filtercontroller,
+			filteraction: filteraction,
+			readonly: readonly,
+			noinitialupdate: noinitialupdate,
+			inline: inline
+			)]
+		
+		// Todo: Nasty hack to bypass a conflict with controller schema and name schema. Needs a fix in MC2
+		[schema2 = schema]
+
+		<input id="[nameof(schema)]_hiddenfield" type="hidden" data-rootschema="[nameof(rootschema)]" data-collection="[schema2.relation]" data-value="[value]"[if (readonly) " disabled='true'"] [if (schema2.favourites) " data-favourites='true'"] [if (schema2.maxfavourites) " data-maxfavourites='maxfavourites'"] />
+	]
+
+	[searchfilterfield(
+		name,
+		label = null, 
+		id = null,
+		value = null,
+		displayvalue = null,
+		controllername = "searchfilter",
+		action = "getresultscollection",
+		placeholder = null,
+		buttonlabel = $search,
+		extraparams = null,
+		required = false,
+		validationerror = null,
+		tiptext = "",
+		class = null,
+		readonly = false)
+
+		[resultid = newid]
+		[targetid = newid]
+
+		// Todo: figure out why the " " value appears
+		[if (value && (!displayvalue || displayvalue == "" || displayvalue == " "))
+			[treeParent = tree.parent(value)]
+
+			[if (treeParent)
+				[displayvalue = tree.get(treeParent, "__searchfilterinput-" + nameof(value))]
+			]
+		]
+
+		[searchfilter.searchfilter(
+			name: name,
+			label: label,
+			targetid: targetid,
+			resultid: resultid,
+			controllername: controllername,
+			action: action,
+			value: value,
+			placeholder: placeholder,
+			buttonlabel: $search,
+			immediate: true, 
+			extraparams: extraparams,
+			required: required,
+			tiptext: tiptext,
+			class: class,
+			readonly: readonly)]
+			
+		[hiddenfield(name, value, targetid, readonly)]
+
+		<div class="__searchfilter-resultwrapper" id="[resultid]"></div>
+
+		[validatemessage(validationerror)]	
+	]
+
+	[selectiondropdown(
+		collectionname,
+		name = "",
+		label = null, 
+		id = null,
+		value = null,
+		displayvalue = null,
+		class = null,
+		validationerror = null,
+		required = false,
+		filtercontroller = "",
+		filteraction = "",
+		readonly = false,
+		inline = false)
+
+		// Todo: figure out why the " " value appears
+		[if (value && (!displayvalue || displayvalue == "" || displayvalue == " "))
+			[treeParent = tree.parent(value)]
+
+			[if (treeParent)
+				[displayvalue = tree.get(treeParent, "__searchfilterinput-" + nameof(value))]
+			]
+		]
+
+		[if (name == "") name = collectionname]
+		
+		[dropdown (
+			name: name,
+			label: label(label),
+			required: required,
+			class: "__selectiondropdown",
+			validationerror: validationerror,
+			filtercontroller: filtercontroller,
+			filteraction: filteraction,
+			readonly: readonly,
+			noinitialupdate: noinitialupdate,
+			inline: inline)]
+		
+		// Nasty hack to bypass a conflict with controller schema and name schema. Needs a fix in MC2
+		[schema2 = schema]
+
+		<input id="[name]_hiddenfield" type="hidden" data-collection="[collectionname]" 
+			data-value="[value]" data-filtercontroller="[filtercontroller]" data-filteraction="[filteraction]"[if (readonly) " disabled='true'"] />
+	]
+
+	[selectionfield(
+		collectionname,
+		name = null,
+		label = null,
+		id = newid,
+		value = null,
+		displayvalue = null,
+		class = null,
+		validationerror = null,
+		documentsperpage = null,
+		historyenabled = true,
+		tiptext = "",
+		readonly = false)
+
+		[if (!name) name = collectionnname]
+		[collectionschema = schemafor(collectionname)]
+		[rootschema = tree.parent(collectionschema)]
+		[resultid = id + "_result"]
+		[targetid = id + "_target"]
+
+		// Todo: figure out why the " " value appears
+		[if (value && (!displayvalue || displayvalue == "" || displayvalue == " "))
+			[treeParent = tree.parent(value)]
+
+			[if (treeParent)
+				[displayvalue = tree.get(treeParent, "__searchfilterinput-" + nameof(value))]
+			]
+		]
+
+
+		[searchfilter.searchfilterforcollection(
+			name: name,
+			label: label(label),
+			targetid: targetid,
+			resultid: resultid,
+			rootschema: nameof(rootschema),
+			collectionname: nameof(collectionschema),
+			valuename: nameof(collectionschema),
+			value: displayvalue,
+			immediate: true,
+			documentsperpage: documentsperpage,
+			id: id,
+			historyenabled: historyenabled,
+			tiptext: tiptext,
+			delay: tree.getvalueordefault(collectionschema.collection, "searchfilterdelay", 300),
+			readonly: readonly)]
+
+		[validatemessage(validationerror)]
+			
+		[hiddenfield(name, value, targetid, readonly)]
+
+		<div id="[resultid]"></div>
+	]
+
+	[radiogroup (
+		name,
+		label = null,
+		tiptext = null,
+		id = null,
+		class = null,
+		validationerror = null,
+		readonly = false)
+
+		[control("radiogroup")
+			<label>[label]</label>
+			<div class="__radios">
+				[content]
+			</div>
+			
+			[validatemessage(validationerror)]
+		]
+	]
+
+	//todo support for parent to get radiogroup name
+	//todo handling default selection
+	[radiobutton(
+		name,
+		label = null,
+		value = null,
+		id = newid,
+		readonly = false)
+		<label for="[id]">[label]</label><input [attr(id)] type="radio" [attr(name)] [attr(value)] />
+	]
+
+	[dropdown (
+		name,
+		label = null,
+		tiptext = null,
+		required = false,
+		id = newid,
+		class = null,
+		inline = false,
+		validationerror = null,
+		raeadonly = false,
+		noinitialupdate = false)
+
+		[tempclass = "__dropdown"]
+
+		[if (inline)
+			[tempclass += " __inline"]
+		]
+		[control(class: tempclass)
+			[if (label != "")
+				<label [attr("for", id)]>[label]
+					<span class="__required-asterisk [if(!required) "__hidden" ]" >*</span>
+				</label>
+			]
+			<select [attr(id)] name="[if (name == "") [label] else [name]]" [attr(class)][if (readonly) " disabled='true'"][if (noinitialupdate) " data-noinitialupdate='true'" parameterstoattributes(extraparameters)]>
+				[if (!noinitialupdate)
+					[content]
+				]
+			</select>
+		]
+		[validatemessage(validationerror)]
+	]
+
+	[picker (
+		label = null,
+		id = null,
+		tiptext = null,
+		class = null,
+		validationerror = null,
+		readonly = false)
+
+		[control("picker")
+			<label for="[id]">[label]</label>
+			<select [attr(id)] name="[label]" multiple[if (readonly) " disabled='true'"]>
+				[content]
+			</select>
+			
+			[validatemessage(validationerror)]
+		]
+	]
+
+	[optiongroup (label)
+		<optgroup [attr(label)]>
+			[content]
+		</optgroup>
+	]
+
+	[option (label = "", value = "", extraparams=null, selected=false)
+		<option value="[if (value == "") [label] else [value]]" [if (extraparams) extraparameters] [if (selected) "selected"]>[label]</option>
+	]
+
+	[checkboxgroup(
+		name,
+		label = null,
+		tiptext = null,
+		id = newid,
+		class = null,
+		validationerror = null)
+
+		[content]
+		
+		[validatemessage(validationerror)]
+	]
+
+	[checkbox (
+		name,
+		label = null,
+		checked = false,
+		tiptext = null,
+		togglecomponents = null,
+		value = null,
+		id = newid,
+		class = null,
+		validationerror = null,
+		historyenabled = false,
+		readonly = false,
+		switch = false,
+		inline = false)
+		[controlclass="__checkbox"]
+		[if (class) controlclass = controlclass + " " + class]
+		[if (inline) controlclass = controlclass + " __inline"]
+		[control(
+			class: controlclass,
+			readonly: readonly
+		)
+			// todo: assign value from checkboxgroup
+			<input type="checkbox" class="__checkbox[if (switch) " __switch"]" [attr(name)] [attr(id)] value="[if(value) [value] else "true"]" [if(checked) "checked"] [if (historyenabled) "data-historyenabled=""true"""][if (readonly) " data-disabled='true'"]></input>[if (label)<label for="[id]">[label]</label>]
+			
+			[validatemessage(validationerror)]
+		]
+		[if (tiptext)
+			[tipfor tiptext]
+		]
+	]
+
+	[button(
+		label = null,
+		buttontype = "ok",
+		id = newid,
+		class = null,
+		extraattributes = null,
+		confirmationmessage = null,
+		name = "",
+		readonly = false)
+
+		[strextraattributes = ""]
+
+		[if (extraattributes)
+				
+			[foreach attribute in extraattributes
+				[strextraattributes += nameof(attribute) + "=""" + attribute + """ "]
+			]
+		]
+
+		<input type="button" [attr(id)] [attr(name)] class="[class] __buttontype_[buttontype] __button" value="[label]" [strextraattributes] data-confirmationmessage="[confirmationmessage]" [parameterstoattributes(extraparameters)][if (readonly) " disabled='true'"] />
+	]
+
+	[submit(
+		label = null,
+		buttontype = "ok",
+		id = newid,
+		class = null,
+		readonly = false)
+		
+		<input type="submit" [attr(id)] class="[class] __buttontype_[buttontype] __button" value="[label]" [parameterstoattributes(extraparameters)][if (readonly) " disabled='true'"] />
+	]
+
+	[tip(tiptext)
+		[if (tiptext != "") 
+			<div class="tip">[tiptext]</div>
+		]
+	]
+
+	[label (inline = true)
+		[if (inline)
+			[tempclass = "__label __inline"]
+		else
+			[tempclass = "__label"]
+		]
+		[control([tempclass])
+			<div class="[tempclass]">
+				[content]	
+			</div>
+		]
+	]
+
+	[validatemessage(validationerror = null)
+		[if (validationerror)
+			<div class="__form_validatemessage">[validationerror][content]</div>
+		]
+	]
+
+	[markdownfield(value)
+		[text.markdown(value)]
+	]
+
+	[displayfield(value, unit)
+		<span [parameterstoattributes(extraparameters)]>[value]</span>
+
+		[if (unit)
+			[unitfor(unit)]
+		]
+
+	]
+
+	[opendialogbutton(
+		action,
+		controller=[currentcontroller],
+		label = null,
+		buttontype = "ok",
+		tiptext = null,
+		id = newid,
+		class = null,
+		extraparams = "",
+		confirmationmessage = null
+		)
+			<input type="button" id="[buttonid]" class="[class] __buttontype_[buttontype] __dialog_open __button" value="[buttonlabel]" [extraparams] data-confirmationmessage="[confirmationmessage]" data-action="[action]" data-controller="[controller]"/>
+	]
+
+	[private]
+	[fieldcontrol(class = null, id = null)
+		<div [attr(id)] [attrclass("__fieldcontrol", class)]>
+			[content]
+		</div>
+	]
+
+	[private]
+	[control(
+		class = null,
+		id = null,
+		validationerror = null,
+		readonly = false)
+
+		<div [attr(id)] class="__control[if (class) " "class][if (validationerror) " __fieldinvalid"]" [parameterstoattributes(extraparameters)][if(readonly) " data-readonly='true'"]>
+			[content]
+		</div>
+	]
+
+	[tipfor
+		<div class="__form_tiptext">[content]</div>
+	]
+
+
+	[private]
+	[unitfor(unit)
+		<div class="__form_unit">[txt(unit)]</div>
+	]
+
+	[errormessage(message)
+		<div class="__message __warning">[message][content]</div>	
+	]
+]

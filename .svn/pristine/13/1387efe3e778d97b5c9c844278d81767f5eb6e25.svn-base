@@ -1,0 +1,147 @@
+﻿[controller(searchfilter)
+
+	[using(layout)]
+	[using(form)]
+	[using(table)]
+
+	[searchfilterforrelation(
+		name, label, targetid, resultid, rootschema, collectionname, valuename, value,
+		immediate = false, required = false, documentsperpage = null, id = null, icon = null,
+		historyenabled = true, tiptext = "", containingitemid = "", delay = 300, readonly = false)
+		
+		[searchfilter(
+			name: name,
+			label: label,
+			targetid: targetid,
+			resultid: resultid,
+			controllername: "searchfilter",
+			action: "getresultsrelation",
+			value: value,
+			immediate: immediate,
+			extraparams: "rootschema=" + rootschema + "&collection=" + collectionname + "&valuename=" + valuename,
+			required: required,
+			documentsperpage: documentsperpage,
+			id: id,
+			icon: icon,
+			historyenabled: historyenabled,
+			tiptext: tiptext,
+			containingitemid: containingitemid,
+			delay: delay,
+			readonly: readonly)]
+	]
+
+	[searchfilterforcollection(
+		name, label, targetid, resultid, rootschema, collectionname, valuename, value,
+		immediate = false, required = false, documentsperpage = null, id = null, icon = null,
+		historyenabled = true, tiptext = "", delay = 300, readonly = false)
+		
+		[searchfilter(
+			name: name,
+			label: label,
+			targetid: targetid,
+			resultid: resultid,
+			controllername: "searchfilter",
+			action: "getresultscollection",
+			value: value,
+			immediate: immediate,
+			extraparams: "rootschema=" + rootschema + "&collection=" + collectionname,
+			required: required,
+			documentsperpage: documentsperpage,
+			id: id,
+			icon: icon,
+			historyenabled: historyenabled,
+			tiptext: tiptext,
+			delay: delay,
+			readonly: readonly)]
+	]
+
+	// name: name for searchfileter that stays constant. It's used to map values to field between post calls.
+	[searchfilter(name, label, targetid, resultid, controllername, action, value=null, placeholder = null,
+				  buttonlabel = $search, immediate = false, extraparams=null, required = false, documentsperpage = null, 
+				  id = null, icon = null, historyenabled = true, tiptext = "", class = null,
+				  containingitemid = "", delay = 300, readonly = false)
+
+		[baseid = id]
+		[if (baseid == null) baseid = newid()]
+
+		[state = history.getstate("__searchfilter_state" + id)]
+		
+		<div class="__searchfilter-wrapper[if (class) " "[class]]" [attr(controllername)] [attr(action)] id="[baseid]" [attr(immediate)] [attr(targetid)] [attr(resultid)]
+		[attr(extraparams)] [attr(documentsperpage)] data-historyvalue="[state.historyvalue]" data-historydisplayvalue="[state.historydisplayvalue]"
+		data-history="[historyenabled]" data-containingitemid="[containingitemid]" data-name="[name]" data-delay="[delay]">
+		
+			[textfield(
+				label: label,
+				name:"__searchfilterinput-" + name,
+				value: value,
+				placeholder: placeholder,
+				class: "__searchfilter_filterfield",
+				id: baseid + "-field",
+				required: required,
+				icon: icon,
+				tiptext: tiptext,
+				readonly: readonly
+			)]
+
+			[if (!immediate && !readonly)
+				[button(
+					label: buttonlabel,
+					class: "__searchfilter",
+					id: baseid + "-button"
+				)]
+			]
+		
+		</div>
+	]
+
+	[private]
+	[searchfilterresult(results)
+		
+		[if (!results) exit]
+		
+		[panel(
+			margin: false,
+			padding: false,
+			class: "__searchfilterresult"
+		)
+
+			[collectionschema = schemafor(results)]
+
+			[collectionschemaname = nameof(collectionschema)]
+			[schemaname = nameof(tree.parent(collectionschema))]
+
+			[table
+				[tablerow
+					[foreach propertyschema in collectionschema
+						[if (propertyschema.searchfield)
+
+							[if (propertyschema.type == "collection") [continue]]
+
+							[tableheadercell
+								[txt("schema_" + collectionschemaname + "_" + nameof(propertyschema), schemaname)]
+							]
+						]
+					]
+				]
+
+				[foreach result in results
+						
+					<tr class="__searchfilter_resultitem" resultid="[tree.get(result, "_id")]" id="[newid]">
+
+						[foreach propertyschema in collectionschema
+							[if (propertyschema.searchfield)
+								[if (propertyschema.type == "collection") [continue]]
+
+								[resultitem = tree.get(result, nameof(propertyschema))]
+								
+								<td namefield="[propertyschema.namefield]">
+									[resultitem]
+								</td>
+							]
+						]
+					</tr>
+				]
+			]
+		]
+	]
+]

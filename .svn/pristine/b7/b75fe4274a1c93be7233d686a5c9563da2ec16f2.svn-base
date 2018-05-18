@@ -1,0 +1,161 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using SystemsGarden.mc2.MC2SiteEnvironment;
+using SystemsGarden.mc2.Core.Runtime;
+using SystemsGarden.mc2.Common;
+using MongoDB.Driver.Builders;
+using MongoDB.Driver;
+using MongoDB.Bson;
+using System.Globalization;
+using SystemsGarden.mc2.Core.Runtime;
+using SystemsGarden.mc2.Common;
+using MongoDB.Driver.Builders;
+using MongoDB.Driver;
+using MongoDB.Bson;
+using SystemsGarden.mc2.Core.Runtime;
+using System.Threading.Tasks;
+using System.Net;
+using System.Text;
+using System.IO;
+
+namespace SystemsGarden.mc2.widgets.homescreenprojects
+{
+	public class homescreenprojects : MC2Controller
+	{
+		#region Actions
+
+		[GrantAccessToGroup("authenticated")]
+		public ActionResult projectdetails(string projectid)
+		{
+            return View(DBDocument.FindOne("project", projectid));
+		}
+
+        [GrantAccessToGroup("authenticated")]
+        public ActionResult mobiledocuments(string projectid)
+        {
+            var project = DBDocument.FindOne("project", projectid);
+            project["projectmanager"].Merge(DBDocument.FindOne("user", project["projectmanager"][DBDocument.Id]));
+            project["customer"].Merge(DBDocument.FindOne("customer", project["customer"][DBDocument.Id]));
+            
+            string json = project.ToJson();
+
+            var request = (HttpWebRequest)WebRequest.Create(Runtime.Config["application"]["mobiledocumentsaddress"]);
+
+            var postData = "project=" + json;
+            var data = Encoding.ASCII.GetBytes(postData);
+
+            request.Method = "POST";
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentLength = data.Length;
+
+            using (var stream = request.GetRequestStream())
+            {
+                stream.Write(data, 0, data.Length);
+            }
+
+            var response = (HttpWebResponse)request.GetResponse();
+
+            var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+            return new RedirectResult(responseString);
+        }
+
+
+        [GrantAccessToGroup("authenticated")]
+		public ActionResult projectallocations(string projectid, string selectedday, string projectname)
+		{
+			DateTime day = DateTime.ParseExact(selectedday, "yyyyMMdd", CultureInfo.InvariantCulture);
+			day = new DateTime(day.Year, day.Month, day.Day, day.Hour, day.Minute, day.Second, DateTimeKind.Utc);
+
+			var query = new DBQuery("homescreenprojects", "allocationsforproject");
+			query.AddParameter("project", new ObjectId(projectid));
+			query.AddParameter("start", day);
+			query.AddParameter("end", day);
+
+			return View((DataTree)query.Find().FirstCollection, projectname);
+		}
+
+
+		[GrantAccessToGroup("authenticated")]
+		public ActionResult startworkonproject(string projectid, string allocationid)
+		{
+			if (!string.IsNullOrEmpty(allocationid))
+			{
+				DBDocument allocationEntry = DBDocument.FindOne("allocationentry", allocationid);
+
+				allocationEntry["status"] = "In progress";
+
+				allocationEntry.UpdateDatabase();
+
+				return new AjaxResult("success");
+			}
+			else
+			{
+				return new AjaxResult("No identifier provided. Cannot start work.");
+			}
+		}
+
+		[GrantAccessToGroup("authenticated")]
+		public ActionResult endworkonproject(string allocationid)
+		{
+			logger.LogTrace("Ending work on allocation", allocationid);
+
+			if (string.IsNullOrEmpty(allocationid))
+			{
+				return new AjaxResult("Allocation id missing. Cannot end work.");
+				logger.LogError("Allocation id missing. Cannot end work.");
+			}
+
+			var allocationEntry = DBDocument.FindOne("allocationentry", allocationid);
+
+			try
+			{
+				if ((bool)Runtime.Features["onlycompleteapprovedallocations"] && CheckForUnapprovedEntries(allocationEntry))
+				{
+					logger.LogDebug("Cannot mark allocation as completed. Not all related entries were worker approved.");
+					return new AjaxResult("unapprovedentriesfound");
+				}
+			}
+			catch(Exception)
+			{
+				// It's likely best to allow completing allocations in case there's an issue. 
+				logger.LogError("Failed to check whether allocation has unapproved entries. Allowing completion.");
+			}
+
+			allocationEntry["status"] = "Done";
+
+			allocationEntry.UpdateDatabase();
+
+			return new AjaxResult("success");
+		}
+
+		private bool CheckForUnapprovedEntries(DBDocument allocationEntry)
+		{
+			logger.LogTrace("Checking whether allocation has unapproved entries");
+
+			bool hasUnapprovedEntries = false;
+
+			var query = new DBQuery("homescreenprojects", "unapprovedentriesforproject");
+
+			query.AddParameter("project", allocationEntry["project"]);
+			query.AddParameter("user", allocationEntry["user"]);
+
+			DBResponse response = query.Find();
+
+
+			if (response["timesheetentry"].Count > 0)
+				hasUnapprovedEntries = true;
+			else if (response["absenceentry"].Count > 0)
+				hasUnapprovedEntries = true;
+			else if (response["dayentry"].Count > 0)
+				hasUnapprovedEntries = true;
+			else if (response["articleentry"].Count > 0)
+				hasUnapprovedEntries = true;
+			return hasUnapprovedEntries;
+		}
+
+		#endregion
+	}
+}

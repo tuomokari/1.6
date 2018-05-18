@@ -1,0 +1,40 @@
+workdatawidget
+	entrydata
+		timesheetentry
+			__condition: { user:[@user], $and: [ { date: { $gte: [@start] } }, { date: { $lte: [@end] } }] }
+
+		absenceentry
+			__condition: { user:[@user], $and: [ { date: { $gte: [@start] } }, { date: { $lte: [@end] } }] }
+		
+		dayentry
+			__condition: { user:[@user], $and: [ { date: { $gte: [@start] } }, { date: { $lte: [@end] } }] }
+
+		articleentry
+			__condition: { user:[@user], $and: [ { date: { $gte: [@start] } }, { date: { $lte: [@end] } }] }
+
+		assetentry
+			__condition: { $or: [ { creator: [@user] }, { user: [@user] }], $and: [ { date: { $gte: [@start] } }, { date: { $lte: [@end] } }] }
+
+		allocationentry
+			__condition: "{ 
+				user: [@user], 
+				$or:[{ 
+						$and: [ 
+							{ date: { $gte: [@start] } }, 
+							{ date: { $lte: [@end] } }
+						] 
+					}, 
+					{ 
+						$and: [
+							{ date: { $exists: false } },
+							{ status: { $ne: "Done" } }
+						] 
+					}]
+				}"
+
+	paytypes
+		timesheetentrydetailpaytype
+			__condition: { disabled: { $ne: true }}
+
+		dayentrytype
+			__condition: { disabled: { $ne: true } }

@@ -1,0 +1,22 @@
+﻿[controller(tro)
+
+	[weekdetails(startday, days)
+		<div id="weekdetails">
+			[while (days > 0)
+				[startday = startday % 7]
+				[days -= 1]
+				[weekdetail(startday)]
+				[startday += 1]
+			]
+		</div>
+	]
+
+	[private]
+	[weekdetail(day)
+		<div class="weekdetailelement" data-weekdetails>
+			<div class="dayname">[txt("day_abbreviated_" + day)]</div>
+			<div class="time"><span class="hours"></span><span class="timeseparator">:</span><span class="minutes"></span></div>
+		</div>
+	]
+]
+

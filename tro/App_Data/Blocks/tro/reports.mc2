@@ -1,0 +1,36 @@
+﻿[controller(tro)
+	
+	[using(form)]
+	[using(table)]
+	[using(layout)]
+	[using(text)]
+	[using(navigation)]
+	[using(defaultaction)]
+	[using(menubar)]
+
+	[reports()
+		[html
+			[head(title: [$pagetitle_reports])
+				[defaultviewhead]
+			]
+			
+			[body
+				[application
+					[reportsbody]
+				]
+			]
+		]
+	]
+
+	[private]
+	[reportsbody
+		[panel([$reports])
+			[region(class: "__flexcontainer")
+				[trostats.statshoursbytype(numberofdays: 50, startminimized: true)]
+				[trostats.statshourtypehistory(numberofweeks: 10, startminimized: true)]
+				[trostats.statstopcustomers(numberofdays: 60, numberofcustomers: 10, startminimized: true)]
+				[trostats.statstopprojects(numberofdays: 90, numberofprojects: 18, startminimized: true)]
+			]
+		]
+	]
+]

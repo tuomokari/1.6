@@ -1,0 +1,6 @@
+refreshdocumentwidget
+	documents
+		[@collectionname]
+			__condition: {}
+			__page: [@page]
+			__documentsbypage: [@documentsbypage]

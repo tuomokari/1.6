@@ -1,0 +1,508 @@
+﻿[controller(listview)
+
+	[using(table)]
+	[using(navigation)]
+	[using(layout)]
+	[using(schemautils)]
+	[using(form)]
+
+	[listview(
+		schema,
+		orderby = "__default",
+		ascending = false,
+		documentsperpage = 16,
+		page = 0,
+		relation = null,
+		relationid = null,
+		islocalrelation = false,
+		localcollection = null,
+		ismanyrelation = false,
+		showheading = true,
+		renderpanel = true,
+		padding = true,
+		allownew = true,
+		allowremove = true,
+		allowinsert = true,
+		listviewcontroller = null,
+		listviewaction = null,
+		itemselection = false,
+		extraparams = "",
+		tools = true,
+		allowback = true,
+		viewcontroller = null,
+		viewaction = null,
+		async = true,
+		customheading = null,
+		noinitialupdate = false,
+		class = null,
+		includetotals = false
+		)
+
+		[schemaname = nameof(schema)]
+
+		// TODO: May need to be revised. Better way would be to pass parameters as extraparameters to form and
+		//       use those parameters to set relationid etc.
+		[formaction = baseurl + "?controller=" + callingcontroller + "&historytoken=" + request.currenthistorytoken]
+
+		[if (relation != null)
+			[if (ismanyrelation)
+
+				[if (islocalrelation)
+					[formaction += "&action=" + callingaction + "&actiontype=removefromrelationlocal" +
+						"&relationid=" + relationid + "&relation=" + relation]
+				][else
+					[formaction += "&action=" + schemaname + "&actiontype=removefromrelationremote" +
+						"&relationid=" + relationid + "&relation=" + relation]				
+				]
+
+			][else
+				[formaction += "&action=" + schemaname + "&actiontype=removefromrelationremote" +
+					"&relationid=" + relationid + "&relation=" + relation]
+			]			
+		][else
+			[formaction += "&action=" + callingaction + "&actiontype=removefromlist"]		
+		]
+
+		[if (allowremove)
+			<form action="[formaction]" enctype="multipart/form-data" method="post" data-ajax="false">
+		]
+
+		[if (renderpanel)
+
+			[panelheading = ""]
+
+			[if (showheading)
+				[panelheading = txt("schema_" + schemaname)]
+			]
+
+			[if (customheading)
+				[panelheading = txt(customheading)]
+			]
+
+			[panel(
+				padding: padding,
+				class: "__generatedpanel")
+
+				[baseid = newid()]
+				<h2 class="__titlepanel-title">
+					[panelheading]
+				</h2>
+				[if (tools)
+					[listviewtools(schema, baseid)]
+				]
+
+				[listviewcontent(
+					schema: schema,
+					orderby: orderby,
+					baseid: baseid,
+					ascending: ascending,
+					documentsperpage: documentsperpage,
+					page: page,
+					relation: relation,
+					relationid: relationid,
+					localcollection: localcollection,
+					islocalrelation: islocalrelation,
+					ismanyrelation: ismanyrelation,
+					showheading: showheading,
+					allownew: allownew,
+					allowremove: allowremove,
+					allowinsert: allowinsert,
+					listviewaction: listviewaction,
+					listviewcontroller: listviewcontroller,
+					itemselection: itemselection,
+					extraparams: extraparams,
+					allowback: allowback,
+					viewcontroller: viewcontroller,
+					viewaction: viewaction,
+					async: async,
+					noinitialupdate: noinitialupdate,
+					class: class,
+					includetotals: includetotals)]
+			]
+		]
+		[else
+			[baseid = newid()]
+			
+			[if (customheading)
+				<h2 class="__listviewregionheading">[txt(customheading)]</h2>
+			]
+							
+			[listviewcontent(
+				schema: schema,
+				orderby: orderby,
+				baseid: baseid,
+				ascending: ascending,
+				documentsperpage: documentsperpage,
+				page: page,
+				relation: relation,
+				relationid: relationid,
+				islocalrelation: islocalrelation,
+				localcollection: localcollection,
+				ismanyrelation: ismanyrelation,
+				showheading: showheading,
+				allownew: allownew,
+				allowremove: allowremove,
+				allowinsert: allowinsert,
+				listviewaction: listviewaction,
+				listviewcontroller: listviewcontroller,
+				itemselection: itemselection,
+				extraparams: extraparams,
+				allowback: allowback,
+				viewcontroller: viewcontroller,
+				viewaction: viewaction,
+				async: async,
+				noinitialupdate: noinitialupdate,
+				class: class,
+				includetotals: includetotals)]
+			]
+		
+		[if (allowremove)
+			</form>
+		]
+	]
+
+	[listviewcontent(
+		schema,
+		orderby = "__default",
+		baseid,
+		ascending = false,
+		documentsperpage = 16,
+		page = 0,
+		relation = null,
+		relationid = null,
+		islocalrelation = false,
+		localcollection = null,
+		ismanyrelation = false,
+		showheading = true,
+		allownew = true,
+		allowremove = true,
+		allowinsert = true,
+		listviewcontroller = null,
+		listviewaction = null,
+		itemselection = false,
+		extraparams = "",
+		allowback = true,
+		viewcontroller = null,
+		viewaction = null,
+		async = true,
+		noinitialupdate = false,
+		class = null,
+		includetotals = false)
+	
+		[schemaname = nameof(schema)]
+
+		[wrapperrelation = relation]
+		[buttonextraparams = extraparams]
+
+		[if (relation && relationid)
+			[if (localcollection)
+				[buttonextraparams += "&relationid=" + relationid + "&relation=" + relation + "&localcollection=" + localcollection]
+			][else
+				[buttonextraparams += "&relationid=" + relationid + "&relation=" + relation]
+			]
+		]
+
+		[region(class: "__listviewactions", margin: false, padding: false)
+
+			[if (allownew)
+				[actiontype = "add"]
+
+				[if (relation)
+					[if (!islocalrelation && ismanyrelation) 
+						actiontype = "addremotemany"
+					][elseif (!islocalrelation)
+						actiontype = "addremoteone"
+					][else
+						actiontype = "addlocalmany"
+					]
+				]
+
+				[actionbutton(
+					label: $new,
+					action: schemaname,
+					extraparams: "actiontype=" + actiontype + buttonextraparams,
+					actiontype: "add",
+					class: "__addbutton")]
+			]
+
+			[if (allowinsert && relation && relationid)
+				[actiontype = "insertlocalmany"]
+				[action = localcollection]
+
+				[if (!islocalrelation)
+					[action = schemaname]
+					[actiontype = "insertremote"]
+				]
+
+				[actionbutton(
+					label: $add,
+					action: action,
+					extraparams: "actiontype=" + actiontype + buttonextraparams,
+					actiontype: "add",
+					class: "__insertbutton")]
+
+			]
+
+			[if (allowremove)
+
+				[confirmationmessage = $confirm_remove_many]
+				
+				[if (relation) confirmationmessage = $confirm_remove_relations]
+				
+				[submit(
+					label: $remove,
+					actiontype: "removefromlist",
+					confirmationmessage: confirmationmessage,
+					action: schemaname,
+					extraparams: "actiontype=remove" + buttonextraparams,
+					actiontype: "remove",
+					prevententer: true,
+					class: "__warning __removebutton")
+				]
+			]
+			
+			[if (allowback)
+				[actionbutton(
+					label: $back,
+					controllername: "navigation",
+					action: "previous",
+					class: "__modest __backbutton")
+				]
+			]
+
+			[actionbutton(
+				label: txt("export_excel"),
+				actiontype: "export_excel",
+				class: "__export_excel __hidden")]
+			<span style="line-height: 40px" class="__exporting_excel __hidden">
+				<span>[txt("export_excel")]</span>
+				<span class="__exporting_progress"></span>
+			</span>
+			<a target="_blank" class="__exportLinkContainer __hidden">[txt("export_excel_link")]</a>
+		]
+
+		<div class="__listview-wrapper [class]" id="[baseid]" controller="[nameof(tree.parent(schema))]" collection="[schemaname]"
+			[attr(orderby)] [attr(ascending)] [attr(documentsperpage)] [attr(page)] [attr(relation)] [attr(relationid)]
+			[attr(baseid)] [attr(islocalrelation)] [attr(localcollection)] [attr(ismanyrelation)] [attr(listviewcontroller)] [attr(listviewaction)]
+			[attr(extraparams)] [if (itemselection) "data-itemselection=true"] [if (viewcontroller) "data-controller='"[viewcontroller]"'"] [if (viewaction) "data-action='"[viewaction]"'"]
+			data-async="[async]" data-allowremove="[allowremove]" data-noinitialupdate="[noinitialupdate]" data-includetotals="[includetotals]">
+		</div>
+	]
+
+	[listviewtools(schema, baseid)
+		<div class="__listviewtoolstoggler"><i class="material-icons">expand_more</i><i class='material-icons'>expand_less</i></div>
+		
+
+		<div class="__listviewtools">
+			[region(
+				margin: false
+			)
+				<div class="__listviewtools_searchfield">
+					[buttonfield( 
+						buttonlabel: $search, 
+						id: baseid + "__listviewsearch")]
+				</div>
+				[checkbox(
+					name: "toggleallcolumns",
+					label: $listview_show_all_columns,
+					class: "__listviewtools_toggleallcolumns __inline",
+					switch: true)
+				]
+			]
+		</div>
+	]
+
+	[listviewresults(
+		elementdata,
+		controllername,
+		totalrecords,
+		currentpage,
+		maxpage,
+		itemselection=true,
+		relation = null,
+		relationid = null,
+		hasmoreresults = true)
+
+		[baseid = newid]
+
+		[schema = schemafor(elementdata)]
+
+		[if (tree.length(elementdata) == 0)
+			[region(
+				class: "__noresults",
+				margin: false,
+				padding: false)
+				[text.inlinenotification() $listview_noelements]
+			]
+		][else
+			// Container for results
+			<div id="[baseid]" data-totalrecords="[totalrecords]">
+
+				[table(
+					class: "__listviewtable")
+
+					[headerforschema(schema, itemselection)]
+
+					[foreach element in elementdata
+						[rowforelement(element, schema, controllername, itemselection, relation, relationid)]
+					]
+				]
+
+				[pageselector(tree.length(elementdata), totalrecords, currentpage, hasmoreresults, baseid)]
+
+			</div>
+		]
+
+	]
+
+	[private]
+	[pageselector(shownrecords, totalrecords, currentpage, hasmoreresults, baseid)
+		[if (hasmoreresults || currentpage != 0)
+			<div class="__pageselector">
+				[link(
+					linktext: $previous_plural,
+					id: baseid + "-previous",
+					disabled: (currentpage == 0),
+					class: "__button __modest")
+				]
+				&nbsp;
+				[link(
+					linktext: $next_plural,
+					id: baseid + "-next",
+					disabled: (!hasmoreresults),
+					class: "__button __modest")
+				]
+			</div>
+		]
+	]
+
+	[private]
+	[rowforelement(element, collectionschema, controllername, itemselection, relation, relationid)
+		[tablerow(
+			relation: element._id
+		)
+			[if (itemselection)
+				[tablecell(class: "__listviewcheckbox")
+					[checkbox(
+						name: "__listitem_" + newid,
+						label: " ",
+						value: element._id,
+						class: "__listview_checkbox")]
+				]
+			]
+
+			[relationtree = tree.get(collectionschema, relation)]
+			[directediting = collectionschema.collection.directediting ||  relationtree.directediting]
+
+			[fieldindex = 0]
+			[foreach propertyschema in collectionschema
+				
+				[if (propertyschema.type == "collection" || propertyschema.hidden || propertyschema.relationtype == "many") [continue]]
+
+				[cellclass = "__listview_" + propertyschema.type]
+				
+				[if (propertyschema.datetimetype == "date")
+					cellclass += " __datetimetype_date"
+				][elseif (propertyschema.datetimetype == "datetime")
+					cellclass += " __datetimetype_datetime"
+				][elseif (propertyschema.datetimetype == "time")
+					cellclass += " __datetimetype_time"
+				]
+
+				[if (propertyschema.hiddenfromlistview)
+					[cellclass += " __hidden"]
+				]
+
+				[if(propertyschema.hideonnarrowview)
+					[cellclass += " __hideonnarrowview"]
+				]
+
+				[if(propertyschema.namefield)
+					[cellclass += " __namefield"]
+				]
+
+				[tablecell(
+					class: [cellclass],
+					schemaname: nameof(propertyschema),
+					isenddate: propertyschema.isenddate
+				)
+					[item = tree.get(element, nameof(propertyschema))]
+
+					[if (directediting)
+						[relations = ""]
+
+						[if (relationid != null)
+							[relations = "&relation=" + relationtree.relation + "&relationid=" + relationid]
+						]
+
+						[actionlink("", nameof(collectionschema), controllername, "actiontype=modify&id=" + element._id + relations, class: "__listviewrow")
+							[if(!item) <span class="__empty">&nbsp;</span>][else
+								[if (propertyschema.relationtype == "one")
+									[getdisplaynameforelation(item, propertyschema, propertyschema.relation)]
+								]
+								[else
+									[dataform.displayforvalue(item)]
+								]
+							]
+						]										
+					]
+
+					[if (!directediting)
+						[actionlink("", nameof(collectionschema), controllername, "actiontype=view&id=" + element._id, class: "__listviewrow")
+							[if(!item) <span class="__empty">&nbsp;</span>][else
+								[if (propertyschema.relationtype == "one")
+									[getdisplaynameforelation(item, propertyschema, propertyschema.relation)]
+								]
+								[else
+									[dataform.displayforvalue(item)]
+								]
+							]
+						]					
+					]
+
+				]
+
+				[fieldindex += 1]
+			]
+		]
+	]
+
+	[private]
+	[headerforschema(schema, itemselection)
+
+		[tableheader
+			[if (itemselection)
+				[tableheadercell(
+					class: "__listviewheadercheckbox"
+				)
+					[checkbox(name: nameof(schema) + "_selectall", label: " ", class: "__listview_checkbox")]
+				]		
+			]
+
+			[foreach propertyschema in schema
+				[if (propertyschema.type == "collection" || propertyschema.hidden || propertyschema.relationtype == "many") continue]
+								
+				[cellclass = "__listviewheadercell"]
+
+				[if (propertyschema.hiddenfromlistview)
+					[cellclass += " __hidden"]
+				]
+
+				[if(propertyschema.hideonnarrowview)
+					[cellclass += " __hideonnarrowview"]
+				]
+
+				[if(propertyschema.namefield)
+					[cellclass += " __namefield"]
+				]
+
+				[tableheadercell(
+					class: [cellclass],
+					extraparams: "data-propertyschema='" + nameof(propertyschema) + "'"
+				)
+					[txt("schema_" + nameof(schema) + "_"  + nameof(propertyschema), nameof(tree.parent(schema)))]
+				]
+			]
+		]
+	]
+]

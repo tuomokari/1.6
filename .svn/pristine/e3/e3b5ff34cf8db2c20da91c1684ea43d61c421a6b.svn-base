@@ -1,0 +1,941 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1FAD13DF-8150-4EB6-93D4-F6757B6C0CDA}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SysemsGarden.mc2.tro</RootNamespace>
+    <AssemblyName>tro</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <FilesToIncludeForPublish>AllFilesInProjectFolder</FilesToIncludeForPublish>
+    <ExcludeGeneratedDebugSymbol>true</ExcludeGeneratedDebugSymbol>
+    <IncludeIisSettings>false</IncludeIisSettings>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <FilesToIncludeForPublish>AllFilesInProjectFolder</FilesToIncludeForPublish>
+    <PublishDatabases>false</PublishDatabases>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AntiXssLibrary">
+      <HintPath>..\references\AntiXssLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime, Version=3.4.1.9004, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="HtmlSanitizationLibrary">
+      <HintPath>..\references\HtmlSanitizationLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="Irony">
+      <HintPath>..\references\Irony.dll</HintPath>
+    </Reference>
+    <Reference Include="MarkdownSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\references\MarkdownSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Bson, Version=2.4.3.23, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Bson.2.4.3\lib\net45\MongoDB.Bson.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=2.4.3.23, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Driver.2.4.3\lib\net45\MongoDB.Driver.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Core, Version=2.4.3.23, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Driver.Core.2.4.3\lib\net45\MongoDB.Driver.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Legacy, Version=2.4.3.23, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\mongocsharpdriver.2.4.3\lib\net45\MongoDB.Driver.Legacy.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="SystemsGarden.mc2.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\references\SystemsGarden.mc2.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="SystemsGarden.mc2.Core, Version=0.9.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\references\SystemsGarden.mc2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="SystemsGarden.mc2.MC2SiteEnvironment, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\references\SystemsGarden.mc2.MC2SiteEnvironment.dll</HintPath>
+    </Reference>
+    <Reference Include="SystemsGarden.Silmu.Library, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\references\SystemsGarden.Silmu.Library.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Solution items\AssemblyVersion.cs">
+      <Link>AssemblyVersion.cs</Link>
+    </Compile>
+    <Compile Include="App_Code\Controllers\tro\defaultvalues.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Content Include="App_Code\Controllers\tro\delete.cs" />
+    <Compile Include="App_Code\Controllers\tro\favouriteusers.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="App_Code\Controllers\tro\myplaces.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Content Include="App_Data\Blocks\tro\approvework.mc2" />
+    <Content Include="App_Data\Blocks\tro\tromenubar.mc2" />
+    <Content Include="App_Data\Blocks\tro\weekdetails.mc2">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\Tools\Web compiler\AjaxMin.dll" />
+    <Content Include="App_Data\Tools\Web compiler\extension.vsixmanifest" />
+    <Content Include="App_Data\Tools\Web compiler\Microsoft.ApplicationInsights.dll" />
+    <Content Include="App_Data\Tools\Web compiler\Microsoft.VisualStudio.TaskRunnerExplorer.14.0.dll" />
+    <Content Include="App_Data\Tools\Web compiler\Newtonsoft.Json.dll" />
+    <Content Include="App_Data\Tools\Web compiler\registry.pkgdef" />
+    <Content Include="App_Data\Tools\Web compiler\Resources\icon.png" />
+    <Content Include="App_Data\Tools\Web compiler\Resources\logo.png" />
+    <Content Include="App_Data\Tools\Web compiler\Resources\preview.png" />
+    <Content Include="App_Data\Tools\Web compiler\WebCompiler.exe" />
+    <Content Include="App_Data\Tools\Web compiler\WebCompiler.pdb" />
+    <Content Include="App_Data\Tools\Web compiler\WebCompilerVsix.dll" />
+    <Content Include="App_Data\Tools\Web compiler\WebCompilerVsix.pdb" />
+    <Content Include="App_Data\Tools\Web compiler\WebCompilerVsix.pkgdef" />
+    <Content Include="App_Data\Widgets\tro\approvework\approveworkresultshelper\approveworkresultshelper.js" />
+    <Content Include="App_Data\Widgets\tro\projectleadmodule\projectleadmodule.js" />
+    <Content Include="App_Data\Widgets\tro\totals\totalwork.css" />
+    <Content Include="App_Data\Widgets\tro\totals\totalwork.js" />
+    <Content Include="App_Data\Widgets\tro\approvework\managerapproveworkfilterhelper\managerapproveworkfilterhelper.css" />
+    <Content Include="App_Data\Widgets\tro\approvework\managerapproveworkfilterhelper\managerapproveworkfilterhelper.js" />
+    <Content Include="App_Data\Widgets\tro\assetentrywidget\assetentrywidget.css" />
+    <Content Include="App_Data\Widgets\tro\assetentrywidget\assetentrywidget.js" />
+    <Content Include="App_Data\Widgets\tro\approvework\approveworkhelper\approveworkhelper.css" />
+    <Content Include="App_Data\Widgets\tro\approvework\approveworkhelper\approveworkhelper.js" />
+    <Content Include="App_Data\Widgets\core\calendarwidget\fullcalendar\fullcalendar.js" />
+    <Content Include="App_Data\Widgets\core\calendarwidget\fullcalendar\scheduler.js" />
+    <Content Include="App_Data\Widgets\tro\data\workdatawidget\workdatawidget.css" />
+    <Content Include="App_Data\Widgets\tro\data\workdatawidget\workdatawidget.js" />
+    <Content Include="App_Data\Widgets\tro\homescreen\startproject\startproject.css" />
+    <Content Include="App_Data\Widgets\tro\homescreen\startproject\startproject.js" />
+    <Content Include="App_Data\Widgets\tro\homescreen\homescreenprojects\homescreenprojects.css" />
+    <Content Include="App_Data\Widgets\tro\homescreen\homescreenprojects\homescreenprojects.js" />
+    <Content Include="App_Data\Widgets\tro\homescreen\homescreenwidget\homescreenwidget.css" />
+    <Content Include="App_Data\Widgets\tro\homescreen\homescreenwidget\homescreenwidget.js" />
+    <Content Include="App_Data\Widgets\tro\homescreen\horizontalworkview\horizontalworkview.css" />
+    <Content Include="App_Data\Widgets\tro\homescreen\horizontalworkview\horizontalworkview.js" />
+    <Content Include="App_Data\Widgets\tro\integration\entryintegrationwidget\entryintegrationwidget.css" />
+    <Content Include="App_Data\Widgets\tro\integration\entryintegrationwidget\entryintegrationwidget.js" />
+    <Content Include="App_Data\Widgets\tro\integration\integrationeventwidget\integrationeventwidget.css" />
+    <Content Include="App_Data\Widgets\tro\integration\integrationeventwidget\integrationeventwidget.js" />
+    <Content Include="App_Data\Widgets\tro\prtgwidget\prtgwidget.css" />
+    <Content Include="App_Data\Widgets\tro\prtgwidget\prtgwidget.js" />
+    <Content Include="App_Data\Widgets\tro\schedulerwidget\schedulerwidget.css" />
+    <Content Include="App_Data\Widgets\tro\schedulerwidget\schedulerwidget.js" />
+    <Content Include="App_Data\Widgets\tro\resourcing\capacityutilizationwidget\capacityutilizationwidget.css" />
+    <Content Include="App_Data\Widgets\tro\resourcing\capacityutilizationwidget\capacityutilizationwidget.js" />
+    <Content Include="App_Data\widgets\core\calendarwidget\calendarwidget.css" />
+    <Content Include="App_Data\widgets\core\calendarwidget\calendarwidget.js" />
+    <Content Include="App_Data\widgets\core\calendarwidget\fullcalendar\lang-all.js" />
+    <Content Include="App_Data\widgets\core\calendarwidget\fullcalendar\LICENSE.txt" />
+    <Content Include="App_Data\Widgets\tro\resourcing\dailyresourcingwidget\dailyresourcingwidget.css" />
+    <Content Include="App_Data\Widgets\tro\resourcing\dailyresourcingwidget\dailyresourcingwidget.js" />
+    <Content Include="App_Data\Widgets\tro\resourcing\resourcingwidget\resourcingwidget.css" />
+    <Content Include="App_Data\Widgets\tro\resourcing\resourcingwidget\resourcingwidget.js" />
+    <Content Include="App_Data\Widgets\tro\resourcing\resourcingcalendarwidget\resourcingcalendarwidget.css" />
+    <Content Include="App_Data\Widgets\tro\resourcing\resourcingcalendarwidget\resourcingcalendarwidget.js" />
+    <Content Include="App_Data\Widgets\core\calendarwidget\calendarwidget.css" />
+    <Content Include="App_Data\Widgets\core\calendarwidget\calendarwidget.js" />
+    <Content Include="App_Data\Widgets\core\calendarwidget\fullcalendar\lang-all.js" />
+    <Content Include="App_Data\Widgets\core\calendarwidget\fullcalendar\LICENSE.txt" />
+    <Content Include="App_Data\Widgets\tro\resourcing\resourcingwidget\resourcingwidget.css" />
+    <Content Include="App_Data\Widgets\tro\resourcing\resourcingwidget\resourcingwidget.js" />
+    <Content Include="App_Data\Widgets\tro\resourcing\resourcingcalendarwidget\resourcingcalendarwidget.css" />
+    <Content Include="App_Data\Blocks\__builtin\defaultaction.mc2" />
+    <Content Include="App_Data\Blocks\__builtin\documentstructure.mc2" />
+    <Content Include="App_Data\Blocks\__builtin\dataform.mc2" />
+    <Content Include="App_Data\Blocks\__builtin\tree.mc2" />
+    <Content Include="App_Data\Blocks\__builtin\errors.mc2" />
+    <Content Include="App_Data\Blocks\__builtin\form.mc2" />
+    <Compile Include="App_Code\Controllers\tro\approveworklistview.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="App_Code\Controllers\tro\searchhelpers.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="App_Code\Controllers\tro\timeline.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="App_Code\Controllers\tro\trodataview.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="App_Code\Controllers\tro\trofilters.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="App_Code\Controllers\tro\troprogrammedfields.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="App_Code\Controllers\__builtin\monitoring.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="App_Code\Controllers\__builtin\security.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="App_Data\Widgets\tro\approvework\approveworkresultshelper\approveworkresultshelper.cs" />
+    <Compile Include="App_Data\Widgets\tro\projectleadmodule\projectleadmodule.cs" />
+    <Compile Include="App_Data\Widgets\tro\totals\totalwork.cs" />
+    <Compile Include="App_Data\Widgets\tro\approvework\managerapproveworkfilterhelper\managerapproveworkfilterhelper.cs" />
+    <Compile Include="App_Data\Widgets\tro\assetentrywidget\assetentrywidget.cs" />
+    <Compile Include="App_Data\Widgets\tro\approvework\approveworkhelper\approveworkhelper.cs" />
+    <Compile Include="App_Data\Widgets\tro\data\workdatawidget\workdatawidget.cs" />
+    <Compile Include="App_Data\Widgets\tro\homescreen\startproject\startproject.cs" />
+    <Compile Include="App_Data\Widgets\tro\homescreen\homescreenprojects\homescreenprojects.cs" />
+    <Compile Include="App_Data\Widgets\tro\homescreen\homescreenwidget\homescreenwidget.cs" />
+    <Compile Include="App_Data\Widgets\tro\homescreen\horizontalworkview\horizontalworkview.cs" />
+    <Compile Include="App_Data\Widgets\tro\integration\entryintegrationwidget\entryintegrationwidget.cs" />
+    <Compile Include="App_Data\Widgets\tro\integration\integrationeventwidget\integrationeventwidget.cs" />
+    <Compile Include="App_Data\Widgets\tro\prtgwidget\prtgwidget.cs" />
+    <Compile Include="App_Data\Widgets\tro\schedulerwidget\schedulerwidget.cs" />
+    <Compile Include="App_Data\Widgets\tro\resourcing\capacityutilizationwidget\capacityutilizationwidget.cs" />
+    <Compile Include="App_Data\Widgets\core\calendarwidget\calendarwidget.cs" />
+    <Compile Include="App_Data\Widgets\tro\resourcing\dailyresourcingwidget\dailyresourcingwidget.cs" />
+    <Compile Include="App_Data\Widgets\tro\resourcing\resourcingwidget\resourcingwidget.cs" />
+    <Compile Include="App_Data\Widgets\tro\resourcing\resourcingcalendarwidget\resourcingcalendarwidget.cs" />
+    <Compile Include="App_Data\Widgets\tro\hourtotals\hourtotals.cs" />
+    <Compile Include="App_Data\Widgets\tro\payrollexport\payrollexportwidget.cs" />
+    <Compile Include="App_Data\Widgets\tro\routefield\routefieldwidget.cs" />
+    <Compile Include="App_Data\Widgets\tro\timesheetentrypaytype\timesheetentrypaytypewidget.cs" />
+    <Compile Include="App_Code\Controllers\__builtin\admin.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="App_Code\Controllers\__builtin\form.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="App_Code\Controllers\__builtin\history.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="App_Code\Controllers\__builtin\navigation.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="App_Code\Controllers\__builtin\programmedfields.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="App_Code\Controllers\__builtin\restapi.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="App_Code\Controllers\__builtin\runtime.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="App_Code\Controllers\__builtin\schemautils.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="App_Code\Controllers\__builtin\text.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="App_Code\Controllers\__builtin\tree.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="App_Code\Controllers\__builtin\math.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="App_Code\Controllers\__builtin\login.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="App_Code\Controllers\__builtin\listview.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="App_Code\Controllers\__builtin\convert.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="App_Code\Controllers\__builtin\searchfilter.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Content Include="App_Data\Blocks\__builtin\table.mc2" />
+    <Content Include="App_Data\Blocks\__builtin\layout.mc2" />
+    <Content Include="App_Data\Blocks\__builtin\navigation.mc2" />
+    <Content Include="App_Data\Blocks\__builtin\list.mc2" />
+    <Content Include="App_Data\Blocks\__builtin\listview.mc2" />
+    <Content Include="App_Data\Blocks\__builtin\runtime.mc2" />
+    <Content Include="App_Data\Blocks\__builtin\searchfilter.mc2" />
+    <Content Include="App_Data\Blocks\__builtin\text.mc2" />
+    <Content Include="App_Data\Blocks\tro\resourceprojects.mc2" />
+    <Content Include="App_Data\Blocks\tro\timeline.mc2" />
+    <Content Include="App_Data\Blocks\__builtin\menubar.mc2" />
+    <Content Include="App_Data\Blocks\__builtin\widget.mc2" />
+    <Content Include="App_Data\Widgets\tro\hourtotals\hourtotals.mc2" />
+    <Content Include="App_Data\Widgets\tro\homescreen\workentries\workentries.css" />
+    <Content Include="App_Data\Widgets\tro\homescreen\workentries\workentries.js" />
+    <Content Include="App_Data\Widgets\tro\userformwidget\userformwidget.css" />
+    <Content Include="App_Data\Widgets\tro\userformwidget\userformwidget.js" />
+    <Content Include="Global.asax" />
+    <Content Include="images\core\arrowdown-narrow.svg" />
+    <Content Include="images\core\arrowdown.svg" />
+    <Content Include="images\core\asset.svg" />
+    <Content Include="images\core\background-fall.jpg" />
+    <Content Include="images\core\clock.svg" />
+    <Content Include="images\core\jqueryui\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="images\core\jqueryui\ui-bg_flat_55_1b389a_40x100.png" />
+    <Content Include="images\core\jqueryui\ui-bg_flat_65_ffffff_40x100.png" />
+    <Content Include="images\core\jqueryui\ui-bg_flat_75_dadada_40x100.png" />
+    <Content Include="images\core\jqueryui\ui-bg_flat_75_e6e6e6_40x100.png" />
+    <Content Include="images\core\jqueryui\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="images\core\jqueryui\ui-bg_flat_95_ff0210_40x100.png" />
+    <Content Include="images\core\jqueryui\ui-icons_222222_256x240.png" />
+    <Content Include="images\core\jqueryui\ui-icons_454545_256x240.png" />
+    <Content Include="images\core\jqueryui\ui-icons_888888_256x240.png" />
+    <Content Include="images\core\jqueryui\ui-icons_dae8fd_256x240.png" />
+    <Content Include="images\core\jqueryui\ui-icons_ffffff_256x240.png" />
+    <Content Include="images\core\logo-i.svg" />
+    <Content Include="images\core\logo-l.png" />
+    <Content Include="images\core\logo.svg" />
+    <Content Include="images\core\magnifier.svg" />
+    <Content Include="images\core\menu.svg" />
+    <Content Include="images\core\next.svg" />
+    <Content Include="images\core\ok.svg" />
+    <Content Include="images\core\person.svg" />
+    <Content Include="images\core\prev.svg" />
+    <Content Include="images\core\spinner-dark.svg" />
+    <Content Include="images\core\spinner.svg" />
+    <Content Include="images\tro\background-3.png" />
+    <Content Include="images\tro\background.png" />
+    <Content Include="images\tro\icon-128.png" />
+    <Content Include="images\tro\icon-evening.png" />
+    <Content Include="images\tro\icon-night.png" />
+    <Content Include="images\tro\icon-overtime.png" />
+    <Content Include="images\tro\icon-travel.png" />
+    <Content Include="images\tro\timer.svg" />
+    <Content Include="images\references\AMCharts\amcharts.js" />
+    <Content Include="images\references\AMCharts\exporting\amexport.js" />
+    <Content Include="images\references\AMCharts\exporting\canvg.js" />
+    <Content Include="images\references\AMCharts\exporting\filesaver.js" />
+    <Content Include="images\references\AMCharts\exporting\jspdf.js" />
+    <Content Include="images\references\AMCharts\exporting\jspdf.plugin.addimage.js" />
+    <Content Include="images\references\AMCharts\exporting\rgbcolor.js" />
+    <Content Include="images\references\AMCharts\funnel.js" />
+    <Content Include="images\references\AMCharts\gauge.js" />
+    <Content Include="images\references\AMCharts\images\dragIcon.gif" />
+    <Content Include="images\references\AMCharts\images\dragIconBlack.gif" />
+    <Content Include="images\references\AMCharts\images\dragIconH.gif" />
+    <Content Include="images\references\AMCharts\images\dragIconHBlack.gif" />
+    <Content Include="images\references\AMCharts\images\export.png" />
+    <Content Include="images\references\AMCharts\images\exportWhite.png" />
+    <Content Include="images\references\AMCharts\images\lens.png" />
+    <Content Include="images\references\AMCharts\images\lensWhite.png" />
+    <Content Include="images\references\AMCharts\lang\az.js" />
+    <Content Include="images\references\AMCharts\lang\bg.js" />
+    <Content Include="images\references\AMCharts\lang\de.js" />
+    <Content Include="images\references\AMCharts\lang\es.js" />
+    <Content Include="images\references\AMCharts\lang\fi.js" />
+    <Content Include="images\references\AMCharts\lang\fo.js" />
+    <Content Include="images\references\AMCharts\lang\fr.js" />
+    <Content Include="images\references\AMCharts\lang\hr.js" />
+    <Content Include="images\references\AMCharts\lang\hu.js" />
+    <Content Include="images\references\AMCharts\lang\id.js" />
+    <Content Include="images\references\AMCharts\lang\is.js" />
+    <Content Include="images\references\AMCharts\lang\it.js" />
+    <Content Include="images\references\AMCharts\lang\lt.js" />
+    <Content Include="images\references\AMCharts\lang\lv.js" />
+    <Content Include="images\references\AMCharts\lang\mk.js" />
+    <Content Include="images\references\AMCharts\lang\mn.js" />
+    <Content Include="images\references\AMCharts\lang\mt.js" />
+    <Content Include="images\references\AMCharts\lang\nl.js" />
+    <Content Include="images\references\AMCharts\lang\no.js" />
+    <Content Include="images\references\AMCharts\lang\pl.js" />
+    <Content Include="images\references\AMCharts\lang\pt.js" />
+    <Content Include="images\references\AMCharts\lang\ro.js" />
+    <Content Include="images\references\AMCharts\lang\ru.js" />
+    <Content Include="images\references\AMCharts\lang\rw.js" />
+    <Content Include="images\references\AMCharts\lang\sk.js" />
+    <Content Include="images\references\AMCharts\lang\so.js" />
+    <Content Include="images\references\AMCharts\lang\th.js" />
+    <Content Include="images\references\AMCharts\lang\tr.js" />
+    <Content Include="images\references\AMCharts\patterns\black\pattern1.png" />
+    <Content Include="images\references\AMCharts\patterns\black\pattern10.png" />
+    <Content Include="images\references\AMCharts\patterns\black\pattern11.png" />
+    <Content Include="images\references\AMCharts\patterns\black\pattern12.png" />
+    <Content Include="images\references\AMCharts\patterns\black\pattern13.png" />
+    <Content Include="images\references\AMCharts\patterns\black\pattern14.png" />
+    <Content Include="images\references\AMCharts\patterns\black\pattern15.png" />
+    <Content Include="images\references\AMCharts\patterns\black\pattern16.png" />
+    <Content Include="images\references\AMCharts\patterns\black\pattern17.png" />
+    <Content Include="images\references\AMCharts\patterns\black\pattern18.png" />
+    <Content Include="images\references\AMCharts\patterns\black\pattern19.png" />
+    <Content Include="images\references\AMCharts\patterns\black\pattern2.png" />
+    <Content Include="images\references\AMCharts\patterns\black\pattern20.png" />
+    <Content Include="images\references\AMCharts\patterns\black\pattern21.png" />
+    <Content Include="images\references\AMCharts\patterns\black\pattern3.png" />
+    <Content Include="images\references\AMCharts\patterns\black\pattern4.png" />
+    <Content Include="images\references\AMCharts\patterns\black\pattern5.png" />
+    <Content Include="images\references\AMCharts\patterns\black\pattern6.png" />
+    <Content Include="images\references\AMCharts\patterns\black\pattern7.png" />
+    <Content Include="images\references\AMCharts\patterns\black\pattern8.png" />
+    <Content Include="images\references\AMCharts\patterns\black\pattern9.png" />
+    <Content Include="images\references\AMCharts\patterns\chalk\pattern1.jpg" />
+    <Content Include="images\references\AMCharts\patterns\chalk\pattern1r.jpg" />
+    <Content Include="images\references\AMCharts\patterns\chalk\pattern2.jpg" />
+    <Content Include="images\references\AMCharts\patterns\chalk\pattern3.jpg" />
+    <Content Include="images\references\AMCharts\patterns\chalk\pattern4.jpg" />
+    <Content Include="images\references\AMCharts\patterns\chalk\pattern5.jpg" />
+    <Content Include="images\references\AMCharts\patterns\chalk\pattern6.jpg" />
+    <Content Include="images\references\AMCharts\patterns\white\pattern1.png" />
+    <Content Include="images\references\AMCharts\patterns\white\pattern10.png" />
+    <Content Include="images\references\AMCharts\patterns\white\pattern11.png" />
+    <Content Include="images\references\AMCharts\patterns\white\pattern12.png" />
+    <Content Include="images\references\AMCharts\patterns\white\pattern13.png" />
+    <Content Include="images\references\AMCharts\patterns\white\pattern14.png" />
+    <Content Include="images\references\AMCharts\patterns\white\pattern15.png" />
+    <Content Include="images\references\AMCharts\patterns\white\pattern16.png" />
+    <Content Include="images\references\AMCharts\patterns\white\pattern17.png" />
+    <Content Include="images\references\AMCharts\patterns\white\pattern18.png" />
+    <Content Include="images\references\AMCharts\patterns\white\pattern19.png" />
+    <Content Include="images\references\AMCharts\patterns\white\pattern2.png" />
+    <Content Include="images\references\AMCharts\patterns\white\pattern20.png" />
+    <Content Include="images\references\AMCharts\patterns\white\pattern21.png" />
+    <Content Include="images\references\AMCharts\patterns\white\pattern3.png" />
+    <Content Include="images\references\AMCharts\patterns\white\pattern4.png" />
+    <Content Include="images\references\AMCharts\patterns\white\pattern5.png" />
+    <Content Include="images\references\AMCharts\patterns\white\pattern6.png" />
+    <Content Include="images\references\AMCharts\patterns\white\pattern7.png" />
+    <Content Include="images\references\AMCharts\patterns\white\pattern8.png" />
+    <Content Include="images\references\AMCharts\patterns\white\pattern9.png" />
+    <Content Include="images\references\AMCharts\pie.js" />
+    <Content Include="images\references\AMCharts\plugins\responsive\examples\funnel.html" />
+    <Content Include="images\references\AMCharts\plugins\responsive\examples\gauge.html" />
+    <Content Include="images\references\AMCharts\plugins\responsive\examples\images\bicycle.png" />
+    <Content Include="images\references\AMCharts\plugins\responsive\examples\images\car.png" />
+    <Content Include="images\references\AMCharts\plugins\responsive\examples\images\motorcycle.png" />
+    <Content Include="images\references\AMCharts\plugins\responsive\examples\index.html" />
+    <Content Include="images\references\AMCharts\plugins\responsive\examples\map.html" />
+    <Content Include="images\references\AMCharts\plugins\responsive\examples\pie1.html" />
+    <Content Include="images\references\AMCharts\plugins\responsive\examples\pie2.html" />
+    <Content Include="images\references\AMCharts\plugins\responsive\examples\radar.html" />
+    <Content Include="images\references\AMCharts\plugins\responsive\examples\serial1.html" />
+    <Content Include="images\references\AMCharts\plugins\responsive\examples\serial2.html" />
+    <Content Include="images\references\AMCharts\plugins\responsive\examples\serial3.html" />
+    <Content Include="images\references\AMCharts\plugins\responsive\examples\stock.html" />
+    <Content Include="images\references\AMCharts\plugins\responsive\examples\xy.html" />
+    <Content Include="images\references\AMCharts\plugins\responsive\license.txt" />
+    <Content Include="images\references\AMCharts\plugins\responsive\responsive.js" />
+    <Content Include="images\references\AMCharts\plugins\responsive\responsive.min.js" />
+    <Content Include="images\references\AMCharts\radar.js" />
+    <Content Include="images\references\AMCharts\serial.js" />
+    <Content Include="images\references\AMCharts\themes\black.js" />
+    <Content Include="images\references\AMCharts\themes\chalk.js" />
+    <Content Include="images\references\AMCharts\themes\dark.js" />
+    <Content Include="images\references\AMCharts\themes\light.js" />
+    <Content Include="images\references\AMCharts\themes\patterns.js" />
+    <Content Include="images\references\AMCharts\xy.js" />
+    <Content Include="references\AMCharts\amcharts.js" />
+    <Content Include="references\AMCharts\exporting\amexport.js" />
+    <Content Include="references\AMCharts\exporting\canvg.js" />
+    <Content Include="references\AMCharts\exporting\filesaver.js" />
+    <Content Include="references\AMCharts\exporting\jspdf.js" />
+    <Content Include="references\AMCharts\exporting\jspdf.plugin.addimage.js" />
+    <Content Include="references\AMCharts\exporting\rgbcolor.js" />
+    <Content Include="references\AMCharts\funnel.js" />
+    <Content Include="references\AMCharts\gauge.js" />
+    <Content Include="references\AMCharts\images\dragIcon.gif" />
+    <Content Include="references\AMCharts\images\dragIconBlack.gif" />
+    <Content Include="references\AMCharts\images\dragIconH.gif" />
+    <Content Include="references\AMCharts\images\dragIconHBlack.gif" />
+    <Content Include="references\AMCharts\images\export.png" />
+    <Content Include="references\AMCharts\images\exportWhite.png" />
+    <Content Include="references\AMCharts\images\lens.png" />
+    <Content Include="references\AMCharts\images\lensWhite.png" />
+    <Content Include="references\AMCharts\lang\az.js" />
+    <Content Include="references\AMCharts\lang\bg.js" />
+    <Content Include="references\AMCharts\lang\de.js" />
+    <Content Include="references\AMCharts\lang\es.js" />
+    <Content Include="references\AMCharts\lang\fi.js" />
+    <Content Include="references\AMCharts\lang\fo.js" />
+    <Content Include="references\AMCharts\lang\fr.js" />
+    <Content Include="references\AMCharts\lang\hr.js" />
+    <Content Include="references\AMCharts\lang\hu.js" />
+    <Content Include="references\AMCharts\lang\id.js" />
+    <Content Include="references\AMCharts\lang\is.js" />
+    <Content Include="references\AMCharts\lang\it.js" />
+    <Content Include="references\AMCharts\lang\lt.js" />
+    <Content Include="references\AMCharts\lang\lv.js" />
+    <Content Include="references\AMCharts\lang\mk.js" />
+    <Content Include="references\AMCharts\lang\mn.js" />
+    <Content Include="references\AMCharts\lang\mt.js" />
+    <Content Include="references\AMCharts\lang\nl.js" />
+    <Content Include="references\AMCharts\lang\no.js" />
+    <Content Include="references\AMCharts\lang\pl.js" />
+    <Content Include="references\AMCharts\lang\pt.js" />
+    <Content Include="references\AMCharts\lang\ro.js" />
+    <Content Include="references\AMCharts\lang\ru.js" />
+    <Content Include="references\AMCharts\lang\rw.js" />
+    <Content Include="references\AMCharts\lang\sk.js" />
+    <Content Include="references\AMCharts\lang\so.js" />
+    <Content Include="references\AMCharts\lang\th.js" />
+    <Content Include="references\AMCharts\lang\tr.js" />
+    <Content Include="references\AMCharts\patterns\black\pattern1.png" />
+    <Content Include="references\AMCharts\patterns\black\pattern10.png" />
+    <Content Include="references\AMCharts\patterns\black\pattern11.png" />
+    <Content Include="references\AMCharts\patterns\black\pattern12.png" />
+    <Content Include="references\AMCharts\patterns\black\pattern13.png" />
+    <Content Include="references\AMCharts\patterns\black\pattern14.png" />
+    <Content Include="references\AMCharts\patterns\black\pattern15.png" />
+    <Content Include="references\AMCharts\patterns\black\pattern16.png" />
+    <Content Include="references\AMCharts\patterns\black\pattern17.png" />
+    <Content Include="references\AMCharts\patterns\black\pattern18.png" />
+    <Content Include="references\AMCharts\patterns\black\pattern19.png" />
+    <Content Include="references\AMCharts\patterns\black\pattern2.png" />
+    <Content Include="references\AMCharts\patterns\black\pattern20.png" />
+    <Content Include="references\AMCharts\patterns\black\pattern21.png" />
+    <Content Include="references\AMCharts\patterns\black\pattern3.png" />
+    <Content Include="references\AMCharts\patterns\black\pattern4.png" />
+    <Content Include="references\AMCharts\patterns\black\pattern5.png" />
+    <Content Include="references\AMCharts\patterns\black\pattern6.png" />
+    <Content Include="references\AMCharts\patterns\black\pattern7.png" />
+    <Content Include="references\AMCharts\patterns\black\pattern8.png" />
+    <Content Include="references\AMCharts\patterns\black\pattern9.png" />
+    <Content Include="references\AMCharts\patterns\chalk\pattern1.jpg" />
+    <Content Include="references\AMCharts\patterns\chalk\pattern1r.jpg" />
+    <Content Include="references\AMCharts\patterns\chalk\pattern2.jpg" />
+    <Content Include="references\AMCharts\patterns\chalk\pattern3.jpg" />
+    <Content Include="references\AMCharts\patterns\chalk\pattern4.jpg" />
+    <Content Include="references\AMCharts\patterns\chalk\pattern5.jpg" />
+    <Content Include="references\AMCharts\patterns\chalk\pattern6.jpg" />
+    <Content Include="references\AMCharts\patterns\white\pattern1.png" />
+    <Content Include="references\AMCharts\patterns\white\pattern10.png" />
+    <Content Include="references\AMCharts\patterns\white\pattern11.png" />
+    <Content Include="references\AMCharts\patterns\white\pattern12.png" />
+    <Content Include="references\AMCharts\patterns\white\pattern13.png" />
+    <Content Include="references\AMCharts\patterns\white\pattern14.png" />
+    <Content Include="references\AMCharts\patterns\white\pattern15.png" />
+    <Content Include="references\AMCharts\patterns\white\pattern16.png" />
+    <Content Include="references\AMCharts\patterns\white\pattern17.png" />
+    <Content Include="references\AMCharts\patterns\white\pattern18.png" />
+    <Content Include="references\AMCharts\patterns\white\pattern19.png" />
+    <Content Include="references\AMCharts\patterns\white\pattern2.png" />
+    <Content Include="references\AMCharts\patterns\white\pattern20.png" />
+    <Content Include="references\AMCharts\patterns\white\pattern21.png" />
+    <Content Include="references\AMCharts\patterns\white\pattern3.png" />
+    <Content Include="references\AMCharts\patterns\white\pattern4.png" />
+    <Content Include="references\AMCharts\patterns\white\pattern5.png" />
+    <Content Include="references\AMCharts\patterns\white\pattern6.png" />
+    <Content Include="references\AMCharts\patterns\white\pattern7.png" />
+    <Content Include="references\AMCharts\patterns\white\pattern8.png" />
+    <Content Include="references\AMCharts\patterns\white\pattern9.png" />
+    <Content Include="references\AMCharts\pie.js" />
+    <Content Include="references\AMCharts\plugins\responsive\examples\funnel.html" />
+    <Content Include="references\AMCharts\plugins\responsive\examples\gauge.html" />
+    <Content Include="references\AMCharts\plugins\responsive\examples\images\bicycle.png" />
+    <Content Include="references\AMCharts\plugins\responsive\examples\images\car.png" />
+    <Content Include="references\AMCharts\plugins\responsive\examples\images\motorcycle.png" />
+    <Content Include="references\AMCharts\plugins\responsive\examples\index.html" />
+    <Content Include="references\AMCharts\plugins\responsive\examples\map.html" />
+    <Content Include="references\AMCharts\plugins\responsive\examples\pie1.html" />
+    <Content Include="references\AMCharts\plugins\responsive\examples\pie2.html" />
+    <Content Include="references\AMCharts\plugins\responsive\examples\radar.html" />
+    <Content Include="references\AMCharts\plugins\responsive\examples\serial1.html" />
+    <Content Include="references\AMCharts\plugins\responsive\examples\serial2.html" />
+    <Content Include="references\AMCharts\plugins\responsive\examples\serial3.html" />
+    <Content Include="references\AMCharts\plugins\responsive\examples\stock.html" />
+    <Content Include="references\AMCharts\plugins\responsive\examples\xy.html" />
+    <Content Include="references\AMCharts\plugins\responsive\license.txt" />
+    <Content Include="references\AMCharts\plugins\responsive\responsive.js" />
+    <Content Include="references\AMCharts\plugins\responsive\responsive.min.js" />
+    <Content Include="references\AMCharts\radar.js" />
+    <Content Include="references\AMCharts\serial.js" />
+    <Content Include="references\AMCharts\themes\black.js" />
+    <Content Include="references\AMCharts\themes\chalk.js" />
+    <Content Include="references\AMCharts\themes\dark.js" />
+    <Content Include="references\AMCharts\themes\light.js" />
+    <Content Include="references\AMCharts\themes\patterns.js" />
+    <Content Include="references\AMCharts\xy.js" />
+    <Content Include="scripts\core\app.js" />
+    <Content Include="scripts\core\core.blockscreen.js" />
+    <Content Include="scripts\core\core.dialog.js" />
+    <Content Include="scripts\core\core.flyout.js" />
+    <Content Include="scripts\core\core.singleuse.js" />
+    <Content Include="scripts\core\core.listview.js" />
+    <Content Include="scripts\core\core.tabs.js" />
+    <Content Include="scripts\core\core.toggleablepanel.js" />
+    <Content Include="scripts\core\core.ui.js" />
+    <Content Include="scripts\core\core.verticalswipe.js" />
+    <Content Include="scripts\core\corefunctions.js" />
+    <Content Include="scripts\core\date.js" />
+    <Content Include="scripts\core\core.getsize.js" />
+    <Content Include="scripts\core\draggabilly.pkgd.min.js" />
+    <Content Include="scripts\core\iscroll.js" />
+    <Content Include="scripts\core\jquery-ui.min.js" />
+    <Content Include="scripts\core\jquery.mobile.custom.min.js" />
+    <Content Include="scripts\core\localstorage.js" />
+    <Content Include="scripts\core\lz-string.js" />
+    <Content Include="scripts\core\moment-with-locales.min.js" />
+    <Content Include="scripts\core\restapi.js" />
+    <Content Include="scripts\core\toggleMenu.js" />
+    <Content Include="App_Data\Widgets\tro\hourtotals\hourtotals.js" />
+    <Content Include="App_Data\Widgets\tro\payrollexport\payrollexportwidget.js" />
+    <Content Include="App_Data\Widgets\tro\routefield\routefieldwidget.js" />
+    <Content Include="App_Data\Widgets\tro\timesheetentrypaytype\timesheetentrypaytypewidget.js" />
+    <Content Include="styles\application.css">
+      <DependentUpon>application.less</DependentUpon>
+    </Content>
+    <Content Include="styles\application.min.css">
+      <DependentUpon>application.css</DependentUpon>
+    </Content>
+    <Content Include="styles\core\core.less" />
+    <Content Include="App_Data\localhost.pfx" />
+    <Content Include="App_Data\DBSchema\application.schema">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="packages.config" />
+    <Content Include="App_Data\Translations\core.lan" />
+    <Content Include="App_Data\Translations\tro.lan" />
+    <Content Include="styles\core\print.css">
+      <DependentUpon>print.less</DependentUpon>
+    </Content>
+    <Content Include="App_Data\Blocks\tro\impersonate.mc2" />
+    <Content Include="App_Data\Blocks\tro\trodefaultaction.mc2" />
+    <Content Include="App_Data\Blocks\tro\trodocumentstructure.mc2" />
+    <Content Include="App_Data\Blocks\tro\home.mc2" />
+    <Content Include="App_Data\Blocks\tro\searchhelpers.mc2" />
+    <Content Include="App_Data\Blocks\tro\approveworkmanager.mc2" />
+    <Content Include="App_Data\Blocks\tro\hrview.mc2" />
+    <Content Include="App_Data\Blocks\tro\trodataform.mc2" />
+    <Content Include="App_Data\Blocks\__builtin\login.mc2" />
+    <Content Include="App_Data\Blocks\tro\resourceallocation.mc2" />
+    <Content Include="App_Data\Blocks\tro\manage.mc2" />
+    <Content Include="App_Data\Blocks\__builtin\local.mc2" />
+    <Content Include="App_Data\Blocks\tro\adminactions.mc2" />
+    <Content Include="App_Data\Blocks\tro\reports.mc2" />
+    <Content Include="App_Data\Blocks\__builtin\admin.mc2" />
+    <Content Include="App_Code\Controllers\tro\Widgets\refreshdocuments.mc2" />
+    <Content Include="App_Data\applicationconfig.tree" />
+    <Content Include="App_Data\Blocks\tro\troadditions.mc2" />
+    <Content Include="App_Data\Blocks\__builtin\Widgets\refreshdocuments.mc2" />
+    <Content Include="App_Data\Blocks\tro\myplaces.mc2" />
+    <Content Include="App_Data\Widgets\tro\routefield\routefieldwidget.mc2" />
+    <Content Include="App_Data\Blocks\tro\settings.mc2" />
+    <Content Include="App_Data\Widgets\tro\timesheetentrypaytype\timesheetentrypaytypewidget.mc2" />
+    <Content Include="App_Data\ConfigTemplates\timetrackingconfig.tree" />
+    <Content Include="App_Data\ConfigTemplates\dailyentriesconfig.tree" />
+    <Content Include="App_Data\Widgets\tro\payrollexport\payrollexportwidget.mc2" />
+    <Content Include="App_Data\coreconfig.tree" />
+    <Content Include="App_Data\Blocks\tro\resourcing.mc2" />
+    <Content Include="App_Data\Blocks\tro\monitoring.mc2" />
+    <Content Include="App_Data\Blocks\tro\favouriteusers.mc2" />
+    <Content Include="App_Data\Blocks\tro\projectleadreport.mc2" />
+    <None Include="App_Data\DBSchema\application.useraccess.schema" />
+    <Content Include="fonts\core\fontawesome-webfont.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\Queries\core.query" />
+    <Content Include="App_Data\Queries\tro.query" />
+    <Content Include="styles\core\fontawesome\core.less" />
+    <Content Include="styles\core\fontawesome\fixed-width.less" />
+    <Content Include="styles\core\fontawesome\font-awesome.less" />
+    <Content Include="styles\core\fontawesome\icons.less" />
+    <Content Include="styles\core\fontawesome\mixins.less" />
+    <Content Include="styles\core\fontawesome\path.less" />
+    <Content Include="styles\core\fontawesome\variables.less" />
+    <Content Include="styles\core\jquery-ui.less" />
+    <Content Include="App_Data\Widgets\tro\hourtotals\hourtotals.query" />
+    <Content Include="App_Data\Widgets\tro\hourtotals\hourtotals.lan" />
+    <Content Include="App_Data\Widgets\tro\routefield\routefieldwidget.query" />
+    <Content Include="App_Data\Widgets\tro\routefield\routefieldwidget.lan" />
+    <Content Include="App_Data\Widgets\tro\timesheetentrypaytype\timesheetentrypaytypewidget.query" />
+    <Content Include="App_Data\Widgets\tro\timesheetentrypaytype\timesheetentrypaytypewidget.lan" />
+    <Content Include="App_Data\Widgets\tro\payrollexport\payrollexportwidget.query" />
+    <Content Include="App_Data\Widgets\tro\payrollexport\payrollexportwidget.lan" />
+    <Content Include="App_Data\publicationconfig.tree" />
+    <Content Include="App_Data\Tools\Web compiler\JSON\compilerconfig-schema.json" />
+    <Content Include="App_Data\Tools\Web compiler\JSON\compilerdefaults-schema.json" />
+    <Content Include="App_Data\Tools\Web compiler\MSBuild\BuildWebCompiler.nuspec" />
+    <Content Include="App_Data\Tools\Web compiler\MSBuild\BuildWebCompiler.targets" />
+    <Content Include="App_Data\Tools\Web compiler\Resources\LICENSE" />
+    <Content Include="App_Data\widgets\core\calendarwidget\calendarwidget.lan" />
+    <Content Include="App_Data\widgets\core\calendarwidget\calendarwidget.less" />
+    <Content Include="App_Data\widgets\core\calendarwidget\calendarwidget.mc2" />
+    <Content Include="App_Data\widgets\core\calendarwidget\calendarwidget.query" />
+    <Content Include="App_Data\widgets\core\calendarwidget\fullcalendar\fullcalendar.less" />
+    <Content Include="App_Data\Widgets\tro\resourcing\resourcingcalendarwidget\resourcingcalendarwidget.lan" />
+    <Content Include="App_Data\Widgets\tro\resourcing\resourcingcalendarwidget\resourcingcalendarwidget.less" />
+    <Content Include="App_Data\Widgets\tro\resourcing\resourcingcalendarwidget\resourcingcalendarwidget.mc2" />
+    <Content Include="App_Data\Widgets\tro\resourcing\resourcingcalendarwidget\resourcingcalendarwidget.query" />
+    <Content Include="App_Data\Widgets\tro\resourcing\resourcingwidget\resourcingwidget.lan" />
+    <Content Include="App_Data\Widgets\tro\resourcing\resourcingwidget\resourcingwidget.less" />
+    <Content Include="App_Data\Widgets\tro\resourcing\resourcingwidget\resourcingwidget.mc2" />
+    <Content Include="App_Data\Widgets\tro\resourcing\resourcingwidget\resourcingwidget.query" />
+    <Content Include="App_Data\Widgets\tro\resourcing\dailyresourcingwidget\dailyresourcingwidget.lan" />
+    <Content Include="App_Data\Widgets\tro\resourcing\dailyresourcingwidget\dailyresourcingwidget.less" />
+    <Content Include="App_Data\Widgets\tro\resourcing\dailyresourcingwidget\dailyresourcingwidget.mc2" />
+    <Content Include="App_Data\Widgets\tro\resourcing\dailyresourcingwidget\dailyresourcingwidget.query" />
+    <Content Include="App_Data\Widgets\tro\resourcing\capacityutilizationwidget\capacityutilizationwidget.lan" />
+    <Content Include="App_Data\Widgets\tro\resourcing\capacityutilizationwidget\capacityutilizationwidget.less" />
+    <Content Include="App_Data\Widgets\tro\resourcing\capacityutilizationwidget\capacityutilizationwidget.mc2" />
+    <Content Include="App_Data\Widgets\tro\resourcing\capacityutilizationwidget\capacityutilizationwidget.query" />
+    <Content Include="App_Data\Widgets\tro\schedulerwidget\schedulerwidget.lan" />
+    <Content Include="App_Data\Widgets\tro\schedulerwidget\schedulerwidget.less" />
+    <Content Include="App_Data\Widgets\tro\schedulerwidget\schedulerwidget.mc2" />
+    <Content Include="App_Data\Widgets\tro\schedulerwidget\schedulerwidget.query" />
+    <Content Include="App_Data\Widgets\core\calendarwidget\fullcalendar\scheduler.less" />
+    <Content Include="App_Data\Widgets\tro\prtgwidget\prtgwidget.lan" />
+    <Content Include="App_Data\Widgets\tro\prtgwidget\prtgwidget.less" />
+    <Content Include="App_Data\Widgets\tro\prtgwidget\prtgwidget.mc2" />
+    <Content Include="App_Data\Widgets\tro\prtgwidget\prtgwidget.query" />
+    <Content Include="App_Data\Widgets\tro\integration\integrationeventwidget\integrationeventwidget.lan" />
+    <Content Include="App_Data\Widgets\tro\integration\integrationeventwidget\integrationeventwidget.less" />
+    <Content Include="App_Data\Widgets\tro\integration\integrationeventwidget\integrationeventwidget.mc2" />
+    <Content Include="App_Data\Widgets\tro\integration\integrationeventwidget\integrationeventwidget.query" />
+    <Content Include="App_Data\Widgets\tro\integration\entryintegrationwidget\entryintegrationwidget.lan" />
+    <Content Include="App_Data\Widgets\tro\integration\entryintegrationwidget\entryintegrationwidget.less" />
+    <Content Include="App_Data\Widgets\tro\integration\entryintegrationwidget\entryintegrationwidget.mc2" />
+    <Content Include="App_Data\Widgets\tro\integration\entryintegrationwidget\entryintegrationwidget.query" />
+    <Content Include="App_Data\Widgets\tro\homescreen\homescreenwidget\homescreenwidget.lan" />
+    <Content Include="App_Data\Widgets\tro\homescreen\homescreenwidget\homescreenwidget.less" />
+    <Content Include="App_Data\Widgets\tro\homescreen\homescreenwidget\homescreenwidget.mc2" />
+    <Content Include="App_Data\Widgets\tro\homescreen\homescreenwidget\homescreenwidget.query" />
+    <Content Include="App_Data\Widgets\tro\homescreen\homescreenprojects\homescreenprojects.lan" />
+    <Content Include="App_Data\Widgets\tro\homescreen\homescreenprojects\homescreenprojects.less" />
+    <Content Include="App_Data\Widgets\tro\homescreen\homescreenprojects\homescreenprojects.mc2" />
+    <Content Include="App_Data\Widgets\tro\homescreen\homescreenprojects\homescreenprojects.query" />
+    <Content Include="App_Data\Widgets\tro\homescreen\workentries\workentries.lan" />
+    <Content Include="App_Data\Widgets\tro\homescreen\workentries\workentries.less" />
+    <Content Include="App_Data\Widgets\tro\homescreen\workentries\workentries.mc2" />
+    <Content Include="App_Data\Widgets\tro\homescreen\workentries\workentries.query" />
+    <Content Include="App_Data\Widgets\tro\homescreen\horizontalworkview\horizontalworkview.lan" />
+    <Content Include="App_Data\Widgets\tro\homescreen\horizontalworkview\horizontalworkview.less" />
+    <Content Include="App_Data\Widgets\tro\homescreen\horizontalworkview\horizontalworkview.mc2" />
+    <Content Include="App_Data\Widgets\tro\homescreen\horizontalworkview\horizontalworkview.query" />
+    <Content Include="App_Data\Widgets\tro\homescreen\startproject\startproject.lan" />
+    <Content Include="App_Data\Widgets\tro\homescreen\startproject\startproject.less" />
+    <Content Include="App_Data\Widgets\tro\homescreen\startproject\startproject.mc2" />
+    <Content Include="App_Data\Widgets\tro\homescreen\startproject\startproject.query" />
+    <Content Include="App_Data\Widgets\tro\approvework\approveworkhelper\approveworkhelper.lan" />
+    <Content Include="App_Data\Widgets\tro\approvework\approveworkhelper\approveworkhelper.less" />
+    <Content Include="App_Data\Widgets\tro\approvework\approveworkhelper\approveworkhelper.mc2" />
+    <Content Include="App_Data\Widgets\tro\approvework\approveworkhelper\approveworkhelper.query" />
+    <Content Include="App_Data\Widgets\tro\data\workdatawidget\workdatawidget.lan" />
+    <Content Include="App_Data\Widgets\tro\data\workdatawidget\workdatawidget.less" />
+    <Content Include="App_Data\Widgets\tro\data\workdatawidget\workdatawidget.mc2" />
+    <Content Include="App_Data\Widgets\tro\data\workdatawidget\workdatawidget.query" />
+    <Content Include="App_Data\Widgets\tro\assetentrywidget\assetentrywidget.lan" />
+    <Content Include="App_Data\Widgets\tro\assetentrywidget\assetentrywidget.less" />
+    <Content Include="App_Data\Widgets\tro\assetentrywidget\assetentrywidget.mc2" />
+    <Content Include="App_Data\Widgets\tro\assetentrywidget\assetentrywidget.query" />
+    <Content Include="App_Data\Widgets\tro\userformwidget\userformwidget.lan" />
+    <Content Include="App_Data\Widgets\tro\userformwidget\userformwidget.less" />
+    <Content Include="App_Data\Widgets\tro\userformwidget\userformwidget.mc2" />
+    <Content Include="App_Data\Widgets\tro\userformwidget\userformwidget.query" />
+    <Content Include="App_Data\Widgets\tro\approvework\managerapproveworkfilterhelper\managerapproveworkfilterhelper.lan" />
+    <Content Include="App_Data\Widgets\tro\approvework\managerapproveworkfilterhelper\managerapproveworkfilterhelper.less" />
+    <Content Include="App_Data\Widgets\tro\approvework\managerapproveworkfilterhelper\managerapproveworkfilterhelper.mc2" />
+    <Content Include="App_Data\Widgets\tro\approvework\managerapproveworkfilterhelper\managerapproveworkfilterhelper.query" />
+    <Content Include="App_Data\Widgets\tro\totals\totalwork.lan" />
+    <Content Include="App_Data\Widgets\tro\totals\totalwork.less" />
+    <Content Include="App_Data\Widgets\tro\totals\totalwork.mc2" />
+    <Content Include="App_Data\Widgets\tro\totals\totalwork.query" />
+    <Content Include="App_Data\Widgets\tro\projectleadmodule\projectleadmodule.mc2" />
+    <Content Include="App_Data\Widgets\tro\projectleadmodule\projectleadmodule.lan" />
+    <Content Include="App_Data\Widgets\tro\projectleadmodule\projectleadmodule.less" />
+    <Content Include="App_Data\Widgets\tro\approvework\approveworkresultshelper\approveworkresultshelper.lan" />
+    <Content Include="App_Data\Widgets\tro\approvework\approveworkresultshelper\approveworkresultshelper.mc2" />
+    <Content Include="App_Data\Widgets\tro\approvework\approveworkresultshelper\approveworkresultshelper.query" />
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
+    <Content Include="fonts\core\MaterialIcons-Regular.woff" />
+    <None Include="Properties\PublishProfiles\aretro-dev.pubxml" />
+    <None Include="Properties\PublishProfiles\aretro-prod.pubxml" />
+    <None Include="Properties\PublishProfiles\aretro-test.pubxml" />
+    <None Include="Properties\PublishProfiles\deletetrotest.pubxml" />
+    <None Include="Properties\PublishProfiles\Local.pubxml" />
+    <None Include="Properties\PublishProfiles\sgtrodemo-prod.pubxml" />
+    <None Include="Properties\PublishProfiles\sgtrodemo_dev.pubxml" />
+    <None Include="Properties\PublishProfiles\tro-dev-ilkka.pubxml" />
+    <None Include="Properties\PublishProfiles\tro_dev_hannu.pubxml" />
+    <None Include="Properties\PublishProfiles\tro_test.pubxml" />
+    <Content Include="images\references\AMCharts\plugins\responsive\readme.md" />
+    <Content Include="styles\core\print.less" />
+    <Content Include="styles\core\corecomponents\navigation.less" />
+    <Content Include="styles\core\themes\fall.less" />
+    <Content Include="styles\tro\configuration.less" />
+    <Content Include="styles\application.less" />
+    <Content Include="App_Data\Widgets\tro\hourtotals\hourtotals.less" />
+    <Content Include="App_Data\Widgets\tro\payrollexport\payrollexportwidget.css" />
+    <Content Include="App_Data\Widgets\tro\routefield\routefieldwidget.less" />
+    <Content Include="styles\core\corecomponents\tabs.less" />
+    <Content Include="styles\core\corecomponents\dialog.less" />
+    <Content Include="styles\core\corecomponents\searchfilter.less" />
+    <Content Include="App_Data\Widgets\tro\timesheetentrypaytype\timesheetentrypaytypewidget.less" />
+    <Content Include="styles\core\corecomponents\accordion.less" />
+    <Content Include="styles\core\corecomponents\coreelements.less" />
+    <Content Include="styles\core\corecomponents\panel.less" />
+    <Content Include="styles\core\corecomponents\card.less" />
+    <Content Include="styles\core\corecomponents\tools.less" />
+    <Content Include="styles\core\corecomponents\animations.less" />
+    <Content Include="styles\core\corecomponents\flyout.less" />
+    <Content Include="styles\core\corecomponents\listview.less" />
+    <Content Include="styles\core\corecomponents\displayform.less" />
+    <Content Include="styles\core\corecomponents\form.less" />
+    <Content Include="styles\core\corecomponents\table.less" />
+    <Content Include="App_Data\Widgets\tro\payrollexport\payrollexportwidget.less" />
+    <Content Include="references\AMCharts\plugins\responsive\readme.md" />
+    <Content Include="styles\core\corecomponents\flexpanel.less" />
+    <Content Include="styles\core\themes\glacier.less" />
+    <Content Include="styles\core\corecomponents\sections.less" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Main.aspx" />
+    <Content Include="scripts\tro.js" />
+    <Content Include="scripts\core\core.js" />
+    <Content Include="scripts\core\d3.min.js" />
+    <Content Include="scripts\core\listview.js" />
+    <Content Include="scripts\core\searchfilter.js" />
+    <Content Include="scripts\core\jquery-2.1.1.min.js" />
+    <Content Include="App_Data\Widgets\tro\hourtotals\hourtotals.css" />
+    <Content Include="App_Data\Widgets\tro\routefield\routefieldwidget.css" />
+    <Content Include="App_Data\Widgets\tro\timesheetentrypaytype\timesheetentrypaytypewidget.css" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Code\Controllers\tro\tro.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="App_Code\Logic\TimesheetUtils.cs" />
+    <Compile Include="App_Data\Widgets\tro\homescreen\workentries\workentries.cs" />
+    <Compile Include="App_Data\Widgets\tro\userformwidget\userformwidget.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Main.aspx.cs">
+      <DependentUpon>Main.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Main.aspx.designer.cs">
+      <DependentUpon>Main.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Code\Controllers\widgets\" />
+    <Folder Include="App_Data\Filters\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:4000</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <PropertyGroup>
+    <PreBuildEvent>"$(SolutionDir)references\RevisionUpdater.exe"
+"$(SolutionDir)references\BuildHelper.exe" copydefaultpublicationconfig $(SolutionDir) $(ProjectDir)
+"$(ProjectDir)references\BuildHelper.exe" copydefaultassemblyversion $(SolutionDir) $(ProjectDir)
+"$(SolutionDir)references\BuildHelper.exe" copywidgetfiles $(SolutionDir) $(ProjectDir)</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>"$(SolutionDir)InstallBuilder\InstallBuilder.exe" $(SolutionDir)
+@exit 0</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

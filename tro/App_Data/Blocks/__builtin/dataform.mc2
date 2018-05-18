@@ -1,0 +1,470 @@
+﻿[controller(dataform)
+
+	[using(form)]
+	[using(layout)]
+	[using(table)]
+	[using(schemautils)]
+	[using(navigation)]
+
+	[formfor(
+		collectionschema,
+		element = null,
+		title = null,
+		extraparams = null)
+
+		[id = ""]
+	
+		[schemaname = nameof(collectionschema)]
+		
+		[if (title == null) title = txt("schema_" + schemaname)]
+
+		[panel(
+                    heading: title,
+                    titlepanel: true)
+			[if (element != null)
+				id = element._id
+			]
+
+			[form(
+				action: callingaction + "&__schema=" + nameof(collectionschema) + "&id=" + id + "&" + extraparams
+			)		
+				[content]			
+			]
+		]
+	]
+
+	[inputfor(propertyschema, value = null)
+
+		[type = propertyschema.type]
+
+		[if (type == "collection") exit]
+		
+		// Hidden checkboxes need to be replaced with hidden field when their value is true
+		// because HTML doesn't send value for false checkboxes. Prefilled relations always need their
+		// value and programmed fields are never shown.
+		[hidden = (propertyschema.hidden || propertyschema.hideoneditform) && (propertyschema.type != "bool" || value != true)  && 
+			(value == null || value.__prefilledrelation != true)]
+
+		
+		[if (propertyschema.programmedfield) hidden = true]
+		[if (!propertyschema.accessmodify) hidden = true]
+
+		[if (hidden)
+			exit
+		]
+
+		[collectionschema = tree.parent(propertyschema)]
+
+		[name = nameof(propertyschema)]
+		[label = txt("schema_" + nameof(collectionschema) + "_" + nameof(propertyschema))]
+		
+		[validationerror = null]
+		[tiptext = null]
+
+		[if (value == null && propertyschema.defaultvalue != null)
+			[value = getdefaultvalue(propertyschema)]
+		]
+		[if (isset(value.__validationerror))
+			[validationerror = txt("validate_" + nameof(tree.getat(value.__validationerror, 0), "core"))]
+		]
+		[if (propertyschema.tiptext)
+			[tiptext = txt("tiptext_" + nameof(collectionschema) + "_" + nameof(propertyschema))]
+		]
+
+		[if (propertyschema.custominput)
+			[inputforcustomvalue(propertyschema, null, type, name, label, value, validationerror)]			
+		][elseif (type == "string")
+
+			[stringtype = propertyschema.stringtype]
+
+			[if(stringtype == "memo")
+				[memo(
+					name: name,
+					label: label,
+					value: value,
+					validationerror: validationerror,
+					tiptext: tiptext,
+					required: propertyschema.required,
+					maxlength: propertyschema.max,
+					readonly: propertyschema.readonly)
+				]
+			][elseif(stringtype == "email")
+				[emailfield(
+					name: name,
+					label: label,
+					value: value,
+					validationerror: validationerror,
+					tiptext: tiptext,
+					required: propertyschema.required,
+					maxlength: propertyschema.max,
+					readonly: propertyschema.readonly)
+				]
+			][elseif(stringtype == "dropdown")
+				[dropdown (
+					name: name,
+					label: label,
+					required: required,
+					class: "__dropdown",
+					validationerror: validationerror,
+					readonly: propertyschema.readonly,
+					noinitialupdate: propertyschema.noinitialupdate)
+
+					[if (value == null) value = propertyschema.defaultvalue]
+
+					[if (!propertyschema.noinitialupdate)
+						[if (propertyschema.emptyoption)
+							[option (			
+								label: "",
+								value: "",
+								selected: (value == null || value == "")
+							)]	
+						]
+						[foreach optionvalue in propertyschema.options
+							[valuename = nameof(optionvalue)]
+							[label = valuename]
+							[if (propertyschema.translated_dropdown)
+								label = txt("schema_" + nameof(collectionschema) + "_" + nameof(propertyschema) + "_" + valuename)
+							]
+												
+							[option (							
+								label: label,
+								value: valuename,
+								selected: valuename == value
+							)]
+						]						
+					]
+				]
+			][else
+				[textfield(
+					name: name,
+					label: label,
+					value: value,
+					validationerror: validationerror,
+					tiptext: tiptext,
+					required: propertyschema.required,
+					maxlength: propertyschema.max,
+					readonly: propertyschema.readonly)
+				]
+			]
+		][elseif (type == "int")
+
+			[inttype = propertyschema.inttype]
+
+			[if (inttype == "timespan")
+				[timespanfield(
+					name: name,
+					label: label,
+					value: value,
+					validationerror: validationerror,
+					tiptext: tiptext,
+					required: propertyschema.required,
+					timeaccuracy: tree.getvalueordefault(propertyschema, "timeaccuracy", 1),
+					readonly: propertyschema.readonly)
+				]
+			][else
+				[numberfield(
+					name: name,
+					label: label,
+					value: value,
+					validationerror: validationerror,
+					tiptext: tiptext,
+					required: propertyschema.required,
+					unit: propertyschema.unit,
+					readonly: propertyschema.readonly)
+				]
+			]		
+		][elseif (type == "decimal")
+
+			[decimaltype = propertyschema.decimaltype]
+
+			[numberfield(
+				name: name,
+				label: label,
+				value: value,
+				// Todo: get decimals from schema
+				decimals: propertyschema.decimals,
+				validationerror: validationerror,
+				tiptext: tiptext,
+				required: propertyschema.required,
+				unit: propertyschema.unit,
+					readonly: propertyschema.readonly)
+			]
+		][elseif (type == "datetime")
+
+			[datetimefield(
+				name: name,
+				label: label,
+				value: value,
+				datetimetype: propertyschema.datetimetype, 
+				timeaccuracy: tree.getvalueordefault(propertyschema, "timeaccuracy", 1),
+				validationerror: validationerror,
+				tiptext: tiptext,
+				required: propertyschema.required,
+				isenddate: propertyschema.isenddate,
+				startyear: tree.getvalueordefault(propertyschema, "datecontrolminyear", -1),
+				endyear: tree.getvalueordefault(propertyschema, "datecontrolmaxyear", -1),
+				readonly: propertyschema.readonly)
+			]
+		
+		][elseif (type == "bool")
+
+			[if (propertyschema.hidden == true || propertyschema.hideoneditform)
+				// Hidden checkboxes need to be replaced with hidden field when their value is true
+				// because HTML doesn't send value for false checkboxes
+				[hiddenfield(
+					name: name,
+					value: value,
+					readonly: propertyschema.readonly)]
+			][else
+				[checkbox(
+					name: name,
+					label: label,
+					checked: value,
+					validationerror: validationerror,
+					tiptext: tiptext,
+					readonly: propertyschema.readonly
+					)
+				]
+			]
+
+		][elseif (type == "file")
+			[filefield(
+				name: name,
+				label: label,
+				accept: propertyschema.accept,
+				required: propertyschema.required,
+				validationerror: validationerror,
+				tiptext: tiptext,
+				readonly: propertyschema.readonly
+			)]			
+		][elseif (type == "relation")
+			[relationfor(
+				propertyschema: propertyschema, 
+				value: value,
+				required: propertyschema.required,
+				validationerror: validationerror,
+				tiptext: tiptext,
+				readonly: propertyschema.readonly,
+				noinitialupdate: propertyschema.noinitialupdate
+			)]
+		][elseif (type == "widget")
+			[callblock(propertyschema.controller, propertyschema.action,
+				propertyschema: propertyschema,
+				value: value,	
+				viewtype: "input",
+				label: label,
+				name: name
+			)]
+		][else
+			[inputforcustomvalue(propertyschema, null, type, name, label, value, validationerror)]
+		]
+	]
+
+	[private]
+	[inputforcustomvalue(propertyschema, document, type, name, label, value, validationerror)]
+
+	[displayfor(value)
+		[propertyschema = schemafor(value, true)]
+		[name = nameof(propertyschema)]
+		[type = propertyschema.type]
+		
+		[if (type == "collection") exit]
+		[if (propertyschema.hidden) exit]
+
+		[table
+			[tablerow
+				[tableheadercell
+					[name]
+				]
+				[tablecell
+					[if (type == "relation" && propertyschema.relationtype == "one")
+						[getdisplaynameforelation(value, propertyschema, propertyschema.relation)]
+					][else
+						[displayforvalue(value)]
+					]
+				]
+			]
+		]
+	]
+
+	[displayrowfor(value, propertyschema = null, isviewform = false, name = null)
+		[if (!propertyschema)
+			[propertyschema = schemafor(value, true)]
+		]
+
+		[schemaname = nameof(tree.parent(propertyschema))]
+		[propertyschemaname = nameof(propertyschema)]
+		[if (!name) name = txt("schema_" + schemaname + "_"  + propertyschemaname)]
+		
+		[if (propertyschema.type == "collection") exit]
+		[if (propertyschema.hidden) exit]
+
+		[class = "__displayformrow"]
+
+		[if (isviewform && propertyschema.hideonviewform)
+			[class += " __hidden"]
+		]
+
+		[tablerow(
+				class: class
+			)
+			[tableheadercell
+				[name]
+			]
+
+			[cellclass = "__displayform_" + propertyschema.type]
+			
+				
+			[if (propertyschema.datetimetype == "date")
+				cellclass += " __datetimetype_date"
+			]
+
+			[if (propertyschema.datetimetype == "datetime")
+				cellclass += " __datetimetype_datetime"
+			]
+
+			[if (propertyschema.datetimetype == "time")
+				cellclass += " __datetimetype_time"
+			]
+
+			[tablecell(
+				class: cellclass,
+				isenddate: propertyschema.isenddate,
+				propertyschemaname: propertyschemaname
+			)
+				[if (propertyschema.type == "relation" && propertyschema.relationtype == "one")
+
+					[relationname = getdisplaynameforelation(value, propertyschema, propertyschema.relation)]
+
+					[if (propertyschema.preventnavigation)
+					
+						displayfield(relationname)
+					
+					][else
+						[actionlink(
+							linktext: relationname,
+							controllername: defaultcontroller,
+							action: propertyschema.relation,
+							extraparams: "actiontype=view&id=" + value._id
+						)]			
+								
+					]
+				][else
+					[displayforvalue(value, propertyschema)]
+				]
+			]
+		]
+	]
+
+	[displayforvalue(value, propertyschema = null)
+		[if (!propertyschema)
+			propertyschema = schemafor(value, true)
+		]
+
+		[type = propertyschema.type]
+
+		[if (propertyschema.customview)
+			[displayforcustomvalue(value, propertyschema, type, null)]
+		]
+
+		[if (type == "file")
+			[if (value.filetype == ".jpg")
+				<img src="/CachedImages/[value.filename]" />
+			][elseif (value.filetype == ".png")
+				<img src="/CachedImages/[value.filename]" />
+			][else
+			    <a href="/CachedFiles/[value.filename]">[value.filename]</a>
+			]
+		]
+		[elseif(type == "bool")
+
+			[if (value)
+				displayfield($true, propertyschema.unit, boolvalue: true)
+			][else
+				displayfield($false, propertyschema.unit, boolvalue: false)
+			]
+		]
+		[elseif(type == "string")
+
+			[if (propertyschema.markdown)
+				markdownfield(value)
+			][else
+				displayfield(value, propertyschema.unit)			
+			]
+		][elseif(type == "widget")
+			[callblock(propertyschema.controller, propertyschema.action,
+				propertyschema: propertyschema,
+				value: value,
+				viewtype: "display"
+			)]
+		][elseif (
+			type == "int" || type == "decimal" || 
+			type == "datetime" || type == "relation")
+			
+			[if (propertyschema.type == "int" && propertyschema.inttype == "timespan")
+				[value = text.formattimespan(value)]
+			]
+
+			displayfield(value, propertyschema.unit)
+			
+		][else
+			[displayforcustomvalue(value, propertyschema, type, value)]
+		]
+	]
+
+	[private]
+	[displayforcustomvalue(value, propertyschema, type, document)
+		// override to add handling for custom values
+	]
+
+	[relationfor(propertyschema, value=null, validationerror=null, required=null, tiptext=null, readonly = false)
+
+		[collectionschema = tree.parent(propertyschema)]
+
+		[displayvalue = getdisplaynameforelation(value, propertyschema, propertyschema.relation)]
+
+		[if (propertyschema.relationtype == "one")
+			[if (value != null && value.__prefilledrelation == true)
+				
+				[hiddenfield(
+					name: nameof(propertyschema),
+					value: value)]
+
+				[hiddenfield(
+					name: nameof(propertyschema) + "__prefilledrelation",
+					value: "true")]
+
+			][elseif (propertyschema.displayhint == "dropdown")
+				
+				[relationdropdown(
+					schema: propertyschema,
+					label: txt("schema_" + nameof(collectionschema) + "_" + nameof(propertyschema)),
+					value: value,
+					displayvalue: displayvalue,
+					validationerror: validationerror,
+					required: required,
+					filtercontroller: propertyschema.filtercontroller,
+					filteraction: propertyschema.filteraction,
+					noinitialupdate: propertyschema.noinitialupdate,
+					readonly: readonly
+				)]
+
+			][else
+				[relationfield(
+					schema: propertyschema,
+					label: txt("schema_" + nameof(collectionschema) + "_" + nameof(propertyschema)),
+					value: value,
+					displayvalue: displayvalue,
+					validationerror: validationerror,
+					required: required,
+					readonly: readonly
+					)
+				]
+			]
+		]
+
+		[if (tiptext)
+			[tipfor tiptext]
+		]
+	]
+]

@@ -1,0 +1,34 @@
+﻿
+.__required-asterisk {
+    font-weight: bold;
+    color: @color-warning;
+}
+
+.__displayformrow {
+    th {
+        white-space: nowrap;
+        -ms-text-overflow: ellipsis;
+        -o-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        text-align: left;
+        font-weight: @tableheadingweight;
+    }
+
+    td {
+        font-weight: @tabledataweight;
+        a {
+            .__link();
+        }
+    }
+}
+
+// prehide javascript processed field values. This is done with color to avoid background flicker.
+.__displayform_datetime {
+    //color: transparent;
+    visibility: hidden;
+
+    &.__show {
+        //color: inherit;
+        visibility: visible;
+    }
+}

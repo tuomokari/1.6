@@ -1,0 +1,34 @@
+﻿[controller(homescreenwidget)
+	[using(layout)]
+	[homescreenwidget(id = "homescreenwidget")
+		[widget(variables, currentblockname, currentcontroller, class: "__hidden __homescreenwidget", id: id)
+
+			[workdatawidget.workdatawidget(id: id + "_workdatawidget")]
+
+			[panel(class: "hwvpanel")
+				[horizontalworkview.horizontalworkview(datasource: id + "_workdatawidget")]
+			]
+			<div class="sectionwrapper">
+			  <div class="section">
+				<input type="radio" checked="checked" id="homescreensection-entries" name="homescreensections"></input>
+				<label for="homescreensection-entries"><div>[txt("sectiontitle-entries", "homescreenwidget")]</div></label>
+				<div class="sectioncontent">
+					[panel(class: "workentriespanel")
+						[workentries.workentries(datasource: id + "_workdatawidget")]
+					]
+				</div>
+			  </div>
+			  <div class="section">
+				<input type="radio" id="homescreensection-allocations" name="homescreensections"></input>
+				<label for="homescreensection-allocations"><div>[txt("sectiontitle-allocations", "homescreenwidget")]</div></label>
+				<div class="sectioncontent">
+					[panel(class: "allocationspanel")
+						[homescreenprojects.homescreenprojects(datasource: id + "_workdatawidget")]
+						[startproject.startproject(datasource: id + "_workdatawidget")]
+					]
+				</div>
+			  </div>
+			</div>			
+		]
+	]
+]

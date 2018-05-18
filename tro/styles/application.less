@@ -1,0 +1,41 @@
+﻿@import "tro/configuration.less";
+
+// approved rows painted green
+tr.approved {
+    background-color: #8dd000 !important;
+    .__listview_checkbox label::before {
+        visibility: hidden !important;
+    }
+}
+
+// formatting of timesheetentry details in listview tables
+.__listviewtable {
+    tr {
+        .entrydetails table {
+            display: inline-table;
+            border-radius: @border-radius;
+            margin: 5px;
+            background: rgba(0, 0, 0, 0.05);
+            border-collapse: collapse;
+            tr {
+                border: none;
+                &:hover {
+                    background: none !important;
+                }
+            }
+            th, td {
+                font-size: 12px;
+                vertical-align: middle !important;
+                width: auto;
+                padding: 5px;
+            }
+        }
+        &:hover {
+            .entrydetails {
+                th, td {
+                    color: #fff !important;
+                }
+            }
+        }
+    }
+}

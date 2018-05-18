@@ -1,0 +1,96 @@
+﻿
+[controller(projectleadmodule)
+	[using(dataform)]
+	[using(form)]
+	[using(table)]
+	[using(navigation)]
+	[using(layout)]
+	[using(schema)]
+	[using(text)]
+	[using(menubar)]
+	[using(documentstructure)]
+
+	// Widget used in both default form and report
+	[projectleadmodule(viewtype, project, projectid, userscope)
+		[widget(variables, currentblockname, currentcontroller, class: "__hidden __projectleadmodule")
+			
+			// Only show in project lead report
+			[if (viewtype == "report")
+				[form(action: callingaction)
+					[panel(
+					heading: txt("pagetitle_projectleadreport", "tro") + " " + project.name,
+					titlepanel: true)
+
+						[selectionfield(
+							collectionname: "payrollperiod",
+							name: "payrollperiodfilter",
+							value: state.payrollperiodfilter,
+							label: txt("schema_payrollperiod", "tro"),
+							id: "payrollperiodfilter",
+							historyenabled: false)]
+
+						[datetimefield(
+							class: "startdate",
+							label: $startdate,
+							name: "startdate",
+							startyear: 2015
+						)]
+
+						[datetimefield(
+							class: "enddate",
+							label: $enddate,
+							name: "enddate",
+							startyear: 2015
+						)]
+
+						[if (currentuser.level > 2 || !userscope)
+							[selectionfield(
+								collectionname: "user",
+								name: "userfilter",
+								value: state.userfilter,
+								label: txt("schema_user", "tro"),
+								id: "userfilter",
+								historyenabled: false)]
+
+							[if (currentuser.level > 2)
+								[selectionfield(
+									collectionname: "favouriteusers",
+									name: "userlist",
+									value: state.favouriteusersfilter,
+									label: txt("schema_favouriteusers", "tro"),
+									id: "approveworkmanager_favouriteusersfilter",
+									historyenabled: false)]
+							]
+						]
+
+						[button($generate_report, class: "button_generate_report")]
+					]
+
+					[region(
+						padding: false,
+						margin: false)
+						[tabs
+							[tab(
+								label: $timesheetentriestab,
+								icon: "schedule",
+								class: "projectleadreporttab timesheetentriestab")
+							]
+
+							[tab(
+								label: $dayentriestab,
+								icon: "euro_symbol",
+								class: "projectleadreporttab dayentriestab")
+							]
+
+							[tab(
+								label: $articlestab,
+								icon: "layers",
+								class: "projectleadreporttab articlestab")
+							]
+						]
+					]
+				]
+			]
+		]
+	]
+]

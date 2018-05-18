@@ -1,0 +1,231 @@
+﻿
+.__float(@float-direction) {
+    float: @float-direction;
+}
+
+.__float-right {
+    .__float(right);
+}
+
+.__float-left {
+    .__float(left);
+}
+
+.__invalid {
+    border: 2px solid @color-warning;
+}
+
+.flexcontainer(@justify: center) {
+    .display-flex;
+    -webkit-flex-flow: row wrap;
+    justify-content: @justify;
+    overflow: auto;
+}
+
+.flex(@grow: 1, @shrink: 0, @basis: auto) {
+    -ms-flex: @grow @shrink @basis;
+    flex: @grow @shrink @basis;
+}
+
+.flex-values(@values) { //todo: combine with flex mixin
+    -ms-flex: @values;
+    flex: @values;
+}
+
+.__hidden {
+    display: none;
+}
+
+.__margin-top {
+    margin-top: @basemeasure !important;
+}
+
+.__margin-right {
+    margin-right: @basemeasure !important;
+}
+
+.__margin-bottom {
+    margin-bottom: @basemeasure !important;
+}
+
+.__margin-left {
+    margin-left: @basemeasure !important;
+}
+
+.__padding-top {
+    padding-top: @basemeasure !important;
+}
+
+.__padding-right {
+    padding-right: @basemeasure !important;
+}
+
+.__padding-bottom {
+    padding-bottom: @basemeasure !important;
+}
+
+.__padding-left {
+    padding-left: @basemeasure !important;
+}
+
+.__no-margin-top {
+    margin-top: 0 !important;
+}
+
+.__no-margin-right {
+    margin-right: 0 !important;
+}
+
+.__no-margin-bottom {
+    margin-bottom: 0 !important;
+}
+
+.__no-margin-left {
+    margin-left: 0 !important;
+}
+
+.__no-padding-top {
+    padding-top: 0 !important;
+}
+
+.__no-padding-right {
+    padding-right: 0 !important;
+}
+
+.__no-padding-bottom {
+    padding-bottom: 0 !important;
+}
+
+.__no-padding-left {
+    padding-left: 0 !important;
+}
+
+.__passthrough {
+    pointer-events: none;
+}
+
+.animate(@duration: @animation-duration, @easing: @animation-easing, @properties: ~"opacity, transform") {
+    transition-timing-function: @easing;
+    transition-duration: @duration;
+    transition-property: @properties;
+}
+
+.__lifted() {
+    /*box-shadow: 0 0 @basemeasure rgba(0,0,0,0.25);*/
+}
+
+.__box() {
+    background: @color-panel-background;
+    border-radius: @border-radius;
+    border: @border;
+}
+
+.__unselectable() {
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.__disabled {
+    pointer-events: none;
+}
+
+.__box_centered() {
+    display: block;
+    overflow: auto;
+    margin: @basemeasure auto @basemeasure auto;
+    min-width: @screen-smartphone;
+    max-width: 1000px;
+
+    @media screen and (max-width: @screen-smartphone) {
+        min-width: inherit;
+    }
+}
+
+.__right {
+    text-align: right;
+}
+
+.__centered {
+    .__box_centered();
+}
+
+.notransition {
+    transition: none !important;
+}
+
+.__clear {
+    &:after { // clears possible float layouts to span full height
+        content: "";
+        display: block;
+        clear: both;
+    }
+}
+
+.__draggable, .is-dragging {
+    transition: none !important;
+}
+
+.__itemcounter {
+    display: inline-block;
+    background-color: @color-warning;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 6px;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.25);
+    font-size: 12px;
+    margin-left: @basemeasure;
+    .__bounce();
+    min-width: 20px;
+    box-sizing: content-box;
+}
+
+.display-flex {
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.center-content {
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+.center-align {
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+// Responsive rulesets
+.smartphone(@rules) {
+    @media only screen and (max-width: @screen-smartphone) {
+        &:not(.__smartphone) {
+            @rules();
+        }
+    }
+    &.__smartphone {
+        @rules();
+    }
+}
+.desktop(@rules) {
+    @media only screen and (min-width: (@screen-smartphone + 1)) {
+        &:not(.__desktop) {
+            @rules();
+        }
+    }
+    &.__desktop {
+        @rules();
+    }
+}
+
+.widescreen(@rules) {
+    @media screen and (min-width: (@screen-hd + 1)) {
+        &:not(.__widescreen) {
+            @rules();
+        }
+        .__widescreen {
+            @rules();
+        }
+    }
+}

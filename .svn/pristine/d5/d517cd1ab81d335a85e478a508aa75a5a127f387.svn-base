@@ -1,0 +1,329 @@
+﻿/*#region Hide columns on default*/
+.__hideonnarrowview {
+    display: none;
+    &.__sorted, &.__sortasc, &.__sortdesc {
+        display: table-cell;
+    }
+}
+
+&.__showallcolumns {
+    .__hideonnarrowview {
+        display: table-cell;
+    }
+}
+/*#endregion*/
+
+/*#region Listview tools*/
+.__listviewactions {
+    
+    .__removebutton {
+        display: none;
+    }
+    &.__items-selected {
+        .__removebutton {
+            display: block;
+        }
+    }
+    .smartphone({
+        .__backbutton {
+            display: none;
+        }
+    });
+
+    &.fixed {
+        position: fixed;
+        background: @color-panel-background;
+        border-bottom-left-radius: @border-radius;
+        border-bottom-right-radius: @border-radius;
+        opacity: 0;
+        pointer-events: none;
+
+        .desktop ({
+            padding: 5px 5px 0 5px;
+            top: @menu-height;
+            left: 15px;
+            .animate();
+            box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25);
+            background: @color-panel-background;
+        });
+
+        .smartphone({
+            padding: 0 5px;
+            .floatbuttonchrome;
+            border-top-left-radius: @border-radius;
+            border-top-right-radius: @border-radius;
+            top: 15px;
+            left: 65px;
+        });
+
+        &.show {
+            pointer-events: all;
+            opacity: 1;
+        }
+    }
+}
+
+.__listviewtoolstoggler {
+    .__unselectable;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    cursor: pointer;
+    .display-flex;
+    justify-content: flex-start;
+    .center-align;
+    padding: 0;
+    height: 40px;
+    width: 40px;
+    .__floatbutton;
+    position: relative;
+    margin-right: -@basemeasure / 2;
+    float: right;
+    
+    i {
+        position: relative;
+        display: block;
+    }
+
+    i:last-child {
+        display: none;
+    }
+    i:first-child {
+        display: block;
+    }
+
+    &.show {
+        i:last-child {
+            display: block;
+        }
+        i:first-child {
+            display: none;
+        }
+    }
+
+    .desktop({ // prevent fixed positioning on desktop
+        z-index: 1;
+        float: left;
+        top: 5px;
+        left: 10px;
+
+        &:before {
+            position: absolute;
+        }
+        i {
+            position: absolute;
+        }
+    });
+
+     .smartphone({
+         right: 0;
+         top: 50px; // todo: his should be replaced by proper floatbutton container
+         top: 50px; // todo: arbitrary
+         &:before {
+             position: absolute;
+             left: 0;
+             top: 0;
+         }
+     });
+}
+
+.__listviewtools_toggleallcolumns {
+    margin-left: @basemeasure;
+    margin-top: 0;
+}
+
+.__listviewsearchfield {
+    float: left;
+}
+
+.__listviewtools {
+    display: block;
+    overflow: hidden;
+    clear: both;
+    margin-bottom: @basemeasure;
+    height: 0;
+    opacity: 0;
+    transition: opacity @animation-duration;
+    padding-top: @basemeasure;
+
+    .__fieldcontrol {
+        margin: 0;
+    }
+
+    .__region {
+        padding: 0;
+        overflow: visible;
+    }
+
+    input[type='text'] {
+        width: 150px;
+        min-width: 150px;
+    }
+
+    &.__active {
+        height: auto;
+        opacity: 1;
+        overflow: visible;
+    }
+
+    .__listviewtools_searchfield {
+        float: left;
+        .smartphone({
+            input[type='text'] { // make sure the control button laways fits
+                min-width: 100px;
+            }
+        });
+    }
+}
+
+/*#endregion*/
+.__pageselector {
+    margin: 0 auto;
+    text-align: center;
+    max-width: 300px;
+
+    a.__button {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow: auto;
+        border-radius: 10px;
+        padding: 5px 10px;
+        margin-top: @basemeasure;
+        border: 1px solid #f1f1f1;
+        margin-left: 10px;
+        &:last-child {
+            float: right;
+        }
+    }
+
+    a:first-child {
+        &:before {
+            .material-icons;
+            content: "navigate_before";
+            display: inline-block;
+        }
+    }
+
+    a:last-child {
+        &:after {
+            .material-icons;
+            content: "navigate_next";
+            display: inline-block;
+        }
+    }
+
+    a[disabled] {
+        pointer-events: none;
+        visibility: hidden;
+    }
+}
+
+.__listviewtable.__table {
+    a {
+        .__link();
+    }
+
+    .__empty {
+        visibility: hidden;
+    }
+    /*This is a "minimum" height to allow for inner-cell content to span full height of cells */
+    height: @baseheight;
+    /*Checkboxes*/
+    .__listviewcheckbox, .__listviewheadercheckbox {
+        vertical-align: middle;
+        
+        &.__listviewheadercheckbox input + label::before {
+            content: "";
+        }
+
+        &.__listviewheadercheckbox input:checked + label::before {
+            content: "check";
+        }
+    
+        &.__listviewcheckbox input:not(:checked) + label::before {
+            visibility: hidden;
+        }
+    }
+
+    thead {
+        th {
+            white-space: nowrap;
+            max-width: 500px;
+            -ms-text-overflow: ellipsis;
+            -o-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            cursor: pointer;
+            color: @color-text-table-header;
+            text-align: left;
+
+            &.__sortasc:before {
+                content: "\25B2 ";
+                font-size: smaller;
+            }
+
+            &.__sortdesc:before {
+                content: "\25BC ";
+                font-size: smaller;
+            }
+        }
+    }
+
+    tbody {
+
+        tr {
+
+            cursor: pointer;
+
+            &.__selected {
+                background: @color-table-active;
+            }
+            .desktop({
+
+                .animate();
+
+                &:hover {
+                    background: @color-table-highlight;
+
+                    .__listviewcheckbox input[type='checkbox'] + label:before {
+                        visibility: visible;
+                    }
+
+                    a {
+                        color: @color-text-table-highlight;
+                    }
+                }
+            });
+        }
+
+        td {
+            padding: 0;
+            white-space: nowrap;
+
+            &.__listviewcheckbox {
+                padding-left: @basemeasure; // to align with header cell, might be better to remove both
+            }
+
+            a, a:visited {
+                display: block;
+                box-sizing: border-box;
+                height: 100%;
+                padding: @basemeasure - @basemeasure / 3  @basemeasure;
+                color: @color-text-table;
+                -ms-text-overflow: ellipsis;
+                text-overflow: ellipsis;
+                overflow: visible;
+            }
+        }
+    }
+}
+
+.__listview-wrapper {
+    transition: opacity 0.15s ease-in;
+    clear: both;
+    overflow: auto;
+    padding-bottom: 10px;
+
+    &.__listview-unload {
+        opacity: 0;    
+    }
+}

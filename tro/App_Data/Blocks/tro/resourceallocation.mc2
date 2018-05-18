@@ -1,0 +1,96 @@
+﻿[controller(tro)
+
+	[using(dataform)]
+	[using(form)]
+	[using(table)]
+	[using(navigation)]
+	[using(layout)]
+	[using(schema)]
+	[using(text)]
+	[using(menubar)]
+	[using(timeline)]
+
+	[resourceallocation(projectid)
+		[html
+			[head(title: [$pagetitle_resourceallocation])
+				[defaultaction.defaultviewhead]
+			]
+			
+			[body
+				[application
+					[resourceallocationbody(projectid)]
+				]
+			]
+		]
+	]
+	
+	[private]
+	[resourceallocationbody(projectid)
+		[actionbutton(
+			label: $timeline_backtoprojectresourcing,
+			controllername: "navigation",
+			action: "previous",
+			class: "backtoprojectresourcing-button")
+		]
+		[panel(
+			padding: false,
+			class: "timelineouterwrapper"
+			)
+			[region
+				<div class="timelinearea">
+				[allocationtimeline(
+					projectid: projectid
+				)]
+				</div>
+			]
+		]
+		[panel (
+			class: "timelinecontrolspanel"
+			)
+			<div class="timelinecontrols-left">
+				[timelinecontrols]
+			</div>
+			<div class="timelineresources">
+				<div class="timeline_button" id="timeline_activeprojectinfo"><i class="fa fa-info-circle"></i></div>
+				<div class="timeline_button" id="timeline_usertoggle"><i class="fa fa-user"></i></div>
+				<div class="timeline_button" id="timeline_assettoggle"><i class="fa fa-truck"></i></div>
+					
+				<div style="display: none" id="timeline_users">
+					[region
+						[listview.listview(
+							schema: schemafor("user"),
+							listviewcontroller: "resourcinglistview",
+							listviewaction: "personslist",
+							extraparams: extraparams,
+							allownew: false,
+							renderpanel: false,
+							padding: false,
+							onlynamefields: true,
+							documentsperpage: 15,
+							allowback: false)
+						]
+					]
+				</div>
+				<div style="display: none" id="timeline_assets">
+					[region
+						[listview.listview(
+							schema: schemafor("asset"),
+							listviewcontroller: "resourcinglistview",
+							listviewaction: "assetslist",
+							extraparams: extraparams,
+							allownew: false,
+							renderpanel: false,
+							padding: false,
+							onlynamefields: true,
+							documentsperpage: 15,
+							allowback: false)
+						]
+					]
+				</div>
+			</div>
+		]
+		<div style="display: none" id="timeline_activeprojectdetails">
+			[projectdata(viewbag.currentproject)]
+		</div>
+	]
+]

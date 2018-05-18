@@ -1,0 +1,10 @@
+﻿[
+  {
+    "outputFile": "styles/application.css",
+    "inputFile": "styles/application.less"
+  },
+  {
+    "outputFile": "styles/core/print.css",
+    "inputFile": "styles/core/print.less"
+  }
+]

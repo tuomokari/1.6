@@ -1,0 +1,11 @@
+﻿
+.__flyout {
+    position: absolute;
+    display: none;
+    .__box();
+    overflow: auto;
+    background: #fff;
+    .__lifted();
+    margin: 0;
+    z-index: 20000;
+}

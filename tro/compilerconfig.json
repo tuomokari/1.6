@@ -1,0 +1,14 @@
+﻿[
+  {
+    "outputFile": "styles/application.css",
+    "inputFile": "styles/application.less"
+  },
+  {
+    "outputFile": "styles/core/print.css",
+    "inputFile": "styles/core/print.less"
+  },
+  {
+    "outputFile": "App_Data/Widgets/tro/data/workdatawidget/workdatawidget.css",
+    "inputFile": "App_Data/Widgets/tro/data/workdatawidget/workdatawidget.less"
+  }
+]

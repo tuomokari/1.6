@@ -1,0 +1,146 @@
+﻿@color-body-background: #E4E4E4;
+@background-image: linear-gradient(to top, rgba(0, 0, 0, 0.25) 0, rgba(0, 0, 0, 0) 100%);
+@background-tiled: false;
+
+@color-panel-background: rgb(255, 255, 255);
+@color-panel-background-opaque: rgb(255, 255, 255); // for overlays in case there is alpha in panel bg
+@color-inner-panel-background: rgb(240, 240, 240);
+@color-panel-header-background: transparent;
+
+@color-menubar-background: #f0f0f0;
+@color-menubar-highlight: #b8957f;
+@color-menubar-mobile-background: darken(@colorvar-azure, 15%);
+@color-menubar-border: transparent;
+@color-menubar-buttonbackground: transparent;
+@color-menubar-shadow: #ccc;
+@color-menuitem-active: #fff;
+@color-menuitem-hover: fade(@color-menuitem-active, 75%);
+
+@color-border: #bfbfbf;
+@color-border-field: #ccc;
+@color-outline: darken(@colorvar-gray, 25%);
+
+@color-text-positive: #1a1a1a;
+@color-text-negative: #f1f1f1;
+@color-text-title: @color-text-positive;
+@color-text-title-float: lighten(@color-text-positive, 5%);
+@color-text-panelheader: darken(@color-text-positive, 5%);
+
+@color-text-menulink: @color-text-positive;
+@color-text-menulink-active: @color-text-positive;
+
+@color-text-link: darken(@colorvar-azure, 15%);
+
+@color-error: @colorvar-red;
+@color-warning: @color-error;
+@color-ok: #20cf18;
+@color-note: #aa885a;
+@color-disabled: #ccc;
+
+@color-icon: @color-text-positive;
+@color-icon-menubar: @colorvar-bronze;
+
+@color-table-background: transparent;
+@color-table-background-alt: transparent;
+@color-table-shadow: #E6E6E6;
+@color-table-header-background: #709fae;
+@color-table-highlight: lighten(@colorvar-azure, 15%);
+@color-table-active: @colorvar-azure;
+@color-text-table: @color-text-positive;
+@color-text-table-highlight: @color-text-negative;
+@color-text-table-header: #709fae;
+@color-table-header-border: transparent;
+@color-table-borders: @colorvar-gray;
+
+@color-field: #fff;
+@color-field-focus: @colorvar-azure;
+@color-field-background: #fff;
+@color-button: @colorvar-azure;
+@color-text-button: #fff;
+@color-text-field: @color-text-positive;
+@color-text-label: @color-text-positive;
+@color-text-button-negative: @color-text-negative;
+@color-checkbox: @colorvar-azure;
+@color-switch-background: #fff;
+@field-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+
+@fcbordercolor: #999;
+@fcbackgroundcolor: #fff;
+@fctoday: #D7F4FF;
+@fceventbackgroundcolor: rgba(39, 136, 183, 0.6);
+@fceventtextcolor: #fff;
+
+@button-font-weight: 400;
+
+@color-shadow: rgba(0,0,0,0.05);
+
+/*Variables*/
+@border-radius: 4px;
+@border-radius-round: 6px;
+@border-width: 1px;
+@border-style: solid;
+@border: @border-width @border-style @color-border;
+@border-field: @border-width @border-style @color-border-field;
+@border-button: 1px solid rgba(0,0,0,0.15);
+
+@shadow-blur: 4px;
+@shadow-spread: 0;
+@shadow-offset: 0;
+@shadow: @shadow-offset 1px @shadow-spread rgba(255,255,255,0.95) inset;
+@shadow-button: 0.5px 0.866px 3px 0px rgba(0, 0, 0, 0.15), inset 0px 3px 0px 0px rgba(255, 255, 255, 0.35);
+@shadow-text: 0 1px 2px fade(@color-shadow, 15%);
+
+@outline-width: 0;
+@outline-style: outset;
+@outline: @outline-width @outline-style @color-outline;
+
+@typeface: "Segoe Ui", Calibri, Arial, Helvetica, sans-serif;
+@typeface-variant: Consolas, sans-serif;
+@base-font-size: 16px;
+@menu-font-size: 16px;
+@base-font-weight: 400;
+@basemeasure: 10px;
+@baseheight: 25px;
+@menu-item-width: 200px;
+@iconsize: 24px;
+
+@form-label-width: 225px;
+@form-input-minwidth: 225px;
+@form-input-maxwidth: 1200px;
+@form-input-targetheight: 32px;
+
+@table-main-border: false;
+@table-borders: false;
+@table-shadows: false;
+@table-rounded: true;
+@table-rowborders: false;
+
+@menu-height: 56px;
+@menu-width: 250px;
+
+@screen-smartphone: 750px;
+@screen-hd: 1200px;
+
+@animation-easing: ease;
+@animation-duration: 0.2s;
+
+@logoimage: "../../../images/core/logo-l.png";
+@logoimage-i: "../../../images/core/logo-l.png";
+
+@lightenstep: 10%;
+@darkenstep: 10%;
+@lightenstep-disabled: 10%;
+@darkenstep-disabled: 10%;
+
+/*Colors*/
+
+@colorvar-gray: rgb(167,155,148);
+@colorvar-blue: #29658d;
+@colorvar-red: rgb(196,30,58);
+@colorvar-azure: #00C3FF;
+@colorvar-bronze: #AC8B70;
+@colorvar-gold: #dbd300;
+@colorvar-bronzegray: rgb(167,155,148);
+@colorvar-lightgray: #ccc2bb;
+@colorvar-fall: #8f6a4e;
+@colorvar-fall-faint: #96837a;

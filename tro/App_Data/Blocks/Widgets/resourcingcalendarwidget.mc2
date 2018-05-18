@@ -1,0 +1,48 @@
+﻿[controller(resourcingcalendarwidget)
+	[using(form)]
+	[using(layout)]
+
+	[resourcingcalendarwidget(userprofitcenter)
+		[widget(variables, currentblockname, currentcontroller, class: "__hidden resourcingcalendarwidget")
+			[panel(
+				class: "resourcingcalendarsetup __inner"
+			)
+				<div class="resourcingcalendarcontrols">
+					[button(label: $previous, class: "resourcingcalendarwidget_previousbutton")]
+					[button(label: $next, class: "resourcingcalendarwidget_nextbutton")]
+					[button(label: $today, class: "resourcingcalendarwidget_todaybutton")]
+					<h2 class="selecteddaystatus">[$selecteddate] <span class="selecteddate"></span></h2>
+				</div>
+				[selectiondropdown(
+					collectionname: "profitcenter",
+					name: "resourcingcalendarwidget_profitcenter",
+					label: txt("schema_profitcenter", "tro"),
+					historyenabled: false,
+					class: "profitcenter-select",
+					inline: true)]
+					<div class="dataselectors">
+						<input type="radio" name="resourcingcalendarwidget_viewtype" value="projects" checked="checked" id="__radio_viewtype_projects" /><label for="__radio_viewtype_projects">[$showprojects]</label>
+						<input type="radio" name="resourcingcalendarwidget_viewtype" value="allocationsforproject" id="__radio_viewtype_allocationsforproject" /><label for="__radio_viewtype_allocationsforproject">[$showallocationsforproject]</label>
+						<input type="radio" name="resourcingcalendarwidget_viewtype" value="allocationsforusers" id="__radio_viewtype_allocationsforusers" /><label for="__radio_viewtype_allocationsforusers">[$showallocationsforperson]</label>
+					</div>
+			]
+
+			[flexpanel(
+				individualscrollbars: true
+				)
+				[flexpanelcolumn(
+					class: "projects"
+				)
+					<div class="calendarentrylist"></div>
+				]
+				[flexpanelcolumn(
+					resizable: false,
+					class: "resourcecalendar",
+					padding: "none"
+				)
+					<div class="fullcalendar"></div>
+				]
+			]
+		]
+	]
+]

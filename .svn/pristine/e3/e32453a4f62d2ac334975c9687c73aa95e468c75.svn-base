@@ -1,0 +1,299 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using SystemsGarden.mc2.Common;
+using System.Xml;
+
+namespace SystemsGarden.mc2.RemoteConnector.Handlers.SapIntegrationHandlerServer
+{
+    public class IntegrationEvents
+    {
+        private static string eventCollectionName = "integrationevent";
+        private string objectIdString;
+        private ObjectId objectid;
+        private MongoDatabase mongoDatabase;
+        private ILogger logger;
+
+        public string ObjectIdString
+        {
+            get { return objectIdString; }
+            set
+            {
+                objectIdString = value;
+                if (string.IsNullOrEmpty(objectIdString))
+                    objectid = ObjectId.Empty;
+                else
+                    objectid = new ObjectId(objectIdString);
+            }
+        }
+        public string IntegrationTarget { get; set; }
+        public string CollectionName { get; set; }
+        public string Name { get; set; }
+        public string DisplayName { get; set; }
+        public string Status { get; set; }
+        public string Identifier { get; set; }
+        public string Direction { get; set; }
+        public string Messagetype { get; set; }
+        public string Messagecontent { get; set; }
+        public Boolean ImportedOrExported { get; set; }
+        public Int32 SqlId { get; set; }
+        public string Lastfailreason { get; set; }
+        public Boolean Failed { get; set; }
+        // filter data:
+        public string Project__displayname { get; set; }
+        public string Profitcenter__displayname { get; set; }
+        public string Userprofitcenter__displayname { get; set; }
+        public string User__displayname { get; set; }
+        public string Parent__displayname { get; set; }
+        public ObjectId Project { get; set; }
+        public ObjectId User { get; set; }
+        public ObjectId Profitcenter { get; set; }
+        public ObjectId Userprofitcenter { get; set; }
+        public ObjectId Parent { get; set; }
+        public DateTime? Date { get; set; }
+        public DateTime? Handledtime { get; set; }
+        public Int32 Handledcount { get; set; }
+        public DateTime? Firsthandledtime { get; set; }
+        public Boolean DataChanged { get; set; } // when false, integrationEvent is not saved
+
+        public IntegrationEvents(string integrationTarget, string collectionName, string objectIdString, string direction, ILogger logger, MongoDatabase mongoDatabase)
+        {
+            try
+            {
+                this.logger = logger;
+                this.mongoDatabase = mongoDatabase;
+
+                SetDefaults();
+
+                IntegrationTarget = integrationTarget;
+                CollectionName = collectionName;
+                ObjectIdString = objectIdString;
+                Direction = direction;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("IntegrationEvents error:", ex);
+            }
+        }
+        public IntegrationEvents(string integrationTarget, string messageid, string messagetype, XmlElement messagecontent, string direction, ILogger logger, MongoDatabase mongoDatabase)
+        {
+            try
+            {
+                this.logger = logger;
+                this.mongoDatabase = mongoDatabase;
+
+                SetDefaults();
+
+                IntegrationTarget = integrationTarget;
+                Messagetype = messagetype;
+                Messagecontent = messagecontent.ToString();
+
+                Int32 sqlId;
+                if (Int32.TryParse(messageid, out sqlId))
+                    SqlId = sqlId;
+
+                Direction = direction;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("IntegrationEvents error:", ex);
+            }
+        }
+        private void SetDefaults()
+        {
+            DateTime now = DateTime.UtcNow;
+            Name = "";
+            Status = "initialized";
+            Messagetype = string.Empty;
+            Messagecontent = "nothing";
+            CollectionName = string.Empty;
+            ImportedOrExported = false;
+            SqlId = 0;
+            Lastfailreason = string.Empty;
+            Failed = false;
+            Project__displayname = string.Empty;
+            Profitcenter__displayname = string.Empty;
+            Userprofitcenter__displayname = string.Empty;
+            User__displayname = string.Empty;
+            Parent__displayname = string.Empty;
+            Project = ObjectId.Empty;
+            User = ObjectId.Empty;
+            Profitcenter = ObjectId.Empty;
+            Userprofitcenter = ObjectId.Empty;
+            Parent = ObjectId.Empty;
+            Date = null;
+            Identifier = string.Empty;
+            DisplayName = string.Empty;
+            Handledtime = now;
+            Handledcount = 0;
+            Firsthandledtime = now;
+            DataChanged = true; // positive attitude! Inbound messages can set this to false.
+        }
+        public void UpdateInboundmessageSynced(BsonDocument document, string collectionname, ObjectId id, Boolean dataChanged)
+        {
+            if (!dataChanged)
+            {
+                DataChanged = false;
+                return;
+            }
+            Project__displayname = (string)document.GetValue("__project__displayname", string.Empty);
+            User__displayname = (string)document.GetValue("__user__displayname", string.Empty);
+            Profitcenter__displayname = (string)document.GetValue("__profitcenter__displayname", string.Empty);
+            Userprofitcenter__displayname = (string)document.GetValue("__userprofitcenter__displayname", string.Empty);
+            Identifier = (string)document.GetValue("identifier", string.Empty);
+            DisplayName = (string)document.GetValue("note", string.Empty);
+            Parent__displayname = (string)document.GetValue("__parent__displayname", string.Empty);
+
+            if (document.Contains("project") && document["project"].BsonType == BsonType.Array && ((BsonArray)document["project"]).Count > 0)
+                Project = (ObjectId)document["project"][0];
+            else
+                Project = ObjectId.Empty;
+
+            if (document.Contains("user") && document["user"].BsonType == BsonType.Array && ((BsonArray)document["user"]).Count > 0)
+                User = (ObjectId)document["user"][0];
+            else
+                User = ObjectId.Empty;
+
+            if (document.Contains("profitcenter") && document["profitcenter"].BsonType == BsonType.Array && ((BsonArray)document["profitcenter"]).Count > 0)
+                Profitcenter = (ObjectId)document["profitcenter"][0];
+            else
+                Profitcenter = ObjectId.Empty;
+
+            if (document.Contains("userprofitcenter") && document["userprofitcenter"].BsonType == BsonType.Array && ((BsonArray)document["userprofitcenter"]).Count > 0)
+                Userprofitcenter = (ObjectId)document["userprofitcenter"][0];
+            else
+                Userprofitcenter = ObjectId.Empty;
+
+            if (document.Contains("parent") && document["parent"].BsonType == BsonType.Array && ((BsonArray)document["parent"]).Count > 0)
+                Parent = (ObjectId)document["parent"][0];
+            else
+                Parent = ObjectId.Empty;
+
+            CollectionName = collectionname;
+            ObjectIdString = id.ToString();
+            Failed = false;
+            Handledtime = DateTime.UtcNow;
+            Status = "synced";
+            Handledcount = 1;
+            Firsthandledtime = DateTime.UtcNow;
+            ImportedOrExported = true;
+        }
+        public IntegrationEvents(string collectionName)
+        {
+            this.CollectionName = collectionName;
+            Name = "";
+            Status = "not set";
+            Direction = "not set";
+            Messagetype = "not set";
+            Messagecontent = "nothing";
+            Project__displayname = string.Empty;
+            Profitcenter__displayname = string.Empty;
+            Userprofitcenter__displayname = string.Empty;
+            User__displayname = string.Empty;
+            Project = ObjectId.Empty;
+            User = ObjectId.Empty;
+            Profitcenter = ObjectId.Empty;
+            Userprofitcenter = ObjectId.Empty;
+            Date = null;
+        }
+
+        // create new integrationEvent
+        public void createEvent()
+        {
+            try
+            {
+                if (!DataChanged)
+                {
+                    return; // inbound message, message data equals tro data
+                }
+
+
+                if (Status == "initialized")
+                    Status = "nooperation";
+
+                MongoCollection<BsonDocument> eventCollection = mongoDatabase.GetCollection(eventCollectionName);
+                BsonDocument eventDocument = new BsonDocument();
+
+                ObjectId eventId = ObjectId.GenerateNewId();
+                eventDocument.SetExtended(eventCollectionName, DBQuery.Id, eventId);
+
+                SetExtendedIfNotNull(eventDocument, eventCollectionName, "name", Name);
+                SetExtendedIfNotNull(eventDocument, eventCollectionName, "displayname", DisplayName);
+                SetExtendedIfNotNull(eventDocument, eventCollectionName, "identifier", Identifier);
+                SetExtendedIfNotNull(eventDocument, eventCollectionName, "created", DateTime.UtcNow);
+                SetExtendedIfNotNull(eventDocument, eventCollectionName, "collectionname", CollectionName);
+                SetExtendedIfNotNull(eventDocument, eventCollectionName, "objectid", objectid);
+                SetExtendedIfNotNull(eventDocument, eventCollectionName, "status", Status);
+                SetExtendedIfNotNull(eventDocument, eventCollectionName, "direction", Direction);
+                SetExtendedIfNotNull(eventDocument, eventCollectionName, "messagecontent", Messagecontent);
+                SetExtendedIfNotNull(eventDocument, eventCollectionName, "messagetype", Messagetype);
+                SetExtendedIfNotNull(eventDocument, eventCollectionName, "sqlid", SqlId);
+                SetExtendedIfNotNull(eventDocument, eventCollectionName, "importedorexported", ImportedOrExported);
+                SetExtendedIfNotNull(eventDocument, eventCollectionName, "collectionname", CollectionName);
+                SetExtendedIfNotNull(eventDocument, eventCollectionName, "lastfailreason", Lastfailreason);
+                SetExtendedIfNotNull(eventDocument, eventCollectionName, "failed", Failed);
+                SetExtendedIfNotNull(eventDocument, eventCollectionName, "integrationtarget", IntegrationTarget);
+
+                SetExtendedIfNotNull(eventDocument, eventCollectionName, "__project__displayname", Project__displayname);
+                SetExtendedIfNotNull(eventDocument, eventCollectionName, "__profitcenter__displayname", Profitcenter__displayname);
+                SetExtendedIfNotNull(eventDocument, eventCollectionName, "__userprofitcenter__displayname", Userprofitcenter__displayname);
+                SetExtendedIfNotNull(eventDocument, eventCollectionName, "__user__displayname", User__displayname);
+                SetExtendedIfNotNull(eventDocument, eventCollectionName, "__parent__displayname", Parent__displayname);
+                SetExtendedIfNotNull(eventDocument, eventCollectionName, "handledtime", Handledtime);
+                SetExtendedIfNotNull(eventDocument, eventCollectionName, "firsthandledtime", Firsthandledtime);
+                SetExtendedIfNotNull(eventDocument, eventCollectionName, "handledcount", Handledcount);
+
+                SetDocumentAsArrayItem(eventDocument, eventCollectionName, Project, "project");
+                SetDocumentAsArrayItem(eventDocument, eventCollectionName, User, "user");
+                SetDocumentAsArrayItem(eventDocument, eventCollectionName, Profitcenter, "profitcenter");
+                SetDocumentAsArrayItem(eventDocument, eventCollectionName, Userprofitcenter, "userprofitcenter");
+                SetDocumentAsArrayItem(eventDocument, eventCollectionName, Parent, "parent");
+
+                eventCollection.Save(eventDocument, WriteConcern.Acknowledged);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("Create integration event error:", ex);
+            }
+
+        }
+        private void SetExtendedIfNotNull(BsonDocument bsonDocument, string collectionName, string fieldName, BsonValue fieldValue)
+        {
+            logger.LogInfo("SetExtendedIfNotNull:", fieldName, fieldValue);
+            if (fieldValue.BsonType == BsonType.String && string.IsNullOrEmpty((string)fieldValue))
+            {
+                bsonDocument.RemoveExtended(collectionName, fieldName);
+                return;
+            }
+
+            if (fieldValue.BsonType == BsonType.DateTime && (DateTime)fieldValue == null)
+            {
+                bsonDocument.RemoveExtended(collectionName, fieldName);
+                return;
+            }
+
+            logger.LogInfo("SetExtendedIfNotNull, not null", fieldName, fieldValue);
+
+            bsonDocument.SetExtended(collectionName, fieldName, fieldValue);
+        }
+        private void SetDocumentAsArrayItem(BsonDocument bsonDocument, string collectionName, ObjectId objectId, string fieldName)
+        {
+            if (objectId != ObjectId.Empty)
+            {
+                logger.LogInfo("SetDocumentAsArrayItem not empty", fieldName, objectId);
+                var IdsArray = new BsonArray();
+                IdsArray.Add(objectId);
+                bsonDocument.SetExtended(collectionName, fieldName, IdsArray);
+            }
+            else
+            {
+                logger.LogInfo("SetDocumentAsArrayItem empty", fieldName, objectId);
+                bsonDocument.RemoveExtended(collectionName, fieldName);
+            }
+        }
+    }
+}

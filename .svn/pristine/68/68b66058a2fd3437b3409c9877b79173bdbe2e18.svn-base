@@ -1,0 +1,99 @@
+﻿/**
+ * approveworkresultshelper widget
+ */
+$.widget("approveworkresultshelper.approveworkresultshelper", $.core.base, {
+    options: {
+    },
+
+    /**
+     * Fired by jQuery when the widget is created.
+     */
+    _create: function () {
+
+    	this._uiState = {};
+    	this._model = {};
+    	this._uiState.firstRender = true;
+    },
+	/**
+	 * Fired by MC2 when widget is created. Implementation specific initialization code should
+	 * be run here
+	 */
+    _initWidget: function () {
+        this._setupWidgetEvents()
+    },
+	/**
+	 * Setup widget's events.
+	 */
+    _setupWidgetEvents: function () {
+    	var base = this;
+    	jQuery('body').on('listviewshown', function (e, listViewWrapper) {
+    	    console.warn(listViewWrapper)
+
+    	    if (listViewWrapper.hasClass("approvework_timesheetentry")) {
+    	        $(".approvework_timesheetentry").find('th[data-propertyschema="note"]').each(function () {
+    	            $(this).removeClass("__hidden")
+    	            $(this).insertAfter($(this).parent().children()[3])
+
+    	        });
+    	        $(".approvework_timesheetentry").find('td[data-schemaname="note"]').each(function () {
+    	            var text = $(this).text();
+    	            $(this).data("fulltext", text);
+    	            $(this).attr("title", text);
+    	            if (text.length > 30) text = text.substr(0, 30) + "...";
+    	            $($(this).children()[0]).text(text)
+
+    	            $(this).removeClass("__hidden")
+    	            $(this).insertAfter($(this).parent().children()[3])
+    	        });
+    	    }
+
+    	    if (listViewWrapper.hasClass("approvework_expenseentry")) {
+    	        $(".approvework_expenseentry").find('th[data-propertyschema="price"]').each(function () {
+    	            $(this).removeClass("__hidden")
+    	            $(this).insertAfter($(this).parent().children()[4])
+    	        });
+
+    	        $(".approvework_expenseentry").find('td[data-schemaname="price"]').each(function () {
+    	            $(this).removeClass("__hidden")
+    	            $(this).insertAfter($(this).parent().children()[4])
+    	        });
+    	    }
+    	});
+    },
+    /**
+     * Refresh all data in the model from the server.
+     * 
+     * @param options: configures how and what data should be acquired
+	 *
+     * @note: You should not do any dom manipulation here. All DOM manipulation needs
+     *        to go to the render method.
+     */
+    refreshData: function (options) {
+
+    	if (!options) options = {};
+
+        // Create an array of promises to wait before calling base and potentially rendering.
+        var promises = [];
+
+		var base = this;
+
+		$.when.apply($, promises).done(function () {
+        });
+    },
+
+    /**
+    * Render data in the model and settings into view.
+    * 
+    * @note: should not make any changes into model or settings
+    * *
+    * @param options: configures how data should be rendered
+    */
+    render: function (options) {
+    	if (!options) options = {};
+
+    	if (this._uiState.firstRender) {
+			// Code run only once when the widget is rendered for the first time.
+    		this._uiState.firstRender = false;
+    	}
+    }
+});

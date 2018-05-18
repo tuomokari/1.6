@@ -1,0 +1,504 @@
+﻿/* Links */
+a {
+    text-decoration: none;
+}
+
+.__link(@color: @color-text-link) {
+    color: @color;
+    text-decoration: none;
+
+    .desktop({
+        .animate();
+    });
+
+    &:visited {
+        color: @color;
+    }
+
+    &:hover, &:active {
+        color: lighten(@color, 15%);
+        cursor: pointer;
+    }
+}
+/*#region menubar*/
+.__menubar {
+    left: 0;
+    z-index: 800;
+    position: fixed;
+    top: 0;
+    background: @color-menubar-background;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+    vertical-align: middle;
+    padding: 0 0 0 5px;
+    border-radius: 0;
+    display: block;
+    height: @menu-height;
+    -moz-transition: max-height .15s;
+    -o-transition: max-height .15s;
+    -webkit-transition: max-height .15s;
+    transition: max-height .15s;
+    overflow: visible;
+    box-shadow: 0 5px 5px @color-menubar-shadow;
+
+    h2 {
+        float: left;
+        display: block;
+        vertical-align: middle;
+        margin-top: 0;
+        color: @color-text-menulink;
+        font-weight: 400; // always narrow font in menu
+
+        a {
+
+            color: @color-text-menulink;
+
+            &:visited, &:hover {
+                color: @color-text-menulink;
+            }
+
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+
+    .__userinfo {
+        text-align: right;
+        border-radius: 0;
+        display: block;
+        background: @color-menubar-background;
+        position: fixed;
+        right: 0;
+        top: 0;
+        font-size: 13px;
+        padding: 3px 5px 3px 5px;
+        border-bottom-left-radius: @border-radius;
+        box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
+        z-index: 1; // to lift item above the menuitems
+        
+        a {
+            .__link();
+        }
+
+        .__userdetails {
+            opacity: 0.75;
+            color: @color-text-positive;
+        }
+    }
+}
+/*#endregion*/
+
+/*#region Wide*/
+#__menubutton, #__menubar_previous {
+    display: none;
+}
+
+#__mobilemenu.__menuitems {
+    padding: 0;
+    font-size: 0; // to make sure there is no unwanted extra space between wrapped lines.
+
+    &:empty {
+        display: none;
+
+        + #__menubutton { // hide menu button if there are no menuitems
+            display: none;
+        }
+
+    }
+}
+
+#__desktopmenu.__menuitems {
+    background: none;
+    overflow: visible;
+    width: 75%;
+    width: ~"calc(100% - 100px)"; // todo: 100 is for margins
+    position: absolute;
+    bottom: 0;
+    .display-flex;
+    padding: 0;
+    padding-top: 2px;
+    margin: 0;
+
+    li {
+        display: block;
+        width: auto;
+        position: relative;
+        .flex-values(0 20 auto);
+        .animate();
+        border: none;
+        border-width: 0;
+        border-radius: @border-radius-round;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        margin-bottom: 0;
+        padding: 0;
+        box-shadow: none;
+        overflow: hidden;
+        margin: 0 5px;
+        padding-bottom: 2px;
+        
+        h2 a {
+            padding: 3px 10px 0 10px;
+            font-size: @menu-font-size;
+            .display-flex;
+        }
+        
+        /*&.__active, &.__active:hover {
+            background-color: @color-menuitem-active;
+                
+            a {
+                color: @color-text-negative;
+            }
+        }*/
+
+        &:before {
+            content: "";
+            width: 10px;
+            height: 100%;
+            position: absolute;
+            display: block;
+            right: 0;
+            top: 0;
+            border-top-right-radius: 10px;
+            background-image: linear-gradient(to left, @color-menubar-background 0, rgba(255, 255, 255, 0) 10px);
+            pointer-events: none;
+        }
+
+        &:hover {
+            -ms-flex: 0 1 auto !important;
+            flex: 0 1 auto !important;
+            padding: 0;
+            background-color: @color-menuitem-hover;
+
+            &:before {
+                opacity: 0;
+            }
+        }
+
+        &.__active {
+            -ms-flex: 0 1 auto !important;
+            flex: 0 1 auto !important;
+            padding: 0;
+            background-color: lighten(@color-button, 30%);
+            box-shadow: 0 10px 30px fade(darken(@color-button, 5%), 60%) inset;
+
+            a {
+                color: @color-text-positive;
+                text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+            }
+
+            &:before {
+                opacity: 0;
+            }
+        }
+
+        /*&.__active:hover {
+            background-color: @color-menuitem-active;
+
+            a {
+                color: @color-text-negative;
+            }
+
+            &:before {
+                opacity: 0;
+            }
+        }*/
+    }
+}
+
+.__menuitems li {
+    color: @color-text-menulink;
+    list-style-type: none;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: @basemeasure / 2;
+    white-space: nowrap;
+    overflow: hidden;
+    -ms-text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    text-align: left;
+    display: inline-block;
+    width: @menu-width;
+    /*height: 100%;*/
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
+    h2 {
+        margin: 0;
+        overflow: hidden;
+        -ms-text-overflow: ellipsis;
+        -o-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        color: @color-text-menulink;
+    }
+
+    a {
+        display: block;
+        color: @color-text-menulink;
+        text-decoration: none;
+        font-size: @base-font-size * 1.2;
+    }
+}
+
+#__menubar_logo {
+    height: 25px;
+    padding: 0;
+    margin-top: 2px;
+    background: url("/@{logoimage}") left top no-repeat !important;
+    width: 300px; // somewhat arbitrary "max-width"
+}
+
+#__menubar_logo_mobile {
+    display: none;
+    height: 60px;
+    padding: 0;
+    background: url("/@{logoimage}") left center no-repeat !important;
+    width: 300px; // somewhat arbitrary "max-width"
+}
+
+#__menubar_menuitems {
+    display: table-cell;
+    vertical-align: middle;
+}
+    
+.__menuitems li h2, .__menubar h2 {
+    width: 100%;
+    float: none; // overrides core setting
+    -ms-text-overflow: clip;
+    -o-text-overflow: clip;
+    text-overflow: clip;
+}
+    
+#__menubar_menuitems {
+    padding-bottom: 0;
+}
+
+#__mobilemenu {
+    position: fixed;
+    overflow: hidden;
+    overflow-y: auto;
+    height: 100%;
+    z-index: 50000;
+    right: 0;
+    top: 0;
+    width: @menu-width;
+    max-width: @menu-width;
+    background: @color-menubar-mobile-background;
+    box-shadow: none;
+    transition: transform .15s ease-out;
+    transform: translateX(@menu-width);
+    will-change: transform;
+
+    ul {
+        padding-top: 0;
+    }
+
+    li {
+        margin: 0;
+
+        a {
+            color: @color-text-button-negative;
+            font-weight: 300;
+            font-size: 18px;
+            padding-top: @basemeasure * 1.2;
+            padding-bottom: @basemeasure * 1.5;
+            padding-left: @basemeasure;
+        }
+        
+        &:first-child a {
+            margin-right: 100px; // to protect the menu close button from accidental navigation clicks/taps
+        }
+        
+        &.__active {
+        background: darken(@color-menubar-mobile-background, 10%);
+
+            a {
+                display: block;
+                font-weight: 700;
+
+                &:active {
+                    background: none;
+                }
+            }
+        }
+    }
+}
+/*#endregion*/
+
+/*#region menubutton*/
+
+#__menubar_previous {
+    margin-left: @basemeasure; // todo: improve this positioning
+}
+
+#__menubutton {
+    right: @basemeasure * 2;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    
+    i:last-child {
+        opacity: 0;
+    }
+
+    .fa {
+        .animate();
+    }
+ }
+
+body.__menuopen {
+    #__menubutton { // this is NOT redundant. Do NOT remove.
+        opacity: 1; // because all float buttons are hidden by default
+        pointer-events: all; // to enable pointer events on menubutton while menu open
+
+        i:last-child {
+            opacity: 1;
+        }
+
+        i:first-child {
+            opacity: 0;
+        }
+    }
+}
+/*#endregion*/
+
+/*#region smartphone*/
+@media screen and (max-width: @screen-smartphone) {
+    #__menubar { // hide desktop main menu bar
+        display: none;
+    }
+    body:not(.__isdialog) {
+        #__menubutton, #__menubar_previous { // show mobile menu
+            display: block;
+        }
+    
+        // open menu
+        &.__menuopen {
+        
+            #__applicationview {
+                .__blocked;
+                .__shaded;
+                &::before {
+                    position: fixed;
+                }
+            }
+
+            #__mobilemenu {
+                transform: none;
+                .__unselectable();
+            }
+        }
+    }
+}
+/*#endregion*/
+
+/*#region floats*/
+.__floatbutton { // todo: generalize and separate areas for fixed top bar buttons and scrollable buttons on side
+    /*overflow: hidden;*/
+    position: fixed;
+    z-index: 50050;
+    width: @floatbuttonsize;
+    height: @floatbuttonsize;
+    top: @basemeasure * 2;
+    box-sizing: border-box;
+    font-size: 18px;
+    color: @color-text-positive !important;
+    border: none !important;
+    cursor: pointer;
+
+    &:before {
+        position: absolute;
+        top: 0; // required by at least firefox for correct positioning
+        content: "";
+        width: @floatbuttonsize;
+        height: @floatbuttonsize;
+        border-radius: 50% !important;
+        .floatbuttonchrome;
+    }
+
+    .desktop({
+        &:before, i {
+            .animate();
+        }
+        &:hover {
+            &:before, i {
+                transform: scale(1.1);
+            }
+        }
+    });
+
+    i {
+        position: absolute;
+        font-size: 25px;
+        line-height: @floatbuttonsize;
+        display: block;
+        height: @floatbuttonsize;
+        vertical-align: middle;
+        width: @floatbuttonsize;
+        text-align: center;
+        top: 0;
+    }
+}
+
+.floatbuttonchrome {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15), 0 2px 2px -1px #fff inset;
+    background: rgba(255, 255, 255, 0.85);
+}
+
+.__floatbutton2 {
+    .display-flex;
+    .center-align;
+    justify-content: flex-end;
+    margin-bottom: @basemeasure;
+
+    .label {
+        opacity: 0;
+        transform: translateX(20px);
+        margin-right: 10px;
+        .animate();
+    }
+
+    &:hover {
+        .label {
+            transform: none;
+            opacity: 0.65;
+        }
+    }
+
+    .floatbuttonelement {
+        z-index: 50050;
+        width: @floatbuttonsize;
+        height: @floatbuttonsize;
+        box-sizing: border-box;
+        font-size: 18px;
+        color: @color-text-positive;
+        border: none;
+        cursor: pointer;
+        .display-flex;
+        .center-align;
+        .center-content;
+        position: relative;
+
+        &::before {
+            position: absolute;
+            top: 0; // required by at least firefox for correct positioning
+            right: 0;
+            content: "";
+            width: @floatbuttonsize;
+            height: @floatbuttonsize;
+            border-radius: 50% !important;
+            .floatbuttonchrome;
+            z-index: -1;
+        }
+
+        &:hover {
+            &::before {
+                box-shadow: 0 1px 15px rgba(0, 0, 0, 0.15), 0 2px 2px -1px #fff inset;
+            }   
+        }
+    }
+}
+/*#endregion*/

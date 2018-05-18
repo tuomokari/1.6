@@ -1,0 +1,140 @@
+﻿[controller(payrollexportwidget)
+	[using(form)]
+	[using(table)]
+	[using(navigation)]
+	[using(layout)]
+	[using(text)]
+
+	[payrollexportwidget()
+		[widget(variables, currentblockname, currentcontroller, class: "__hidden")
+			[form(action: callingaction)
+				[panel(
+				heading: txt("pagetitle_hrview", "tro"),
+				titlepanel: true)
+					[selectionfield(
+						collectionname: "user",
+						name: "userfilter",
+						value: state.userfilter,
+						label: txt("schema_user", "tro"),
+						id: "userfilter",
+						historyenabled: false)]
+
+					[selectionfield(
+						collectionname: "payrollperiod",
+						name: "payrollperiodfilter",
+						value: state.payrollperiodfilter,
+						label: txt("schema_payrollperiod", "tro"),
+						id: "payrollperiodfilter",
+						historyenabled: false)]
+
+					[checkbox(
+						name: "showonlyentriesnotacceptedbymanager",
+						label: $show_only_entries_not_accepted_by_manager,
+						class: "showonlyentriesnotacceptedbymanager",
+						checked: state.showonlyentriesnotacceptedbymanager,
+						id: "hr_showonlyentriesnotacceptedbymanager",
+						historyenabled: false)]
+
+					[checkbox(
+						name: "showonlyentriesnotacceptedbyworker",
+						label: $show_only_entries_not_accepted_by_worker,
+						class: "showonlyentriesnotacceptedbyworker",
+						checked: state.showonlyentriesnotacceptedbyworker,
+						id: "hr_showonlyentriesnotacceptedbyworker",
+						historyenabled: false)]
+
+					[checkbox(
+						name: "showonlyexportedentries",
+						label: $show_only_expored_entries,
+						class: "showonlyexportedentries",
+						checked: state.showonlyexportedentries,
+						id: "hr_showonlyexportedentries",
+						historyenabled: false)]
+
+					[button($filter, class: "button_filter")]
+				]
+
+				[region(
+					padding: false,
+					margin: false)
+					[tabs
+						[tab(
+							label: $timesheetentriestab,
+							icon: "schedule",
+							class: "approveworktab")						
+
+							[listview.listview(
+								schema: schemafor("timesheetentry"),
+								listviewcontroller: "approveworklistview",
+								listviewaction: "approveworkhrentry",
+								allowback: false,
+								allowremove: false,
+								renderpanel: false,
+								tools: false,
+								noinitialupdate: true,
+								class: "approveworklist",
+								includetotals: true)
+							]
+						]
+
+						[tab(
+							label: $dailyentriestab,
+							icon: "euro_symbol",
+							class: "approveworktab")						
+
+							[listview.listview(
+								schema: schemafor("dayentry"),
+								listviewcontroller: "approveworklistview",
+								listviewaction: "approveworkhrentry",
+								extraparams: extraparams,
+								allowback: false,
+								allowremove: false,
+								renderpanel: false,
+								tools: false,
+								noinitialupdate: true,
+								class: "approvedailyentreislist",
+								includetotals: true)
+							]
+						]
+
+						[tab(
+							label: $absenceentriestab,
+							icon: "do_not_disturb",
+							class: "approveworktab")						
+
+							[listview.listview(
+								schema: schemafor("absenceentry"),
+								listviewcontroller: "approveworklistview",
+								listviewaction: "approveworkhrentry",
+								extraparams: extraparams,
+								allowback: false,
+								allowremove: false,
+								renderpanel: false,
+								tools: false,
+								noinitialupdate: true,
+								class: "approveabsenceentrieslist",
+								includetotals: true)
+							]
+						]
+					]
+				]
+			]
+			[panel(txt("actions", "tro"))
+			<input type="button" class="__button submit_exportpayroll [if (state.exportdisabled != false) "__disabled"]" value="[$exportdata]" />
+			<input type="button" class="__button submit_revertpayroll [if (state.canceldisabled != false) "__disabled"]" value="[$revertexport]" />
+			<input type="button" class="__button submit_exporttoexcel [if (state.exporttoexceldisabled != false) "__disabled"]" value="[$exporttoexcel]" />
+
+				[listview.listview(
+					schema: schemafor("payrollexport"),
+					allownew: false,
+					tools: false,
+					allowremove: false,
+					allowback: false,
+					allowcopy: false,
+					class: "payrollexportlist",
+					documentsperpage: 4
+				)]
+			]
+		]
+	]
+]

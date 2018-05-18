@@ -1,0 +1,146 @@
+﻿@color-body-background: @colorvar-fall;
+@background-image: url(../../../images/core/background-fall.jpg);
+@background-tiled: false;
+
+@color-panel-background: rgba(240, 240, 240, 0.975);
+@color-panel-background-opaque: rgb(240, 240, 240); // for overlays in case there is alpha in panel bg
+@color-inner-panel-background: rgb(240, 240, 240);
+@color-panel-header-background: transparent;
+
+@color-menubar-background: #f0f0f0;
+@color-menubar-highlight: #b8957f;
+@color-menubar-mobile-background: @colorvar-bronze;
+@color-menubar-border: transparent;
+@color-menubar-buttonbackground: transparent;
+@color-menubar-shadow: @color-menuitem-active;
+@color-menuitem-active: @colorvar-fall-faint;
+@color-menuitem-hover: rgb(227, 218, 212);
+
+@color-border: #bfbfbf;
+@color-border-field: #ccc;
+@color-outline: darken(@colorvar-gray, 25%);
+
+@color-text-positive: #1a1a1a;
+@color-text-negative: #f1f1f1;
+@color-text-title: @color-text-positive;
+@color-text-title-float: lighten(@color-text-positive, 5%);
+@color-text-panelheader: darken(@color-text-positive, 5%);
+
+@color-text-menulink: @color-text-positive;
+@color-text-menulink-active: @color-text-positive;
+
+@color-text-link: @colorvar-bronze;
+
+@color-error: @colorvar-red;
+@color-warning: @color-error;
+@color-ok: #20cf18;
+@color-note: #aa885a;
+@color-disabled: #ccc;
+
+@color-icon: @color-text-positive;
+@color-icon-menubar: @colorvar-bronze;
+
+@color-table-background: #fafafa;
+@color-table-background-alt: #fafafa;
+@color-table-shadow: #1a1a1a;
+@color-table-header-background: transparent;
+@color-table-highlight: @colorvar-bronze;
+@color-table-active: #e6e1dd;
+@color-text-table: @color-text-positive;
+@color-text-table-highlight: @color-text-negative;
+@color-text-table-header: @colorvar-bronze;
+@color-table-header-border: @colorvar-gray;
+@color-table-borders: @colorvar-gray;
+
+@color-field: #fff;
+@color-field-focus: rgb(172, 139, 112);
+@color-field-background: #fff;
+@color-button: @colorvar-bronze;
+@color-text-button: #fff;
+@color-text-field: @color-text-positive;
+@color-text-label: @color-text-positive;
+@color-text-button-negative: @color-text-negative;
+@color-checkbox: @colorvar-azure;
+@color-switch-background: #fff;
+@field-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+
+@fcbordercolor: #666;
+@fcbackgroundcolor: #fa0;
+@fctoday: #fff;
+@fceventbackgroundcolor: #b7d6d6;
+@fceventtextcolor: darken(@fceventbackgroundcolor, 50%);
+
+@button-font-weight: 400;
+
+@color-shadow: rgba(0,0,0,0.05);
+
+/*Variables*/
+@border-radius: @basemeasure * 0.75;
+@border-radius-round: @basemeasure;
+@border-width: 1px;
+@border-style: solid;
+@border: @border-width @border-style @color-border;
+@border-field: @border-width @border-style @color-border-field;
+@border-button: 1px solid rgba(0,0,0,0.15);
+
+@shadow-blur: 4px;
+@shadow-spread: 0;
+@shadow-offset: 0;
+@shadow: @shadow-offset 1px @shadow-spread rgba(255,255,255,0.95) inset;
+@shadow-button: 0.5px 0.866px 3px 0px rgba(0, 0, 0, 0.15), inset 0px 3px 0px 0px rgba(255, 255, 255, 0.35);
+@shadow-text: 0 1px 2px fade(@color-shadow, 15%);
+
+@outline-width: 0;
+@outline-style: outset;
+@outline: @outline-width @outline-style @color-outline;
+
+@typeface: "Segoe Ui", Calibri, Arial, Helvetica, sans-serif;
+@typeface-variant: Consolas, sans-serif;
+@base-font-size: 16px;
+@menu-font-size: 16px;
+@base-font-weight: 400;
+@basemeasure: 10px;
+@baseheight: 25px;
+@menu-item-width: 200px;
+@iconsize: 24px;
+
+@form-label-width: 225px;
+@form-input-minwidth: 225px;
+@form-input-maxwidth: 1200px;
+@form-input-targetheight: 32px;
+
+@table-main-border: false;
+@table-borders: false;
+@table-shadows: false;
+@table-rounded: true;
+@table-rowborders: false;
+
+@menu-height: 56px;
+@menu-width: 250px;
+
+@screen-smartphone: 750px;
+@screen-hd: 1200px;
+
+@animation-easing: ease;
+@animation-duration: 0.2s;
+
+@logoimage: "../../../images/core/logo-l.png";
+@logoimage-i: "../../../images/core/logo-l.png";
+
+@lightenstep: 10%;
+@darkenstep: 10%;
+@lightenstep-disabled: 10%;
+@darkenstep-disabled: 10%;
+
+/*Colors*/
+
+@colorvar-gray: rgb(167,155,148);
+@colorvar-blue: #29658d;
+@colorvar-red: rgb(196,30,58);
+@colorvar-azure: #00c3ca;
+@colorvar-bronze: #AC8B70;
+@colorvar-gold: #dbd300;
+@colorvar-bronzegray: rgb(167,155,148);
+@colorvar-lightgray: #ccc2bb;
+@colorvar-fall: #8f6a4e;
+@colorvar-fall-faint: #96837a;

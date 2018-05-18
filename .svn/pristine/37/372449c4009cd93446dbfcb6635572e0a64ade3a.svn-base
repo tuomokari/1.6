@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DEFCAAF4-A2A9-409E-B7DC-A4405FAB3CF2}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SystemsGarden.mc2.Tools.DevelopmentServer</RootNamespace>
+    <AssemblyName>DevelopmentServer</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>
+    </ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MongoDB.Driver, Version=2.4.3.23, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MongoDB.Driver.2.4.3\lib\net45\MongoDB.Driver.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Core, Version=2.4.3.23, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MongoDB.Driver.Core.2.4.3\lib\net45\MongoDB.Driver.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Legacy, Version=2.4.3.23, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\mongocsharpdriver.2.4.3\lib\net45\MongoDB.Driver.Legacy.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="SystemsGarden.mc2.Common">
+      <HintPath>..\..\references\SystemsGarden.mc2.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="SystemsGarden.mc2.Core">
+      <HintPath>..\..\references\SystemsGarden.mc2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="SystemsGarden.mc2.RemoteConnector.Core">
+      <HintPath>..\..\references\SystemsGarden.mc2.RemoteConnector.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="SystemsGarden.mc2.RemoteConnector.Handlers.Shared">
+      <HintPath>..\..\references\SystemsGarden.mc2.RemoteConnector.Handlers.Shared.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyVersion.cs" />
+    <Compile Include="DevelopmentServer.cs" />
+    <Compile Include="DevelopmentServerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DevelopmentServerForm.Designer.cs">
+      <DependentUpon>DevelopmentServerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormEditConfiguration.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormEditConfiguration.Designer.cs">
+      <DependentUpon>FormEditConfiguration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="DevelopmentServerForm.resx">
+      <DependentUpon>DevelopmentServerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormEditConfiguration.resx">
+      <DependentUpon>FormEditConfiguration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="config.tree">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="localhost.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Handlers\ArchiveHandlerServer\ArchiveHandlerServer.csproj">
+      <Project>{93f6577b-9809-40b2-9c51-9bfa87f2e0ba}</Project>
+      <Name>ArchiveHandlerServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Handlers\AXIntegrationHandlerServer\AXIntegrationHandlerServer.csproj">
+      <Project>{99dbad1d-943d-482b-893f-601f86c71a4c}</Project>
+      <Name>AXIntegrationHandlerServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Handlers\PayrollIntegrationHandlerServer\PayrollIntegrationHandlerServer.csproj">
+      <Project>{aad191cd-071d-4830-a8a2-5b774539df72}</Project>
+      <Name>PayrollIntegrationHandlerServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Handlers\SapIntegrationHandlerServer\SapIntegrationHandlerServer.csproj">
+      <Project>{e946b160-c8bd-41bd-9c81-c90f0d69b12f}</Project>
+      <Name>SapIntegrationHandlerServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Handlers\TroHelpersHandlerServer\TroHelpersHandlerServer.csproj">
+      <Project>{1dabac2f-ca4a-435b-99c7-53bfb83a6ead}</Project>
+      <Name>TroHelpersHandlerServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Handlers\VismaIntegrationHandlerServer\VismaIntegrationHandlerServer.csproj">
+      <Project>{6844dc02-d619-480a-a0cf-7506d0f6a044}</Project>
+      <Name>VismaIntegrationHandlerServer</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>taskkill /im DevelopmentServer.exe 2&gt;nul 1&gt;nul
+EXIT 0</PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

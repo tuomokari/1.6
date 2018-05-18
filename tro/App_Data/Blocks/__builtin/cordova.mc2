@@ -1,0 +1,50 @@
+﻿[controller(cordova)
+
+	[headcontent
+		[version = runtime.version]
+
+		[if (session.cordova.device == "wm")
+			[exit]		
+		][else if (session.cordova.device == "android")
+			[exit]
+		][else if (session.cordova.device == "windows")
+			[exit]		
+		][else if (session.cordova.device == "ios")
+			[exit]
+		
+		]
+
+	]
+
+	[private]
+	[headcontent_common
+		[if (session.cordova.version == "")
+			<script src="/scripts/core/cordova/v003/base.js?version=[version]"></script>
+			<script src="/scripts/core/cordova/v003/cordova.js?version=[version]"></script>
+			<script src="/scripts/core/cordova/v003/cordova_plugins.js?version=[version]"></script>
+			<script src="/scripts/core/cordova/v003/index.js?version=[version]"></script>
+		]
+	]
+
+	[private]
+	[headcontent_wm
+	]
+	
+	[private]
+	[headcontent_android
+	]
+	
+	[private]
+	[headcontent_windows
+		[if (session.cordova.version == "")
+			<script src="/scripts/core/cordova/v003/platformOverrides_windows.js?version=[version]"></script>
+			<script src="/scripts/core/cordova/v003/winstore-jscompat.js?version=[version]"></script>		
+		]
+	]
+	
+	[private]
+	[headcontent_ios
+	]
+
+
+]

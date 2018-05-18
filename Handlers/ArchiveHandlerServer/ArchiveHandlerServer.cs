@@ -1,0 +1,285 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Threading;
+using System.Diagnostics;
+using SystemsGarden.mc2.RemoteConnector.Handlers;
+using SystemsGarden.mc2.Common;
+using SystemsGarden.mc2.Common.Constants;
+using SystemsGarden.mc2.RemoteConnector.Handlers.CoreServerHandlers.MongoDBHandler;
+using System.IO;
+using MongoDB.Bson;
+using MongoDB.Shared;
+using MongoDB.Driver;
+using MongoDB.Driver.Builders;
+
+namespace SystemsGarden.mc2.RemoteConnector.Handlers.ArchiveHandlerServer
+{
+    public class ArchiveHandlerServer : BaseHandler
+    {
+        const int MsPerDay = 24 * 60 * 60 * 1000;
+        const string TimeComparingFieldNameDefault = "created";
+        const int KeepDaysDefault = 400;
+        const string AuditCollectionSuffix = "__audittrail";
+        const string AuditOriginalIdFieldName = "__originalid";
+        private static object archiveLock = new object();
+        private static bool isInitialized = false;
+        private bool disabled;
+        private static string archiveCollectionSuffix;
+        private static MongoDBHandlerServer mongoDBHandler;
+        private static MongoDatabase database;
+        private static int scheduledTimehh;
+        private static int scheduledTimemm;
+        private static int scheduledMs;
+        private static int maxDailyRunMinutes;
+        private static Thread archivingThread;
+
+        public ArchiveHandlerServer(
+                IRemoteConnection remoteConnection,
+                ILogger parentLogger,
+                IHandlerContainer handlerContainer)
+                : base(remoteConnection, parentLogger, ArchiveHandlerServerInfo.HandlerName, handlerContainer)
+        {
+            _handlerInfo = new ArchiveHandlerServerInfo();
+        }
+
+        public override void HandleMessageInternal()
+        {
+            ForwardMessage();
+        }
+
+        protected override void Initialize()
+        {
+            lock (archiveLock)
+            {
+                if (isInitialized) { return; }
+
+                disabled = (bool)Message["disabled"].GetValueOrDefault(false);
+                if (disabled)
+                {
+                    logger.LogInfo("Archive handler is disabled.");
+                    return;
+                }
+
+                mongoDBHandler = ((MongoDBHandlerServer)handlerContainer.GetHandler("mongodbhandler"));
+                database = mongoDBHandler.Database;
+
+                scheduledTimehh = (int)Message["scheduledtime"]["hh"].GetValueOrDefault(01);
+                scheduledTimemm = (int)Message["scheduledtime"]["mm"].GetValueOrDefault(15);
+                scheduledMs = (scheduledTimehh * 60 + scheduledTimemm) * 60 * 1000;
+                maxDailyRunMinutes = (int)Message["maxdailyrunminutes"].GetValueOrDefault(40); // max daily operational time
+
+                archiveCollectionSuffix = (string)Message["archiveCollectionSuffix"].GetValueOrDefault("__archive");
+
+                isInitialized = true;
+
+                if (archivingThread == null)
+                {
+                    archivingThread = new Thread(RunArchivingDaily);
+                    archivingThread.Name = "Archive Handler Archive Thread";
+                    archivingThread.Start();
+                }
+            }
+        }
+
+        // run archive daily.
+        // do not run archive until tomorrow, if time now is past scheduled time. 
+        private void RunArchivingDaily()
+        {
+            while (!stopping.WaitOne(0))
+            {
+                try
+                {
+                    if (!MongoDBHandlerServer.SchemaApplied)
+                    {
+                        logger.LogTrace("Schema not yet applied. Waiting for it.");
+                        stopping.WaitOne(30000);
+                    }
+                    else
+                    {
+                        logger.LogInfo("Archiver will be run as scheduled at ", scheduledTimehh, scheduledTimemm);
+                        stopping.WaitOne(GetMillisecondsToScheduledTime());
+
+                        archive();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError("Failed to archive.", ex);
+                }
+            }
+        }
+
+        private void archive()
+        {
+            logger.LogInfo("Start archiving");
+
+            var endTimer = new Stopwatch();
+            endTimer.Start();
+
+            foreach (DataTree schemaCollection in MongoDBHandlerServer.Schema["tro"])
+            {
+                if ((bool)schemaCollection["collection"]["archive"])
+                {
+                    ArchiveCollection(schemaCollection, endTimer);
+                }
+            }
+
+            logger.LogInfo("Archiving done.");
+        }
+
+        /// <summary>
+        /// Archive documents in collection that meet the conditions specified in schema.
+        /// </summary>
+        /// <param name="schemaCollection">Collection in schema.</param>
+        /// <param name="endTimer">Stopwatch tracking time spent archiving documents</param>
+        private void ArchiveCollection(DataTree schemaCollection, Stopwatch endTimer)
+        {
+            logger.LogInfo("Archiving collection", schemaCollection.Name);
+
+            IMongoQuery query = GetArchiveCollectionConditions(schemaCollection);
+            MongoCollection<BsonDocument> sourceCollection = database.GetCollection(schemaCollection.Name);
+            MongoCollection<BsonDocument> targetCollection = database.GetCollection(schemaCollection.Name + archiveCollectionSuffix);
+
+            MongoCursor cursorSourceCollection = sourceCollection.Find(query);
+
+            if (cursorSourceCollection == null) return;
+
+            int countArchived = 0;
+            int countAuditArchived = 0;
+            MongoCollection<BsonDocument> auditCollection = database.GetCollection(schemaCollection.Name + AuditCollectionSuffix);
+            MongoCollection<BsonDocument> auditTargetCollection = database.GetCollection(schemaCollection.Name + AuditCollectionSuffix + archiveCollectionSuffix);
+
+            foreach (BsonDocument sourceDocument in cursorSourceCollection)
+            {
+                if (ArchiveDocument(sourceDocument, sourceCollection, targetCollection, schemaCollection["collection"]))
+                {
+                    countArchived++;
+                    // archive audit documents:
+                    bool test1 = schemaCollection["collection"].Contains("audittrail");
+                    bool test2 = (bool)schemaCollection["collection"]["audittrail"].GetValueOrDefault(false);
+                    if (schemaCollection["collection"].Contains("audittrail") && (bool)schemaCollection["collection"]["audittrail"].GetValueOrDefault(false))
+                    {
+                        IMongoQuery auditQuery = Query.EQ(AuditOriginalIdFieldName, (ObjectId)sourceDocument[DBQuery.Id]);
+                        MongoCursor cursorAuditCollection = auditCollection.Find(auditQuery);
+                        if (cursorAuditCollection != null)
+                        {
+                            foreach (BsonDocument auditDocument in cursorAuditCollection)
+                            {
+                                if (ArchiveDocument(auditDocument, auditCollection, auditTargetCollection, schemaCollection["collection"]))
+                                {
+                                    countAuditArchived++;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (endTimer.Elapsed.TotalMinutes >= maxDailyRunMinutes)
+                {
+                    logger.LogWarning("Archiving stopped for today. Total archiving time reached.", maxDailyRunMinutes);
+                    break;
+                }
+            }
+
+            logger.LogInfo("Archived collection entries", schemaCollection.Name, countArchived, auditCollection.Name, countAuditArchived);
+        }
+
+        private bool ArchiveDocument(
+            BsonDocument sourceDocument,
+            MongoCollection<BsonDocument> sourceCollection,
+            MongoCollection<BsonDocument> targetCollection,
+            DataTree schemaCollection)
+        {
+            bool documentArchived = false;
+
+            try
+            {
+                logger.LogDebug("Archiving document", sourceCollection.Name, sourceDocument[DBDocument.Id]);
+
+                // Save document to archive collection
+                sourceDocument["__archived"] = MC2DateTimeValue.Now();
+                targetCollection.Save(sourceDocument);
+
+                // Purge original doucment
+                sourceCollection.Remove(Query.EQ(DBDocument.Id, sourceDocument[DBDocument.Id]));
+
+                documentArchived = true;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("Failed to archive document", sourceCollection.Name, sourceDocument[DBDocument.Id], ex);
+            }
+
+            return documentArchived;
+        }
+
+        /// <summary>
+        /// Return query for determining which documents are archived.
+        /// </summary>
+        /// <param name="schemaCollection"></param>
+        /// <returns></returns>
+        private IMongoQuery GetArchiveCollectionConditions(DataTree schemaCollection)
+        {
+            var andQueries = new List<IMongoQuery>();
+
+            andQueries.Add(GetArchiveCollectionConditionQuery(schemaCollection));
+
+            // Get archiving limits
+            const int DefaultArchiveDays = 240;
+
+            // Get archive limits as UTC timestamp
+            var now = DateTime.Now;
+            var dateNowUtc = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0, DateTimeKind.Utc);
+
+            // Get archive limits. Use given values if any are specified, if nothing is specified, default to using
+            // modified timestamp and 240 days.
+            if (schemaCollection["collection"].Contains("archiveagedayscreated"))
+            {
+                int archiveAgeDaysCreated = (int)schemaCollection["collection"]["archiveagedayscreated"].GetValueOrDefault(DefaultArchiveDays);
+                logger.LogInfo("archiveAgeDaysCreated", archiveAgeDaysCreated);
+                DateTime archiveDateCreated = dateNowUtc.AddDays(-archiveAgeDaysCreated);
+                andQueries.Add(Query.LT("created", archiveDateCreated));
+            }
+
+            if (schemaCollection["collection"].Contains("archiveagedaysmodified") || !schemaCollection["collection"].Contains("archiveagedayscreated"))
+            {
+                int archiveAgeDaysModified = (int)schemaCollection["collection"]["archiveagedaysmodified"].GetValueOrDefault(DefaultArchiveDays);
+                logger.LogInfo("archiveAgeDaysModified", archiveAgeDaysModified);
+                DateTime archiveDateModified = dateNowUtc.AddDays(-archiveAgeDaysModified);
+                andQueries.Add(Query.LT("modified", archiveDateModified));
+            }
+
+            return Query.And(andQueries.ToArray());
+        }
+
+        private IMongoQuery GetArchiveCollectionConditionQuery(DataTree schemaCollection)
+        {
+            IMongoQuery query = new QueryDocument(BsonDocument.Parse("{}")); ;
+
+            string condition = schemaCollection["collection"]["archivefilter"];
+            if (!string.IsNullOrEmpty(condition))
+            {
+                try
+                {
+                    logger.LogInfo("query", condition);
+                    query = new QueryDocument(BsonDocument.Parse(condition));
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError("Failed to parse JSON when determining archiving query", ex.Message, condition);
+                }
+            }
+
+              return query;
+        }
+
+        private int GetMillisecondsToScheduledTime()
+        {
+            int msElapsedToday = (DateTime.Now.Hour * 60 + DateTime.Now.Minute) * 60 * 1000;
+            if (msElapsedToday >= scheduledMs) { return (scheduledMs - msElapsedToday + MsPerDay); } // tomorrow
+            else { return (scheduledMs - msElapsedToday); } // today
+        }
+    }
+}

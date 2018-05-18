@@ -1,0 +1,53 @@
+﻿[controller(tree)
+
+	[using(layout)]
+
+	[show(data, treetype="list")
+		[if (treetype == "list")
+
+			[showdatatreelist(data, true)]
+
+		][elseif (treetype == "paneledlist")
+
+			[showdatatreepaneledlist(data, true)]		
+		]
+	]
+	
+	[private]
+	[showdatatreelist(data, isfirst)
+		[if (isfirst)
+			<ul>
+			<li>[nameof(data)] : [data]</li>
+		]
+		
+		<ul>
+		
+		[foreach subtree in data
+			<li>
+			[nameof(subtree)] : [subtree]
+			
+			[showdatatreelist(subtree, false)]
+			
+			</li>
+		]
+	
+		</ul>
+
+		[if (isfirst)
+			</ul>
+		]
+	]
+	
+	[private]
+	[showdatatreepaneledlist(data, isfirst)
+		[if (isfirst)
+			[accordion
+				[foreach subtree in data
+					[panel(nameof(subtree))
+						[showdatatreelist(subtree, true)]			
+					]
+				]
+			]
+		]
+	]				
+]

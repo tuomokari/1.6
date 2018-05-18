@@ -1,0 +1,9 @@
+﻿.resourcingwidget {
+    height: 100%;
+    .resourcingtooltabs {
+        height: 100%;
+        .display-flex;
+        -ms-flex-direction: column;
+        flex-direction: column;
+    }
+}

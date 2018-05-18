@@ -1,0 +1,331 @@
+﻿runtime
+	nostart: false
+
+handlers
+	mongodbhandler
+	reversetcphandler
+		sslport:26264
+
+monitoring
+	enabled: true
+
+	sources
+		tro
+			pollinginterval: 6000
+			maxdatapoints: 100
+			counters
+				homescreenopened
+					type: totaldelta
+
+				approveworkviewopened
+					type: totaldelta
+
+				approveworkmanagerviewopened
+					type: totaldelta
+
+				hrviewopened
+					type: totaldelta
+
+				settingsviewopened
+					type: totaldelta
+
+				managementviewopened
+					type: totaldelta
+
+				myplacesviewopened
+					type: totaldelta
+
+				timesheetentriesadded
+					type: totaldelta
+
+				absenceentriesadded
+					type: totaldelta
+
+				expenseentriesadded
+					type: totaldelta
+
+				articleentriesadded
+					type: totaldelta
+
+				assetentriesadded
+					type: totaldelta
+
+				workerapprovalrequests
+					type: totaldelta
+
+				managerapprovalrequests
+					type: totaldelta
+
+				managerfilterwork
+					type: totaldelta
+
+application
+	name: tro
+	mobiledocumentsaddress: http://www.example.com
+	features
+		// Enables starting and stopping projects with start and end time. Allocations track progress with their state (allocated, inprogress and done).
+		timedprojectstatuscontrols: false
+
+		// Enables starting and stopping projects without start and end time. Allocations track progress with their state (allocated, inprogress and done).
+		untimedprojectstatuscontrols: false
+
+		// *** Work ***
+			
+		// Enable setting project leads (kärkimies) for projects. Allows viewing dudits for project's hours
+		projectleads: false
+
+		// Enables setting paytype for default work entries. If set to false no paytype selector is shown when logging work
+		// If entry details are used, these will still have the paytype selector.
+		paytypeforworkentries: true
+
+		// Enables homescreen horizontal work view
+		homescreenhorizontalworkview: true
+
+		// Enables settings view
+		settings: true
+
+		// Enables "my places". An option for users to enter their own custom locations.
+		myplaces: true
+
+		// Enables favourite users list.
+		favouriteusers: true
+		
+		// Enables resourcing timeline.
+		resourcing: true
+
+		// Enables booking article consumption.
+		articles: true
+
+		// Enables entering work per day without giving start and end times.
+		dailyentries: true
+
+		// Enables time tracking clock, tracking start and end times for work and single active project concept.
+		timetracking: false
+
+		// Enables travel time checkbox for all timesheet entries.
+		traveltime: false
+
+		// Default base pay is used. Practical only whne timetracking is set to true. 
+		usedefaultbasepaytype: false
+
+		// Enables logging hours and allocations for assets.
+		assets: true
+
+		// Enables editing timestamps for allocations. If set to false allocations are daily only.
+		allocationshavetimestamps: true
+
+		// Allow level 1 users to log work (timesheet entries, expenses and material) for projects that are not allocated for them
+		workerscanuseunallocatedprojects: true
+
+		// Enables entering separate work amout for billing.
+		allowdifferentdurationforbilling: true
+
+		// Allow entering separate project category for individual timesheet entries if it's 
+		// missing from pay type or for timetracking.
+		usedirectprojectcategory: true
+
+		// Use project's project category as default project category if paytype has no
+		// project category. Requires usedirectprojectcategory to be set to true
+		useprojectscategoryasdefault: true
+
+		// Enable social project. Can be used to enter timesheet entries not related to any projects.
+		enablesocialproject: false
+
+		// Allow managers to edit entries after the entries have been accepted by them. Exported
+		// entries cannot be edited.
+		allowmanagerstomodifylockedpayrollperiods: true
+
+		// Enable tiemstamp for articles. If set to false, enry creation time is used instead.
+		articleshavetimestamp: true
+
+		// Allow entering absences for future dates
+		allowfutureabsences: true
+
+		// Allow user to complete allocations only when all work related to them has been approved by worker
+		onlycompleteapprovedallocations: false
+
+		// ** Homescreen general options ***
+		
+		// Include buttons for adding entries. Unrelated to individual projects.
+		homescreenentrybuttons: false
+
+		// Enable copy and paste work from homescreen
+		homescreencopypaste: false
+
+		// ** Homescreen allocations *** 
+
+		// Show allocations (projects) that are being worked on
+		showactiveallocations: true
+
+		// Show today's work in homescreen
+		showtodaysallocations: true
+
+		// Show tomorrows work in homescreen
+		showtomorrowsallocations: true
+
+		// Show future work in homescreen
+		showfutureallocations: true
+
+		// Show unscheduled work in homescreen
+		showunscheduledallocations: true
+
+		// Show scheduled work in homescreen
+		showscheduledallocations: true
+
+		// Show customer name in workschedulewidget cards
+		showallocationcustomername: false
+
+		// ** Filtering *** 
+
+		// Filter timesheet entries based on CLA contracts
+		filterbasedonclacontract_timesheetentry: true
+
+		// Filter absence entries based on CLA contracts
+		filterbasedonclacontract_absenceentry: true
+
+		// Filter daily entries (expenses) based on CLA contracts
+		filterbasedonclacontract_dayentry: true
+
+		// *** Manager approval view ***
+
+		// Enables filtering based on entry's user
+		managerfilter_user: true
+		
+		// Enables filtering based on entry's project
+		managerfilter_project: true
+		
+		// Enables filtering based on entry's asset
+		managerfilter_assets: true
+		
+		// Enables filtering based on entry's project's profit center
+		managerfilter_projectprofitcenter: true
+		
+		// Enables filtering based on entry's user's profit center
+		managerfilter_resourceprofitcenter: true
+
+		// Enables filtering based on entry's user's businesarea
+		managerfilter_resourcebusinessarea: true
+
+		// Enables filtering based on entry's user's functional area
+		managerfilter_resourcefunctionalarea: true
+
+		// Enables filter based on entry's project's manager
+		managerfilter_projectmanager: true
+
+		// Filter based on payroll period
+		managerfilter_payrollperiod: true
+
+		// Filter based on date range
+		managerfilter_daterange: true
+
+		// Set current user as default value for project manager filter
+		managerfilter_defaultprojectmanageriscurrentuser: false
+
+		// Show total hours in manager approval view
+		show_approveworkmanager_totalhours: true
+
+		// *** User approval view
+
+		// Show indicator of when entries were last approved
+		showentrieslastapproved: false
+		
+		// *** Payroll ***
+
+		// Payroll exports are handled in background and a separated collection is used for storing the status of these exports.
+		usebackgroundpayrollexport: true
+
+
+		// *** Integration ***
+
+		// Add an entry of each timesheet/dayentry/absence/article to be used in ERP integrations
+		useerpupdatetable: true
+
+		// Display detailed events for integration. For this to work the integration module(s) must write data to integrationevent collection
+		showintegrationevents: false
+
+		// *** Reports and statistics
+
+		// Enables prtg monitoring
+		prtgmonitor: false
+
+		// Enables reports.
+		reports: true
+
+		// *** Maintenance ***
+
+		// Archive old documents. Needs to be enabled for each collection.
+		archive: false
+		
+		// *** Users
+
+		// Enable user profile pictures
+		useprofilepictures: true
+
+loggers
+	[@applicationname] file logger
+		numberoflogstokeep: 100
+
+security
+	accessgroups
+		workers
+			1
+			2
+			6
+
+		basicworkers
+			1
+			6
+
+		canlogwork
+			1
+			2
+			3
+			4
+			5
+			6
+
+		autoapprovework
+			3
+			4
+
+		anonymous
+			0
+			1
+			2
+			3
+			4
+			5
+			6
+			7
+
+		defaultformaccess
+			1
+			2
+			3
+			4
+			5
+			6
+			7
+
+		authenticated
+			1
+			2
+			3
+			4
+			5
+			6
+			7
+
+		restapi
+			1
+			2
+			3
+			4
+			5
+			6
+			7
+
+totalwork
+	extraexpensetypes
+		mealallowance
+		dailyallowance

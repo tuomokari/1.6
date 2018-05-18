@@ -1,0 +1,7 @@
+﻿[controller(entryintegrationwidget)
+	[entryintegrationwidget(parameter1, parameter2)
+			[widget(variables, currentblockname, currentcontroller, class: "__hidden __entryintegrationwidget")
+			<h1>[$title]</h1>
+		]
+	]
+]

@@ -1,0 +1,62 @@
+﻿.__accordion {
+    .__panel-core();
+    margin: @basemeasure 0;
+
+    &:first-child {
+        margin-top: 0;
+    }
+
+    > .__panel {
+        background: none;
+        border-radius: 0;
+        margin: 0;
+        border-bottom: none;
+        .desktop({
+            box-shadow: none; // override panel shadows
+            background: none;
+        });
+        .smartphone({
+            background: none;
+        });
+
+        > .__panelcontent {
+            display: none;
+        }
+    
+        &+.__panel { // if two panels are atop each other, remove gutter
+            margin-top: 0;
+        }
+
+        &:last-child {
+            padding-bottom: @basemeasure; // extra padding in the bottom of the accordion
+        }
+
+        &.__active {
+            &:not(:last-child) {
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            }
+            
+            > .__panelcontent {
+                display: block;
+            }
+
+            .__panelhead > h2:after {
+                content: "arrow_drop_down";
+            }
+        }
+
+        .__panelhead {
+        
+            cursor: pointer;
+
+            > h2 {
+                .display-flex;
+                align-items: flex-end;
+                &:after {
+                    .material-icons;
+                    content: "arrow_drop_up";
+                }
+            }
+        }
+    }
+}

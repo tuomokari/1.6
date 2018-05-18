@@ -1,0 +1,168 @@
+﻿.__horizontalworkviewwrapper {
+    @height: "auto";
+    @color-approved: #68b51d;
+    @color-unapproved: #f5ab00;
+    @color-noentries: #8AABA0;
+    @color-today: #007b9c;
+    >div {
+        padding-bottom: 15px; // to facilitate current day arrow
+    }
+    .__horizontalworkview {
+        white-space: nowrap;
+        .display-flex;
+        float: left;
+        padding-right: 75px; // to make sure everything is always visible and that there is clear indication of last date
+
+        .day {
+
+            &.approved {
+                .horizontalworkviewcommon(@cardcolor: @color-approved);
+            }
+
+            &.unapproved {
+                .horizontalworkviewcommon(@cardcolor: @color-unapproved);
+            }
+
+            &.noentries {
+                .horizontalworkviewcommon(@cardcolor: @color-noentries);
+                /*background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAK0lEQVQIW2NkYGBg+P//vySIZmRkfA6m0QXggjAVMF2MIAYMwHVhCADNBQC1KhYydCPLPwAAAABJRU5ErkJggg==') !important;*/
+            }
+
+            &.today {
+                .horizontalworkviewcommon(@cardcolor: @color-today);
+            }
+
+            &::before {
+                content: attr(data-date);
+                display: block;
+                position: absolute;
+                top: 0;
+                font-size: 12px;
+                width: 100%;
+                left: 0;
+                text-align: center;
+                color: #fff;
+                font-weight: 400;
+                background: rgba(0, 0, 0, 0.35);
+                padding: 2px 0;
+                border-top-left-radius: @border-radius;
+                border-top-right-radius: @border-radius;
+            }
+
+            .horizontalworkviewcommon(@cardcolor: @color-panel-backgroun) {
+
+                cursor: pointer;
+
+                min-width: 60px;
+                min-height: 30px;
+                margin-left: 0;
+                margin-right: 0;
+                height: @height;
+                position: relative;
+                line-height: 12px;
+                .display-flex;
+                align-items: stretch;
+                .center-content;
+                flex-shrink: 0;
+                margin: 0 1px 0 0;
+                border-radius: @border-radius;
+                padding: 18px 5px 5px 5px;
+                overflow: visible;
+                box-shadow: none;
+                background: @cardcolor;
+                margin: 4px 1px 4px 0;
+                
+                &:first-child {
+                    border-top-left-radius: @border-radius;
+                    border-bottom-left-radius: @border-radius;
+                }
+                &:last-child {
+                    border-top-right-radius: @border-radius;
+                    border-bottom-right-radius: @border-radius;
+                    border-right: none;
+                }
+                
+                &.active {
+                    background: lighten(@cardcolor, 3%);
+                    margin: 0;
+                    margin: 0 1px 0 0;
+
+                    &::after {
+                        @arrowsize: 14px;
+                        content: "";
+                        width: @arrowsize;
+                        height: @arrowsize;
+                        background: lighten(@cardcolor, 3%);
+                        position: absolute;
+                        display: block;
+                        margin-left: -@arrowsize / 2;
+                        left: 50%;
+                        bottom: -@arrowsize / 2;
+                        transform: rotate(45deg);
+                    }
+                }
+
+            }
+            .time {
+                padding-right: 5px;
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+                .display-flex;
+                .center-align;
+                flex-shrink: 0;
+
+                &:empty {
+                    display: none;
+                }
+            }
+            .details {
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+                flex-shrink: 0;
+            }
+            span {
+                display: inline-block;
+                font-size: 11px;
+                color: #fff;
+                &.hours {
+                    font-size: 28px;
+                    line-height: 20px;
+                    font-weight: 700;
+                    letter-spacing: -1px;
+                }
+                &.decimal {
+                    font-weight: 400;
+                    line-height: 20px;
+                    font-size: 22px;
+                    letter-spacing: -1px;
+                    margin-top: 4px;
+                }
+                &.unit {
+                    font-size: 16px;
+                    line-height: 20px;
+                    font-weight: 100;
+                    padding-top: 4px;
+                    display: none; // hidden for now
+                }
+                &.date {
+                    font-weight: 700;
+                }
+                &.extras {
+
+                }
+                &.travel {
+
+                }
+            }
+        }
+        .weekstart {
+            .display-flex;
+            width: 4px;
+            min-width: 4px;
+            background: #969696;
+            margin: 10px 4px;
+            border-radius: 4px;
+        }
+    }
+    overflow: hidden;
+    position: relative;
+    /*height: @height + 15px;*/
+}

@@ -1,0 +1,30 @@
+﻿[controller(tro)
+
+	[using(dataform)]
+	[using(form)]
+	[using(table)]
+	[using(navigation)]
+	[using(layout)]
+	[using(schema)]
+	[using(text)]
+	[using(menubar)]
+
+	[projectleadreport()
+		[html
+			[head(title: [$pagetitle_projectleadreport])
+				[defaultaction.defaultviewhead]
+			]
+			
+			[body
+				[application
+					[projectleadreportbody()]
+				]
+			]
+		]
+	]
+	
+	[private]
+	[projectleadreportbody()
+		[projectleadmodule.projectleadmodule(viewtype: "report", project: viewbag.project, projectid: viewbag.project._id)]
+	]	
+]

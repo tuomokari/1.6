@@ -1,0 +1,75 @@
+timesheetentrypaytypewidget
+	clacontractsandpaytypes
+		clacontract
+			__condition: {}
+			__specifiedonly: true
+			identifier			
+
+		timesheetentrydetailpaytype
+			__condition: { disabled: { $ne: true }, isbasepaytype: { $ne: true } }
+			__orderby: name
+			__ascending: true
+			__specifiedonly: true
+			__disabled: [@timesheetentrydisabled]
+			name
+			countsasregularhours
+			isovertime50
+			isovertime100
+			isovertime150
+			isovertime200
+			issocialpaytype
+			enabledclacontracts
+			exporttoax
+			hasprice
+			priceonlyformanagers
+			priceoptional
+			projectcategory
+			mandatorynote
+			noduration
+
+		projectcategory
+			__condition: { disabled: { $ne: true } }
+			__orderby: name
+			__ascending: true
+			__specifiedonly: true
+			__disabled: [@projectcategorydisabled]
+			name
+			identifier
+			isovertime50
+			isovertime100
+			isovertime150
+			isovertime200
+
+		dayentrytype
+			__condition: { disabled: { $ne: true } }
+			__specifiedonly: true
+			__disabled: [@dayentrytypedisabled]
+			__orderby: name
+			__ascending: true
+			name
+			issocialpaytype
+			enabledclacontracts
+			hasprice
+			priceonlyformanagers
+			priceoptional
+			hastime
+			hasroute
+			exporttoerp
+			projectcategory
+			mandatorynote
+		
+		absenceentrytype
+			__condition: { disabled: { $ne: true } }
+			__specifiedonly: true
+			__disabled: [@absencedisabled]
+			__orderby: name
+			__ascending: true
+			name
+			enabledclacontracts
+			exporttoerp
+
+		initialproject
+			__collectionname: project
+			__condition: { _id: [@initialproject] }
+			__specifiedonly: true
+			projecttype

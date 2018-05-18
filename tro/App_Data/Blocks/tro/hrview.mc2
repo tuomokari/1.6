@@ -1,0 +1,30 @@
+﻿[controller(tro)
+
+	[using(dataform)]
+	[using(form)]
+	[using(table)]
+	[using(navigation)]
+	[using(layout)]
+	[using(schema)]
+	[using(text)]
+	[using(menubar)]
+
+	[hrview()
+		[html
+			[head(title: [$pagetitle_hrview])
+				[defaultaction.defaultviewhead]
+			]
+			
+			[body
+				[application
+					[hrviewbody()]
+				]
+			]
+		]
+	]
+	
+	[private]
+	[hrviewbody()
+		[payrollexportwidget.payrollexportwidget(state)]
+	]	
+]

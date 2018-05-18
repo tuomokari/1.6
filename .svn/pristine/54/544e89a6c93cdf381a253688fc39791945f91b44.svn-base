@@ -1,0 +1,48 @@
+﻿[controller(table)
+
+	[using(form)]
+
+	[table (class = null, id = null)
+		<div class="__table-wrapper">
+			<table [attr(id)] class="__table[if (class) " "[class]]" [parameterstoattributes(extraparameters)]>
+				[content]
+			</table>
+		</div>
+	]
+
+	[tableheader (class = null, id = null)
+		<thead [attr(class)] [attr(id)] [parameterstoattributes(extraparameters)]>
+			[content]
+		</thead>
+	]
+
+	[tablebody (class = null, id = null)
+		<tbody [attr(class)] [attr(id)] [parameterstoattributes(extraparameters)]>
+			[content]
+		</tbody>
+	]
+
+	[tablefooter (id = null, class = null)
+		<tfoot [attr(class)] [parameterstoattributes(extraparameters)]>
+			[content]
+		</tfoot>
+	]
+
+	[tablerow (class = null, id = null, relation = null)
+		<tr [attr(class)] [attr(id)] [attr("data-relation", relation)] [parameterstoattributes(extraparameters)]>
+			[content]
+		</tr>
+	]
+
+	[tablecell (class = null, id = null, relation = null)
+		<td [attr(class)] [attr(id)] [attr("data-relation", relation)] [parameterstoattributes(extraparameters)]>
+			[content]
+		</td>
+	]
+
+	[tableheadercell (class = "", id = null, extraparams = null)
+		<th [attr(class)] [attr(id)] [if(extraparams) extraparams] [parameterstoattributes(extraparameters)]>
+			[content]
+		</th>
+	]
+]

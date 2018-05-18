@@ -1,0 +1,558 @@
+﻿// Core configuration from MC2.
+//
+// Please do not modify this file. Modify and override values in applicationconfig.tree
+// for application and if you need different publications for your application, use
+// publishconfiguration tree that will be applied last.
+
+loggers
+	[@applicationname] pipe logger
+		loggertype: namedpipe
+		loglevel: debug
+
+	[@applicationname] file logger
+		loggertype:  file
+		filename: [@appdatafolder]\logs\[@applicationname].log
+		loglevel: debug
+
+handlers
+	mongodbhandler
+	reversetcphandler
+		sslport:26263
+		sslcertificatefile:localhost.pfx
+		requirecertificate:false
+
+runtime
+	defaultcontroller: [@applicationname]
+	defaultaction: home
+	defaultlanguage:en-US
+	numberofremoteconnection:1
+	disabledocumentcache: true
+	cordova: false
+	globaldefaultorder: created
+	nostart: true
+
+application
+
+security
+	debug: false
+
+	loginguid: 6746F4D3-1E6E-4B1B-A1A9-35EE7E33C13B
+
+	accessgroups
+		anonymous
+			0
+			1
+			2
+			3
+			4
+			5
+
+		defaultformaccess
+			1
+			2
+			3
+			4
+			5
+
+		authenticated
+			1
+			2
+			3
+			4
+			5
+
+		restapi
+			0
+			1
+			2
+			3
+			4
+			5
+
+		sysadmin
+			5
+
+		actiondefaultaccess
+			5
+
+gateusersync
+	enabled: false
+
+monitoring
+	enabled: false
+	remotemonitorpollinginterval: 30000
+
+	sources
+		login
+			pollinginterval: 30000
+			maxdatapoints: 12
+			counters
+				usersloggedin
+					type: totaldelta
+			
+				adusersloggedin
+					type: totaldelta
+			
+				passwordusersloggedin
+					type: totaldelta
+			
+				gateusersloggedin
+					type: totaldelta
+
+				usersloggedout
+					type: totaldelta
+
+				failedlogins
+					type: totaldelta
+
+				failedloginsduetotech
+					type: totaldelta
+
+				passwordsRequested
+					type: totaldelta
+
+		runtime
+			pollinginterval: 30000
+			maxdatapoints: 12
+			counters
+				actioncalls
+					type: totaldelta
+
+				actioncallsfailed
+					type: totaldelta
+
+				actioncallsaccessdenied
+					type: totaldelta
+
+				dbqueriessent
+					type: totaldelta
+
+				dbqueriesfailedduetonorc
+					type: totaldelta
+
+				DBDocumentssent
+					type: totaldelta
+
+				dbinsertsintorelationsent
+					type: totaldelta
+
+				dbremovefromrelationsent
+					type: totaldelta
+
+				dbremovessent
+					type: totaldelta
+
+				activecalls
+					type: latest
+
+		runtimehost
+			pollinginterval: 30000
+			maxdatapoints: 12
+			counters
+				actioncalls
+					type: totaldelta
+
+				actioncallsfailed
+					type: totaldelta
+
+
+		schemavalidation
+			pollinginterval: 30000
+			maxdatapoints: 12
+			counters
+				documentsvalidated
+					type: totaldelta
+
+				validationsfailed
+					type: totaldelta
+
+		gateusersync
+			pollinginterval: 30000
+			maxdatapoints: 12
+			counters
+				gateusersyncscompleted
+					type: totaldelta
+
+				gateusersyncsfailed
+					type: totaldelta
+
+				gateuserssynced
+					type: totaldelta
+
+				gateusersyncactions
+					type: totaldelta
+
+		system
+			pollinginterval: 5000
+			maxdatapoints: 1
+			counters
+				availablephysicalmemory
+					type: latest
+
+				availablevirtualmemory
+					type: latest
+
+				cpuutilization			
+					type: latest
+
+		searchfilter
+			pollinginterval: 30000
+			maxdatapoints: 12
+			counters
+				searches
+					type: totaldelta
+
+		reversetcphandlerclient
+			pollinginterval: 30000
+			maxdatapoints: 12
+			counters
+				sendtimeouts
+					type: totaldelta
+
+				messagesaddedtosendqueue
+					type: totaldelta
+
+				requestsreceived
+					type: totaldelta
+
+				responsesreceived
+					type: totaldelta
+
+				messagesentandresponsereceived
+					type: totaldelta
+
+				secureconnectionsestablished
+					type: totaldelta
+
+				secureconnectionsfailed
+					type: totaldelta
+
+				sendfailsduetoconnectionstopping
+					type: totaldelta
+
+				unknownerrors
+					type: totaldelta
+
+				sendfailsduetonoremoteconnection
+					type: totaldelta
+
+				pingssent
+					type: totaldelta
+
+				messageswaitingforresponse
+					type: latest
+
+				serverrunning
+					type: latest
+
+				connections
+					type: totaldelta
+
+				sendqueuelength
+					type: latest
+
+				messageswaitingforresponsequeuelength
+					type: totaldelta
+
+				unknownresponsesreceived
+					type: totaldelta
+
+				oldmessagescleaned
+					type: totaldelta
+
+				maxmessagequeueitemage
+					type: latest
+
+				averagemessagequeueitemage
+					type: latest
+
+				connectionstatussettofailed
+					type: totaldelta
+
+		tcphandlerclient
+			pollinginterval: 30000
+			maxdatapoints: 12
+			counters
+				sendtimeouts
+					type: totaldelta
+
+				messagesaddedtosendqueue
+					type: totaldelta
+
+				requestsreceived
+					type: totaldelta
+
+				responsesreceived
+					type: totaldelta
+
+				messagesentandresponsereceived
+					type: totaldelta
+
+				secureconnectionsestablished
+					type: totaldelta
+
+				secureconnectionsfailed
+					type: totaldelta
+
+				sendfailsduetoconnectionstopping
+					type: totaldelta
+
+				unknownerrors
+					type: totaldelta
+
+				sendfailsduetonoremoteconnection
+					type: totaldelta
+
+				pingssent
+					type: totaldelta
+
+				messageswaitingforresponse
+					type: latest
+
+				sendqueuelength
+					type: latest
+
+				messageswaitingforresponsequeuelength
+					type: totaldelta
+
+				unknownresponsesreceived
+					type: totaldelta
+
+				oldmessagescleaned
+					type: totaldelta
+
+				maxmessagequeueitemage
+					type: latest
+
+				averagemessagequeueitemage
+					type: latest
+
+				connectionstatussettofailed
+					type: totaldelta
+
+		monitorhandler
+			pollinginterval: 30000
+			maxdatapoints: 1
+			counters
+				memory_physical
+					type: latest
+
+				memory_virtual
+					type: latest
+				
+				memory_physicaltotal
+					type: latest
+				
+				memory_virtualtotal
+					type: latest
+
+		mongodbhandler
+			pollinginterval: 30000
+			maxdatapoints: 100
+			counters
+				scehemaapplied
+
+				getdata
+					type: totaldelta
+
+				setdata
+					type: totaldelta
+
+				removedata
+					type: totaldelta
+
+				insertontorelation
+					type: totaldelta
+
+				removefromrelation
+					type: totaldelta
+
+				login
+					type: totaldelta
+
+				adlogin
+					type: totaldelta
+
+				setpassword
+					type: totaldelta
+
+				recordsreturned
+					type: totaldelta
+
+				thumbnailssaved
+					type: totaldelta
+
+				recordsremoved
+					type: totaldelta
+
+				recordsadded
+					type: totaldelta
+
+				recordsupdated
+					type: totaldelta
+
+				filesreturned
+					type: totaldelta
+
+				filesskippedbecauseofcache
+					type: totaldelta
+
+				filessaved
+					type: totaldelta
+
+				filesnotfound
+					type: totaldelta
+
+				getdata_totaltime
+					type: totaldelta
+
+				setdata_totaltime
+					type: totaldelta
+
+				removedata_totaltime
+					type: totaldelta
+
+				insertintorelation_totaltime
+					type: totaldelta
+
+				removefromrelation_totaltime
+					type: totaldelta
+
+				getdata_handled_instant
+					type: totaldelta
+
+				getdata_handled_moderate
+					type: totaldelta
+
+				getdata_handled_long
+					type: totaldelta
+
+				getdata_handled_verylong
+					type: totaldelta
+
+				getdata_handled_extreme
+					type: totaldelta
+
+				setdata_handled_instant
+					type: totaldelta
+
+				setdata_handled_moderate
+					type: totaldelta
+
+				setdata_handled_long
+					type: totaldelta
+
+				setdata_handled_verylong
+					type: totaldelta
+
+				setdata_handled_extreme
+					type: totaldelta
+
+				removedata_handled_instant
+					type: totaldelta
+
+				removedata_handled_moderate
+					type: totaldelta
+
+				removedata_handled_long
+					type: totaldelta
+
+				removedata_handled_verylong
+					type: totaldelta
+
+				removedata_handled_extreme
+					type: totaldelta
+
+				mongodb_connections
+					type: latest
+
+				mongodb_insert
+					type: totaldelta
+
+				mongodb_query
+					type: totaldelta
+
+				mongodb_update
+					type: totaldelta
+
+				mongodb_delete
+					type: totaldelta
+
+				mongodb_status
+					type: totaldelta
+
+				mongodb_network_kbin
+					type: totaldelta
+
+				mongodb_network_kbout
+					type: totaldelta
+
+				mongodb_network_requests
+					type: totaldelta
+
+				mongodb_mem_residentmb
+					type: latest
+
+				mongodb_mem_virtualmb
+					type: latest
+
+				mongodb_mem_mappedwithjournalmb
+					type: latest
+
+				mongodb_asserts_regular
+					type: totaldelta
+
+				mongodb_asserts_user
+					type: totaldelta
+
+				mongodb_asserts_warning
+					type: totaldelta
+
+				mongodb_asserts_msg
+					type: totaldelta
+
+				mongodb_asserts_rollovers
+					type: latest
+
+				mongodb_metrics_operation_fastmod
+					type: totaldelta
+
+				mongodb_metrics_operation_idhack
+					type: totaldelta
+
+				mongodb_metrics_operation_scanandorder
+					type: totaldelta
+
+		reversetcphandler
+			pollinginterval: 30000
+			maxdatapoints: 100
+			counters
+				requestsreceived
+					type: totaldelta
+
+				timesconnected
+					type: totaldelta
+
+				concurrentrequests
+					type: latest
+
+				queueLength
+					type: latest
+
+				messagesWaitingForResponse
+					type: latest
+
+				unknownResponsesReceived
+					type: totaldelta
+
+				oldMessagesCleaned
+					type: totaldelta
+
+				maxMessageQueueItemAge
+					type: totaldelta
+
+				averageMessageQueueItemAge
+					type: totaldelta
+
+				exceptionswhenhandlingmessages
+					type: totaldelta

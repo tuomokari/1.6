@@ -1,0 +1,677 @@
+﻿@import "fontawesome/font-awesome.less";
+@import "jquery-ui.less";
+
+/*#region fonts*/
+@fa-font-path: "../../../fonts/core";
+/*#endregion*/
+
+// Google MD Fonts
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../../fonts/core/MaterialIcons-Regular.woff');
+}
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
+
+/*#region Calculated and fixed color variables*/
+
+/*Base*/
+
+@blockscreen: rgb(0, 0, 0);
+@blockscreen-opacity: 0.65;
+@floatbuttonsize: 40px;
+@tableheadingweight: 700;
+@tabledataweight: 400;
+
+/*Tables*/
+
+/*#region Element styles*/
+
+.__buttongroup {
+    display: inline-block;
+
+    div {
+        float: left;
+        border-radius: 0;
+    }
+
+    >.__button {
+            float: left;
+            border-radius: 0;
+            margin-left: 0;
+
+        &:not(:last-child)  {
+            margin-right: 0;
+            }
+
+            &:last-child, &:last-child:hover {
+                border-top-right-radius: @border-radius;
+                border-bottom-right-radius: @border-radius;
+            }
+
+            &:first-child, &:first-child:hover {
+                border-top-left-radius: @border-radius;
+                border-bottom-left-radius: @border-radius;
+            }
+
+            &.__off {
+                background: @color-disabled;
+                color: #666;
+                text-shadow: none;
+            pointer-events: none;
+                }
+                }
+            }
+
+/*#endregion*/
+
+/*#region Notifications*/
+
+.__inlinenotification {
+    font-style: italic;
+    opacity: 0.75;
+}
+/*#endregion*/
+
+/*#region scrollbar overrides*/
+.iScrollVerticalScrollbar {
+    width: 10px !important;
+}
+.iScrollIndicator {
+    border-radius: 5px !important;
+    width: 10px !important;
+    background: rgb(50, 50, 50) !important;
+    border: none  !important;
+
+    .desktop({
+        box-shadow: rgba(0, 0, 0, 0.34902) 2px 2px 5px !important;
+    });
+}
+
+.iScrollLoneScrollbar {
+    transition-duration: 0.2s !important;
+    cursor: pointer;
+    opacity: 0 !important;
+}
+
+.iScrollLoneScrollbar.show {
+    opacity: 0.5 !important;
+}
+/*#endregion*/
+
+/*#region Document defaults*/
+html {
+    &:not(.__isdialog) {
+        background-image: @background-image;
+        background-size: cover;
+        background-attachment: fixed;
+        background-color: @color-body-background;
+        &when (@background-tiled = true) {
+            background-size: auto;
+            background-attachment: scroll;
+            background-repeat: repeat;
+        }
+    }
+
+    &.__isdialog {
+        background-color: @color-panel-background-opaque; // to fix background on views opened as dialogs
+    }
+
+    width: 100%;
+    height: 100%;
+
+    &.__debug body::before {
+        content: "debug";
+        font-size: 11px;
+        position: fixed;
+        width: 70px;
+        height: 14px;
+        background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+        color: #F00;
+        top: 0;
+        left: calc(~"50% - 35px");
+        z-index: 1000;
+        display: inline-flex;
+        align-items: flex-start;
+        text-transform: uppercase;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+        .center-content;
+        opacity: 0.75;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.25);
+    }
+}
+
+div {
+    margin: 0;
+    padding: 0;
+}
+
+body, input, .__button, p, li, select, textarea {
+    font-family: @typeface;
+    font-size: @base-font-size;
+    font-weight: @base-font-weight;
+    color: @color-text-positive; // todo: there should be base settings for light and dark type of theme
+}
+
+body {
+    -ms-touch-action: pan-y;
+    touch-action: pan-y; // this is to prevent IE swipe history. todo: check that this does not break any other functionality!
+    -webkit-overflow-scrolling: touch;
+    position: static;
+    height: 100%;
+    padding: @basemeasure;
+    box-sizing: border-box;
+    margin: 0;
+    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -ms-overflow-style: scrollbar;
+}
+
+#__applicationview {
+    margin: 0;
+    left: 0;
+    position: absolute;
+    z-index: 900;
+    height: 100%;
+    top: 0;
+    overflow: visible;
+    width: 100%;
+    &::before {
+        opacity: 0;
+        transition: opacity 0.1s ease-out;
+        content: "";
+        will-change: opacity;
+    }
+
+    
+    #__applicationview_inner {
+        padding: @basemeasure @basemeasure 0 @basemeasure; // bottom handled separately
+        overflow: visible;
+        width: 100%;
+        margin: 0 auto; // todo: fix original source of menu height value
+        left: 0;
+        min-height: calc(~"100% - "@menu-height);
+        height: calc(~"100% - "@menu-height);
+        position: static;
+        box-sizing: border-box;
+        .desktop ({
+            margin-top: @menu-height;
+        });
+
+        // bottom margin, done this way to resolve problems displaying bottom padding on IE
+        div.__panel:last-child {
+            margin-bottom: @basemeasure;
+        }
+
+        // content width limit todo: make a better way for doing these, parametrizable on page level. Optional region that has the paddings and widths would do it
+        > .__applicationview-fixed-wrapper {
+            margin-left: auto;
+            margin-right: auto;
+            height: calc(~"100% - " @basemeasure); // todo: basemeasure for margin, this is the wrong place for it
+
+            // bottom margin, done this way to resolve problems displaying bottom padding on IE
+            div.__panel:last-child {
+                margin-bottom: @basemeasure;
+            }
+        }
+    }
+}
+
+p {
+    margin: @basemeasure 0;
+    font-weight: 400;
+
+    &:first-child {
+        margin-top: 0;
+    }
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: @basemeasure 0;
+    color: @color-text-title;
+    font-weight: 200;
+}
+
+h1 {
+    font-size: 32px;
+}
+
+h2 {
+    font-size: 24px;
+}
+
+h3 {
+    font-size: @base-font-size * 1.15;
+}
+
+h4 {
+    font-size: @base-font-size * 1.1;
+}
+
+h5 {
+    font-size: @base-font-size * 1;
+    font-weight: 700;
+}
+
+h6 {
+    font-size: @base-font-size * 1;
+}
+
+.spinner(@size: 150px; @color: #fff) {
+    &::after {
+        content: "";
+        border: 3px solid @color;
+        border-top-color: transparent;
+        width: @size;
+        height: @size;
+        border-radius: 50%;
+        position: absolute;
+        left: calc(~"50% - "@size / 2);
+        top: calc(~"50% - "@size / 2);
+        animation: spin 1.25s infinite linear;
+        z-index: 700;
+        box-sizing: border-box;
+        background: rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0 2*@size @size rgba(0, 0, 0, 0.1);
+        opacity: 1;
+    }
+}
+
+.__spinner-inline {
+    // requires relative or absolute positioning but this needs to be set in the element itself.
+    .spinner(@size: 40px);
+}
+
+// new blockscreen
+
+body.__blockscreen { // body blockscreen is a special case because it disables the user interface completely.
+    overflow: hidden;
+    /*min-height: 100%; // to ensure the blocking area spans entire page
+    max-height: 100%; // to ensure the blocking area spans entire page*/
+
+    &.__blockscreen { // handle menu blockscreen via navigation.css
+
+        #__menubar {
+            .__blocked;
+        }
+
+        #__applicationview {
+            .__blocked;
+            .__shaded;
+            &::before { // to ensure blockscreen is on top of UI regardless of scroll position etc.
+                position: fixed;
+                z-index: 10000;
+            }
+        }
+    }
+
+    .__float, .__float-notdt {
+        opacity: 0;
+        pointer-events: none;
+    }
+}
+
+div.__blockscreen {
+    .__blocked;
+    .__shaded;
+    &.__spinner {
+        .spinner(@size: 32px);
+    }
+}
+
+body.__spinner {
+    #__applicationview {
+        .spinner();
+    }
+}
+
+.__blocked { // Blockscreen
+    .__unselectable();
+    
+    div {
+        .__passthrough;
+    }
+
+    &:before {
+        content: "";
+        display: block;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        position: absolute;
+        opacity: 0;
+        z-index: 700;
+    }
+
+    &.__shaded {
+        &:before {
+            content: "";
+            /*transition: opacity 100ms @animation-easing, z-index @animation-duration @animation-easing;*/ // disabled for increased performance
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            position: absolute;
+            background: @blockscreen;
+            will-change: opacity;
+            pointer-events: none;
+            transform: translateZ(0); // fixes flickering on IE 8.1 mobile
+            opacity: @blockscreen-opacity;
+        }
+    }
+}
+
+pre {
+    white-space: pre;
+}
+
+.__margin-left {
+    margin-left: @basemeasure;
+}
+
+.__margin-right {
+    margin-right: @basemeasure;
+}
+
+.__margin-top {
+    margin-top: @basemeasure;
+}
+
+.__margin-bottom {
+    margin-bottom: @basemeasure;
+}
+/*#endregion*/
+
+/*#region Layout blocks*/
+
+.__region {
+    &.__padding {
+        padding: @basemeasure;
+    }
+
+    &.__margin {
+        margin: @basemeasure;
+    }
+
+    clear: both;
+}
+
+.__makeroom() {
+    h2 {
+        margin-left: 2 * @basemeasure;
+    }
+}
+
+/*#endregion*/
+
+/*#region List blocks*/
+
+ol, ul {
+    margin: 0;
+}
+
+/*#endregion*/
+
+/*#region Responsiveness*/
+
+@media screen {
+    @-webkit-viewport {
+        width: device-width;
+    }
+
+    @-moz-viewport {
+        width: device-width;
+    }
+
+    @-ms-viewport {
+        width: device-width;
+    }
+
+    @-o-viewport {
+        width: device-width;
+    }
+
+
+    @viewport {
+        width: device-width;
+    }
+}
+
+/*#region icons*/
+
+.__icon {
+    fill: @color-icon;
+    width: @iconsize;
+    height: @iconsize;
+
+    svg {
+        width: @iconsize;
+        height: @iconsize;
+    }
+
+    &.__spin svg {
+        -webkit-animation: spin 4s linear infinite;
+        -moz-animation: spin 4s linear infinite;
+        -o-animation: spin 4s linear infinite;
+        animation: spin 4s linear infinite;
+    }
+}
+
+&.__icon-menu {
+    display: none;
+}
+
+.__fa-icon { // todo: what is this?
+    font-size: @base-font-size * 2;
+    opacity: 0.75;
+}
+
+/*#endregion*/
+
+/*#region: datepicker*/
+.ui-datepicker {
+    width: auto;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    background: none;
+    border: none;
+
+    &:hover {
+        background: rgba(0,0,0,0.25);
+        border-radius: 3px;
+    }
+}
+
+.ui-datepicker-current-day {
+    background: fade(@color-table-highlight, 25%);
+    border-radius: 3px;
+}
+
+.ui-datepicker-today {
+    background: rgba(241, 126, 28, 0.75);
+    border-radius: 3px;
+}
+
+td.ui-datepicker-week-col {
+    font-size: 12px;
+    padding-top: 6px;
+}
+
+.ui-datepicker th {
+    padding-bottom: 2px;
+}
+
+.ui-datepicker-header {
+    box-shadow: 0 5px 12px -10px rgba(0,0,0,0.35);
+}
+/*#endregion*/
+
+/*#region flex*/
+.__flex-container {
+    .flexcontainer();
+
+    .__flex-left {
+        .flex();
+        .display-flex;
+
+        div, .__button {
+            flex-grow: 0;
+            margin-right: @basemeasure / 2;
+        }
+    }
+
+    .__flex-right {
+        .flex(0, 1, auto);
+        margin-left: @basemeasure;
+        .display-flex;
+
+        div, .__button {
+            flex-grow: 0;
+            margin-left: @basemeasure / 2;
+        }
+    }
+}
+/*#endregion*/
+
+@import "corecomponents/accordion.less";
+@import "corecomponents/animations.less";
+@import "corecomponents/card.less";
+@import "corecomponents/coreelements.less";
+@import "corecomponents/dialog.less";
+@import "corecomponents/displayform.less";
+@import "corecomponents/flyout.less";
+@import "corecomponents/form.less";
+@import "corecomponents/listview.less";
+@import "corecomponents/navigation.less";
+@import "corecomponents/panel.less";
+@import "corecomponents/flexpanel.less";
+@import "corecomponents/searchfilter.less";
+@import "corecomponents/table.less";
+@import "corecomponents/tabs.less";
+@import "corecomponents/sections.less";
+@import "corecomponents/tools.less";
+
+//todo: move respoinsiveness helpers elsewhere
+
+.widescreen({
+    .__applicationview-fixed-wrapper {
+        width: calc(~"100% - 100px");
+        min-width: @screen-hd - 200px;
+        max-width: none;
+        .__menubar {
+            padding-left: 55px; // todo: fix if this is arbitrary
+        }
+    }
+
+});
+
+/*#region Smartphone screens*/
+
+.__show_mobile {
+    //display: none;
+}
+
+@media only screen and (max-width: @screen-smartphone) {
+
+    #__applicationview {
+        padding-top: 0;
+        height: 100%;
+        min-height: 100%;
+
+        #__applicationview_inner {
+            padding-top: @basemeasure;
+            height: 100%;
+            min-height: 100%;
+
+            &:before {
+                top: 0; // fix shadow to top
+            }
+        }
+    }
+
+    .__pageselector {
+        /*text-align: left;*/
+
+        a[disabled] {
+            display: none;
+        }
+    }
+
+    .__show_desktop {
+        display: none;
+    }
+
+    .__show_mobile {
+        display: block;
+    }
+
+    .__hideonmobile {
+        display: none;
+    }
+
+    #__menubar_logo_mobile {
+        display: block;
+    }
+
+    #__menubar_menuitems {
+        display: none;
+    }
+    .__userinfo {
+        display: none !important;
+    }
+
+    table.__table {
+        td, th {
+            border-radius: 0 !important;
+        }
+
+        .__displayformrow {
+            td, th {
+                display: block;
+            }
+
+            th {
+                padding-bottom: 0;
+            }
+
+            td {
+                padding-top: 0;
+            }
+        }
+    }
+
+    .__listview_mobile {
+        h2 {
+            font-size: 19px;
+        }
+    }
+}
+/*#endregion*/

@@ -1,0 +1,99 @@
+﻿			payrollintegrationhandler
+				export
+					exportautomatically: true
+					lockautomatically: true
+					//0.5h default (1800000) -> ms 
+					automaticexportinterval: 1800000
+					//9h default (32400000)-> ms
+					payrolllockoffset: 32400000
+					//2d default (172800000) -> ms
+					payrollexportoffset: 172800000
+					
+					//**************************CSV/Excel region**************
+					exportabsencefilecsv: Poissaolokirjaukset.csv
+						append:false
+					exportdayfilecsv: KuluJaTuntikirjaukset.csv
+						append:false
+					exporttimesheetfilecsv: KuluJaTuntikirjaukset.csv
+						append:true
+					exportexcelfile: hours.xlsx
+					
+					// ************ Entry types and fields region ************
+					//if numeric value is empty show zero 0, default is true
+					allowzerovaluesindouble: false
+
+					validtypescountandtypes: 3
+						absence: 0
+						day: 1
+						timesheet: 2
+					fields
+						paymentgroup
+							index:0
+							valid
+								absence
+								day
+								timesheet
+						useridentifier
+							index:1
+							valid
+								absence
+								day
+								timesheet
+							//whether remove preceding zeros from identifier, default is false
+							removeprecedingzeroes:true
+						startdate
+							index:2
+							valid
+								absence
+								day
+								timesheet
+							format:d.M.yyyy
+						//By deafult enddate is same as startdate
+						enddate
+							index:3
+							valid
+								absence
+								day
+								timesheet
+							format:d.M.yyyy
+						//identifier:projectid default value
+						//required 3 fields, 1 field length is 8
+						projectnumber:array
+							identifier:poski
+							fieldspan:3
+							length:8
+							index:4
+							valid
+								day
+								timesheet
+						workorder
+							index:7
+							valid
+								day
+								timesheet
+						paytypeid
+							index:8
+							valid
+								absence
+								day
+								timesheet
+						hours
+							index:9
+							valid
+								absence
+								day
+								timesheet
+							calculationfunction:1000/60/60
+							precedingoperator:/
+						amount
+							index:10
+							valid
+								day
+						hourlyrate
+							index:11
+							valid
+								day
+						quantityrate
+							index:12
+							valid
+								day

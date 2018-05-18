@@ -1,0 +1,4 @@
+approveworkhelper
+	paytypes
+		timesheetentrydetailpaytype
+			__condition: { disabled: { $ne: true }}

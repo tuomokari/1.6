@@ -1,0 +1,498 @@
+﻿tro
+	customer
+		collection
+			accessread: true
+
+			accessadd: false
+				userlevels
+					5: true
+			accessremove: false
+				userlevels
+					5: true
+			accessmodify: false
+				userlevels
+					5: true
+
+	project
+		collection
+			accessread: true
+
+			accessadd: false
+				userlevels
+					5: true
+			accessremove: false
+				userlevels
+					5: true
+			accessmodify: false
+				userlevels
+					5: true
+				featureson
+					projectleads: true
+		
+	asset
+		collection
+			accessread: true
+
+			accessadd: false
+				userlevels
+					5: true
+			accessremove: false
+				userlevels
+					5: true
+			accessmodify: false
+				userlevels
+					5: true
+
+	assetlocationentry
+		collection
+			accessread: false
+				owner: true
+				creator: true
+				userlevels
+					2: true
+					3: true
+					4: true
+					5: true
+					6: true
+
+
+	timesheetentry
+		collection
+			accessread: false
+				owner: true
+				creator: true
+				userlevels
+					3: true
+					4: true
+					5: true
+					6: true
+					7: true
+			
+			accessadd: true
+
+			accessremove: false
+				owner: true
+				creator: true
+				userlevels
+					3: true
+					4: true
+					5: true
+
+			accessmodify: false
+				owner: true
+				creator: true
+				userlevels
+					3: true
+					4: true
+					5: true
+	
+	timesheetentrydetailpaytype	
+		collection
+			accessread: true
+			
+			accessadd: false
+				userlevels
+					5: true
+
+			accessremove: false
+				userlevels
+					5: true
+
+			accessmodify: false
+				userlevels
+					5: true
+
+	dayentry
+		collection
+			accessread: false
+				owner: true
+				creator: true
+				userlevels
+					3: true
+					4: true
+					5: true
+					6: true
+					7: true
+			
+			accessadd: true
+
+			accessremove: false
+				owner: true
+				creator: true
+				userlevels
+					2: true
+					3: true
+					4: true
+					5: true
+
+			accessmodify: false
+				owner: true
+				creator: true
+				userlevels
+					2: true
+					3: true
+					4: true
+					5: true
+	dayentrytype
+		collection
+			accessread: true
+			
+			accessadd: false
+				userlevels
+					5: true
+
+			accessremove: false
+				owner: true
+				creator: true
+				userlevels
+					5: true
+
+			accessmodify: false
+				userlevels
+					5: true
+
+	allocationentry
+		collection
+			accessread: true
+			accessadd: false
+				userlevels
+					3: true
+					5: true
+
+			accessremove: false
+				userlevels
+					3: true
+					5: true
+
+			accessmodify: false
+				userlevels
+					3: true
+					5: true
+
+	articleentry
+		collection
+			accessread: false
+				owner: true
+				creator: true
+				userlevels
+					3: true
+					4: true
+					5: true
+					6: true
+					7: true
+
+			accessadd: true
+			accessremove: false
+				owner: true
+				creator: true
+				userlevels
+					3: true
+					4: true
+					5: true
+
+			accessmodify: false
+				owner: true
+				creator: true
+				userlevels
+					3: true
+					4: true
+					5: true
+
+	articlegroup
+		collection
+			accessread: true
+			
+			accessadd: false
+				userlevels
+					5: true
+
+			accessremove: false
+				userlevels
+					5: true
+
+			accessmodify: false
+				userlevels
+					5: true
+
+	article
+		collection
+			accessread: true
+
+			accessadd: false
+				userlevels
+					5: true
+			accessremove: false
+				userlevels
+					5: true
+			accessmodify: false
+				userlevels
+					5: true
+
+	user
+		collection
+			accessread: true
+			accessadd: false
+				userlevels
+					5: true
+			accessremove: false
+				userlevels
+					5: true
+			accessmodify: false
+				userlevels
+					4: true
+					5: true
+
+	payrollperiod
+		collection
+			accessread: true
+				userlevels
+					3: true
+					4: true
+					5: true
+					6: true
+			accessadd: false
+				userlevels
+					4: true
+					5: true
+					6: true
+			accessremove: false
+				userlevels
+					4: true
+					5: true
+					6: true
+			accessmodify: false
+				userlevels
+					4: true
+					5: true
+					6: true
+
+	clacontract
+		collection
+			accessread: true
+
+			accessadd: false
+				userlevels
+					5: true
+			accessremove: false
+				userlevels
+					5: true
+			accessmodify: false
+				userlevels
+					5: true
+
+	projectcategory
+		collection
+			accessread: true
+
+			accessadd: false
+				userlevels
+					5: true
+			accessremove: false
+				userlevels
+					5: true
+			accessmodify: false
+				userlevels
+					5: true
+
+	absenceentry
+		collection
+			accessread: false
+				owner: true
+				creator: true
+				userlevels
+					3: true
+					4: true
+					5: true
+					6: true
+					7: true
+			
+			accessadd: true
+
+			accessremove: false
+				owner: true
+				creator: true
+				userlevels
+					3: true
+					4: true
+					5: true
+			accessmodify: false
+				owner: true
+				creator: true
+				userlevels
+					3: true
+					4: true
+					5: true
+
+	absenceentrytype
+		collection
+			accessread: true
+
+			accessadd: false
+				userlevels
+					5: true
+			accessremove: false
+				userlevels
+					5: true
+			accessmodify: false
+				userlevels
+					5: true
+
+	assetentry
+		collection
+			accessread: false
+				owner: true
+				creator: true
+				userlevels
+					2: true
+					3: true
+					4: true
+					5: true
+					6: true
+					7: true
+			
+			accessadd: false
+				userlevels
+					2: true
+					3: true
+					4: true
+					5: true
+
+			accessremove: false
+				owner: true
+				creator: true
+				userlevels
+					2: true
+					3: true
+					4: true
+					5: true
+
+			accessmodify: false
+				owner: true
+				creator: true
+				userlevels
+					2: true
+					3: true
+					4: true
+					5: true
+
+	profitcenter
+		collection
+			accessread: true
+
+			accessadd: false
+				userlevels
+					5: true
+			accessremove: false
+				userlevels
+					5: true
+			accessmodify: false
+				userlevels
+					5: true
+
+	businessarea
+		collection
+			accessread: true
+
+			accessadd: false
+				userlevels
+					5: true
+			accessremove: false
+				userlevels
+					5: true
+			accessmodify: false
+				userlevels
+					5: true
+
+	functionalarea
+		collection
+			accessread: true
+
+			accessadd: false
+				userlevels
+					5: true
+			accessremove: false
+				userlevels
+					5: true
+			accessmodify: false
+				userlevels
+					5: true
+
+	entryupdate_erp
+		collection
+			accessread: false
+				userlevels
+					5: true
+			accessadd: false
+				userlevels
+					5: true
+			accessremove: false
+				userlevels
+					5: true
+			accessmodify: false
+				userlevels
+					5: true
+
+	payrollexport
+		collection
+			accessread: false
+				userlevels
+					4: true
+					5: true
+					6: true
+			accessadd: false
+				userlevels
+					4: true
+					5: true
+					6: true
+			accessremove: false
+				userlevels
+					4: true
+					5: true
+					6: true
+			accessmodify: false
+
+	location
+		collection
+			accessread: false
+				owner: true
+				creator: true
+
+			accessadd: true
+			accessremove: false
+				owner: true
+				creator: true
+				userlevels
+					5: true
+			accessmodify: false
+				owner: true
+				creator: true
+				userlevels
+					5: true			
+
+	favouriteusers
+		collection
+			accessread: false
+				owner: true
+				creator: true
+
+			accessadd: true
+			accessremove: false
+				owner: true
+				creator: true
+				userlevels
+					5: true
+			accessmodify: false
+				owner: true
+				creator: true
+				userlevels
+					5: true			
+
+	integrationevent
+		collection
+			accessread: false
+				userlevels
+					5: true
+					7: true
+			accessadd: false
+			accessremove: false
+			accessmodify: false

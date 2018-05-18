@@ -1,0 +1,48 @@
+﻿[controller(tro)
+
+	[using(dataform)]
+	[using(form)]
+	[using(table)]
+	[using(navigation)]
+	[using(layout)]
+	[using(schema)]
+	[using(text)]
+	[using(menubar)]
+	[using(documentstructure)]
+
+	[settings()
+		[html
+			[head(title: [$pagetitle_settings])
+				[defaultaction.defaultviewhead]
+			]
+			
+			[body
+				[application()
+					[settingsbody]
+				]
+			]
+		]
+	]				
+
+	[private]
+	[settingsbody()
+		[panel(
+			heading: [$pagetitle_settings],
+			titlepanel: true)
+
+			[if (config.application.features.myplaces)
+				[actionbutton(
+					label: $pagetitle_myplaces,
+					action: "myplaces",
+					controllername: "tro")]
+			]
+
+			[if (config.application.features.favouriteusers && currentuser.level == 3 || currentuser.level == 4 || currentuser.level == 5)
+				[actionbutton(
+					label: $pagetitle_favouriteusers,
+					action: "favouriteuserslists",
+					controllername: "tro")]
+			]
+		]
+	]
+]

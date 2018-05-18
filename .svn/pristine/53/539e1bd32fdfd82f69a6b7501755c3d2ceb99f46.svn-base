@@ -1,0 +1,249 @@
+﻿html[data-dialogopen='true'][data-overflow='true'], html[data-menuopen='true'][data-overflow='true']{
+    overflow-y: scroll;
+}
+body.__dialogopen {
+    /*overflow: hidden;*/
+    position: fixed;
+    width: 100%;
+    .display-flex;
+    .center-align;
+    .center-content;
+
+    #__applicationview {
+        /*overflow-y: hidden;*/
+    }
+}
+
+.__dialog {
+    .__box;
+    background-color: @color-panel-background-opaque;
+    border: @border-radius solid @color-panel-background-opaque; // this is to clean up scrollbar corners
+    box-sizing: border-box;
+    z-index: 90000;
+    position: relative;
+    opacity: 0;
+    /*transition: opacity 100ms ease-out;*/
+    /*will-change: opacity;*/
+    overflow: visible;
+    position: relative;
+    height: 100%;
+
+    &.__open {
+        opacity: 1;
+    }
+
+    &.__closed {
+        opacity: 0;
+    }
+
+    .__dialog-content {
+        overflow: auto;
+        height: 100%;
+        &.__customscroll {
+            overflow: hidden
+        }
+    }
+
+    &.__iframe .__dialog-content {
+        overflow: hidden;
+    }
+
+    .__panel, .__panelbody, .__panel:first-child .__panelbody {
+        box-shadow: none;
+    }
+
+    iframe {
+        border: none;
+        width: 100%;
+        height: 100%;
+    }
+
+    .__printbutton {
+        position: absolute;
+        padding-right: 10px;
+        z-index: 1000;
+        cursor: pointer;
+        height: 0;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        text-align: right;
+        left: 0;
+        pointer-events: none;
+
+        .desktop({
+            margin: -25px auto 0 auto;
+            right: -135px;
+        });
+
+        .smartphone({
+            display: none;
+        });
+
+        > div {
+            top: inherit;
+            display: inline-flex;
+            text-align: center;
+            position: static;
+            pointer-events: all;
+        }
+    }
+
+    .__closebutton {
+        position: absolute;
+        padding-right: 10px;
+        z-index: 1000;
+        cursor: pointer;
+        height: 0;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        text-align: right;
+        left: 0;
+        pointer-events: none;
+        max-width: 100% !important;
+
+        .desktop({
+            margin: -25px auto 0 auto;
+            right: -135px;
+        });
+
+        .smartphone({ //todo: check these!!!
+            margin: 10px auto 0 auto;
+            right: 0;
+        });
+
+        &+.__printbutton.__show {
+            
+            .desktop({
+                right: -35px;
+            });
+        }
+
+        > div {
+            top: inherit;
+            display: inline-flex;
+            text-align: center;
+            position: static;
+            pointer-events: all;
+        }
+    }
+
+    .__dialogcontrols {
+        margin-top: 15px;
+    }
+    .__dialogheading {
+        font-size: 32px;
+        font-weight: 200;
+        margin: 0;
+    }
+    .__dialogheading-sub {
+        font-size: 16px;
+        font-weight: 400;
+        margin: 0;
+    }
+}
+
+/*#region messagebox*/
+.__messagebox-body, .__messagebox {
+    padding: @basemeasure;
+
+    .__messagebox-message {
+        .flexcontainer();
+
+        >div {
+            .flex();
+            flex-shrink: 1;
+        }
+    }
+
+    .__messagebox-controls {
+        text-align: center;
+
+        &.__right {
+            text-align: right;
+        }
+
+        &.__left {
+            text-align: left;
+        }
+
+        margin-top: @basemeasure;
+    }
+    .__messagebox-icon {
+        @messagebox-iconsize: 64px;
+        font-size: @messagebox-iconsize;
+        text-align: center;
+        max-width: @messagebox-iconsize + 2 * @basemeasure;
+    }
+    .__messagebox-cancel {
+        margin-left: @basemeasure;
+    }
+    .__messagebox-validatemessage {
+        color: @color-warning;
+        display: none;
+    }
+    .__messagebox-confirm-error {
+        color: @color-error;
+    }
+    .__messagebox-confirm-warning {
+        color: @color-note;
+    }
+    .__messagebox-confirm-ok {
+        color: @color-ok;
+    }
+    .__messagebox-confirm-info {
+        color: @color-ok;
+    }
+    .__messagebox-confirm-question {
+        color: @color-ok;
+    }
+}
+/*#endregion*/
+
+/*#region positioning*/
+@dialog-margin: 25px;
+
+.__dialog-top {
+    top: @dialog-margin;
+}
+.__dialog-right {
+    right: @dialog-margin;
+}
+.__dialog-bottom {
+    bottom: @dialog-margin;
+}
+.__dialog-left {
+    left: @dialog-margin;
+}
+/*#endregion*/
+
+/*#region isdialog*/
+body.__isdialog {
+    background: @color-panel-background-opaque !important;
+    
+    #__menubar, #__mobilemenu, #__menubar_mobilemenu {
+        display: none !important;
+    }
+
+    #__applicationview_inner {
+        padding: 0 !important;
+        height: auto !important;
+        margin-top: 0 !important;
+
+        .__applicationview-fixed-wrapper {
+            margin: 0 !important;
+            width: 100% !important;
+            max-width: none !important;
+        }
+    
+        div:not(.__panel)>.__panel:not(.__searchfilterresult), >.__panel:not(.__searchfilterresult) {
+            border-radius: 0 !important;
+            border: none !important;
+            box-shadow: none !important;
+            margin: 0 !important;
+            background: @color-panel-background-opaque !important;
+        }
+    }
+}
+/*#endregion*/

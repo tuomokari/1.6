@@ -1,0 +1,33 @@
+﻿payrollexportwidget
+	en-US
+		revertexport: Return exported data
+		exporttoexcel: Export to excel
+		confirmrevert: All exported entries found with current filters will be returned to unexported state. Do you wish to continue?
+		confirmtotals: Do you wish to generate a spreadsheet of selected entries?
+		confirmexporttoexcel: Do you wish to export currently filtered data to Excel? No data will be changed.
+		confirmexport: All data selected by current filters will be exported to payroll. Do you wish to continue?
+		exportdata: Export data
+		cancelexport: Return exported data
+		confirmcancel: All exported entries found with current filters will be returned to unexported state. Do you wish to continue?
+		timesheetentriestab: Timesheet entries
+		dailyentriestab: Daily entries
+		show_only_expored_entries: Only exported entries
+		show_only_entries_not_accepted_by_manager: Only entries not accepted by manager
+		show_only_entries_not_accepted_by_worker: Only entries not accepted by worker
+		absenceentriestab: Absences
+	fi
+		revertexport: Palauta viedyt tiedot muokattavaksi
+		exporttoexcel: Vie Exceliin
+		confirmrevert: Kaikki viedyt tiedot, jotka löytyvät valitulla suodatuksella palautetaan muokattavaksi. Haluatko jatkaa?
+		confirmtotals: Haluatko muodostaa taulukon valitusta aineistosta?
+		confirmexporttoexcel: Haluatko viedä nykyisellä suodatuksella valitut datat Exceliin? Dataa ei muokata tai palkkakautta lukita viennin seurauksena.
+		confirmexport: Kaikki nykyisellä suodatuksella valitut tiedot viedään palkanlaskentaan. Haluatko jatkaa?
+		exportdata: Vie tiedot
+		cancelexport: Palauta viedyt tiedot muokattavaksi
+		confirmcancel: Kaikki viedyt tiedot, jotka löytyvät valitulla suodatuksella palautetaan muokattavaksi. Haluatko jatkaa?
+		timesheetentriestab: Tuntikirjaukset
+		dailyentriestab: Kulut
+		show_only_expored_entries: Näytä jo viedyt kirjaukset
+		show_only_entries_not_accepted_by_manager: Näytä esimiesten hyväksymättömät kirjaukset
+		show_only_entries_not_accepted_by_worker: Näytä työntekijöiden hyväksymättömät kirjaukset
+		absenceentriestab: Poissaolot

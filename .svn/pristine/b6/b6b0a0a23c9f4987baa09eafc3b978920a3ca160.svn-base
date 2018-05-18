@@ -1,0 +1,24 @@
+﻿[controller(dataform)
+	
+	[using(menubar)]
+	[using(form)]
+	
+	[override]
+	[private]
+	[displayforcustomvalue(value, propertyschema, type, document)
+		[if (type == "routefield")
+			[displayfield(value, propertyschema.unit)]
+		]
+	]
+
+	[override]
+	[private]
+	[inputforcustomitem(propertyschema, item, type, name, label, value, validationerror)
+
+		[if (type == "routefield") 
+			[routefieldwidget.routefieldwidget(propertyschema, item, name, label, value, validationerror)]
+		][else if (type == "timesheetentrypaytype")
+			[timesheetentrypaytypewidget.timesheetentrypaytypewidget()]
+		]
+	]
+]

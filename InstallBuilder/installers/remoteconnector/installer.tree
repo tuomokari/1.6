@@ -1,0 +1,19 @@
+remoteconnector
+	files
+		core
+			source:"references"
+			target
+			acceptfilter:"(?:(?!\\.dll)(?:.|\\n))*\\.dll"
+			recursive:true
+			singletargetfolder:true
+		exe
+			source:"references"
+			target
+			acceptfilter:"RemoteConnector.exe"
+			recursive:true
+			singletargetfolder:true
+		handlers
+			source:"Handlers\\bin\\Release"
+			target
+			acceptfilter:"(?:(?!\\.dll)(?:.|\\n))*\\.dll"
+			recursive:true

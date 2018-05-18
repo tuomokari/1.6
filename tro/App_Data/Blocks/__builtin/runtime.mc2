@@ -1,0 +1,34 @@
+﻿[controller(runtime)
+	[using(layout)]
+
+	[info
+		[runtimeinfo = __runtimeinfo]
+
+		[tree.show(runtimeinfo, "paneledlist")]
+	]
+
+	[timedtasks
+		[timedtaskinfo = runtime.timedtaskinfo]
+
+		[tree.show(timedtaskinfo, "paneledlist")]
+	]
+
+	[about
+		[html
+			[head(title: [$pagetitle_about])
+				[defaultaction.defaultviewhead]
+			]
+			
+			[body
+				[core.application("__about")
+					[panel(heading: txt("about_versionmc2"))
+						<h3>[viewbag.versionmc2]</h3>
+					]
+					[panel(heading: txt("about_versionapplication"))
+						<h3>[viewbag.versionapplication]</h3>
+					]
+				]
+			]
+		]
+	]
+]
