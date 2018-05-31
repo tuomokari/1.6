@@ -19,7 +19,7 @@ $.widget("userformwidget.userformwidget", $.core.base, {
 	 * be run here
 	 */
     _initWidget: function () {
-        let base = this
+        var base = this
         this._setupWidgetEvents();
         $(".__externalrelation_project").remove();
         $(".__externalrelation_timesheetentry").remove();

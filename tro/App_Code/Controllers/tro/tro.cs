@@ -805,7 +805,7 @@ namespace tro.App_Code.Controllers.tro
         private void ValidateProjectActive(ValidatedDocument validatedDocument)
         {
             // Project active constraints not used for HR or admins
-            if ((int)Runtime.SessionManager.CurrentUser["level"] == 5)
+            if ((int)Runtime.SessionManager.CurrentUser["level"] == 3 || (int)Runtime.SessionManager.CurrentUser["level"] == 5)
                 return;
 
             string collectionName = validatedDocument.Schema.Name;

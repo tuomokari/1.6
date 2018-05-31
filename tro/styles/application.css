@@ -8599,15 +8599,6 @@ tr.fc-collapsed > td > div {
 .__homescreenprojects .projectinfo.untimedproject h3 {
   color: #fff;
 }
-.__homescreenprojects .projectinfo.untimedproject [data-inworkstatus='In progress'] .__button.projectallocations {
-  background-color: orange;
-}
-.__homescreenprojects .projectinfo.untimedproject [data-inworkstatus='Not started'] .__button.projectallocations {
-  background-color: #00C3FF;
-}
-.__homescreenprojects .projectinfo.untimedproject :not([data-inworkstatus]) .__button.projectallocations {
-  background-color: #00C3FF;
-}
 .__homescreenprojects .projectinfo.timedproject {
   cursor: default;
   z-index: 100;

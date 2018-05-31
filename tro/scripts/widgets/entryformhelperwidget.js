@@ -40,7 +40,7 @@ $.widget("entryformhelperwidget.entryformhelperwidget", $.core.base, {
             return
 
         // Don't render approve button for workers or assistant HR
-        let level = parseInt($("body").data("userlevel"))
+        var level = parseInt($("body").data("userlevel"))
         if (level < 3 || level > 5)
             return
 
